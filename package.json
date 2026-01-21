@@ -1,0 +1,12 @@
+{
+  "name": "subtext-vk-bot",
+  "version": "1.0.0",
+  "description": "VK Bot for English Learning",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
