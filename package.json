@@ -1,1 +1,9 @@
-
+{
+  "name": "subtext-platform",
+  "version": "1.0.0",
+  "description": "Static site for English learning",
+  "scripts": {
+    "build": "echo 'No build needed'"
+  },
+  "dependencies": {}
+}
