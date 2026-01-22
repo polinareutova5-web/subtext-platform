@@ -18,7 +18,7 @@
     }
     .hidden { display: none; }
 
-    /* Шапка — картинка по ширине экрана, высота как была */
+    /* Шапка — картинка с пустым центром */
     .header {
       width: 100%;
       height: 200px;
@@ -28,6 +28,18 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.9) 80%, rgba(255,255,255,0.9) 100%);
+      z-index: 1;
     }
 
     .header h1 {
@@ -79,7 +91,7 @@
       background: #c8e6c9;
     }
 
-    /* Основной контент — профиль по центру */
+    /* Основной контент */
     .main-content {
       padding: 2rem 1rem;
       max-width: 800px;
@@ -87,6 +99,7 @@
       text-align: center;
     }
 
+    /* Профиль — только в разделе "Профиль" */
     .profile-section {
       display: flex;
       flex-direction: column;
@@ -186,7 +199,7 @@
   </style>
 </head>
 <body>
-  <!-- Шапка — картинка по ширине экрана -->
+  <!-- Шапка — картинка с пустым центром -->
   <div class="header">
     <h1>Subtext</h1>
   </div>
@@ -204,7 +217,7 @@
       <button onclick="showSection('schedule')">📅 Расписание</button>
     </div>
 
-    <!-- Профиль — строго по центру -->
+    <!-- Профиль — только в этом разделе -->
     <div id="profile" class="section profile-section">
       <h2>👤 Профиль</h2>
       <p>Привет, <strong id="username"></strong>!</p>
