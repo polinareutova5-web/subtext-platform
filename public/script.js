@@ -67,7 +67,12 @@ shopItems.innerHTML = data.shop.map((item, idx) =>
     } else {
       shopItems.innerHTML = '<p>Магазин временно пуст.</p>';
     }
-
+function confirmBuy(index, name, price) {
+  const confirmed = confirm(`Хотите купить?\n\n${name}\nЦена: ${price} монет`);
+  if (confirmed) {
+    buyItem(index);
+  }
+}
     // Показываем интерфейс
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('main').classList.remove('hidden');
