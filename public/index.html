@@ -19,13 +19,39 @@
     }
     .hidden { display: none; }
 
-    /* Навигация — идеальный блок */
+    /* Шапка с картинкой - растягивается на весь экран */
+    .header-container {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
+      background-size: cover;
+      height: 200px;
+    }
+
+    h1 {
+      color: #013220;
+      text-align: center;
+      margin: 0 auto;
+      padding: 1rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'English Script', cursive;
+      font-size: 3rem;
+      font-weight: normal;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      letter-spacing: 1px;
+      max-width: 800px;
+    }
+
+    /* Навигация — прилегает к краям центрального блока */
     .nav-container {
       display: flex;
       gap: 0.5rem;
       flex-wrap: nowrap;
       margin: 1rem 0;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0;
       background: #fff;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       overflow-x: auto;
@@ -53,7 +79,8 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      height: 50px; /* ← фиксированная высота */
+      height: 50px;
+      flex: 1;
     }
 
     .nav-container button:hover {
@@ -73,28 +100,13 @@
       margin: 0.5rem 0;
     }
 
-    /* Шапка с фоном */
-    h1 {
-      color: #013220;
-      text-align: center;
-      margin: 0;
-      padding: 1rem;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
-      background-size: cover;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'English Script', cursive;
-      font-size: 3rem;
-      font-weight: normal;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      letter-spacing: 1px;
-    }
-
     .section {
       animation: fadeIn 0.3s;
       padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      margin: 1rem 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     @keyframes fadeIn {
@@ -166,62 +178,74 @@
       font-size: 1.2rem;
       color: #666;
     }
+
+    /* Контейнер для основного контента */
+    .content-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0;
+    }
   </style>
 </head>
 <body>
-  <!-- Шапка с картинкой -->
-  <h1>Subtext</h1>
+  <!-- Шапка с картинкой на весь экран -->
+  <div class="header-container">
+    <h1>Subtext</h1>
+  </div>
 
   <div id="loading">Загрузка...</div>
 
   <!-- Основной интерфейс -->
   <div id="main" class="hidden">
-    <!-- Навигация -->
-    <div class="nav-container">
-      <button onclick="showSection('profile')">👤 Профиль</button>
-      <button onclick="showSection('lessons')">📚 Уроки</button>
-      <button onclick="showSection('homework')">📤 ДЗ</button>
-      <button onclick="showSection('shop')">🛒 Магазин</button>
-      <button onclick="showSection('schedule')">📅 Расписание</button>
-    </div>
-
-    <!-- Профиль -->
-    <div id="profile" class="section">
-      <h2>👤 Профиль</h2>
-      <p>Привет, <strong id="username"></strong>!</p>
-      <p>Уровень: <span id="level"></span></p>
-      <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
-    </div>
-
-    <!-- Уроки -->
-    <div id="lessons" class="section hidden">
-      <h2>📚 Уроки</h2>
-      <div id="lessons-list" class="lessons-grid"></div>
-    </div>
-
-    <!-- ДЗ -->
-    <div id="homework" class="section hidden">
-      <h2>📤 Сдать ДЗ</h2>
-      <textarea id="hwText" placeholder="Ваш ответ..."></textarea><br>
-      <input type="file" id="hwFile" accept="image/*,.pdf,.doc,.docx">
-      <button onclick="submitHomework()">Отправить ДЗ</button>
-      <p id="hwStatus"></p>
-    </div>
-
-    <!-- Магазин -->
-    <div id="shop" class="section hidden">
-      <h2>🛒 Магазин</h2>
-      <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
-        💰 Ваши монеты: <span id="shop-coins">0</span>
+    <!-- Контейнер для центрального контента -->
+    <div class="content-wrapper">
+      <!-- Навигация -->
+      <div class="nav-container">
+        <button onclick="showSection('profile')">👤 Профиль</button>
+        <button onclick="showSection('lessons')">📚 Уроки</button>
+        <button onclick="showSection('homework')">📤 ДЗ</button>
+        <button onclick="showSection('shop')">🛒 Магазин</button>
+        <button onclick="showSection('schedule')">📅 Расписание</button>
       </div>
-      <div id="shop-items" class="shop-grid"></div>
-    </div>
 
-    <!-- Расписание -->
-    <div id="schedule" class="section hidden">
-      <h2>📅 Расписание</h2>
-      <p>Ваше индивидуальное расписание пока не задано.</p>
-      <p>Свяжитесь с преподавателем для составления графика.</p>
+      <!-- Профиль -->
+      <div id="profile" class="section">
+        <h2>👤 Профиль</h2>
+        <p>Привет, <strong id="username"></strong>!</p>
+        <p>Уровень: <span id="level"></span></p>
+        <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+      </div>
+
+      <!-- Уроки -->
+      <div id="lessons" class="section hidden">
+        <h2>📚 Уроки</h2>
+        <div id="lessons-list" class="lessons-grid"></div>
+      </div>
+
+      <!-- ДЗ -->
+      <div id="homework" class="section hidden">
+        <h2>📤 Сдать ДЗ</h2>
+        <textarea id="hwText" placeholder="Ваш ответ..."></textarea><br>
+        <input type="file" id="hwFile" accept="image/*,.pdf,.doc,.docx">
+        <button onclick="submitHomework()">Отправить ДЗ</button>
+        <p id="hwStatus"></p>
+      </div>
+
+      <!-- Магазин -->
+      <div id="shop" class="section hidden">
+        <h2>🛒 Магазин</h2>
+        <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
+          💰 Ваши монеты: <span id="shop-coins">0</span>
+        </div>
+        <div id="shop-items" class="shop-grid"></div>
+      </div>
+
+      <!-- Расписание -->
+      <div id="schedule" class="section hidden">
+        <h2>📅 Расписание</h2>
+        <p>Ваше индивидуальное расписание пока не задано.</p>
+        <p>Свяжитесь с преподавателем для составления графика.</p>
+      </div>
     </div>
   </div>
 
