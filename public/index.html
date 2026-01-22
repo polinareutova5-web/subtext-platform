@@ -15,18 +15,16 @@
       padding: 0;
       background-color: #faf9f6;
       color: #333;
-      overflow-x: hidden;
     }
     .hidden { display: none; }
 
-    /* Шапка — вся страница */
+    /* Шапка — картинка по ширине экрана, высота как была */
     .header {
-      height: 100vh;
       width: 100%;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
+      height: 200px;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center top;
       background-size: cover;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
@@ -43,21 +41,16 @@
       z-index: 2;
     }
 
-    /* Навигация — кнопки под шапкой */
+    /* Навигация — только кнопки, без белого фона */
     .nav-container {
       display: flex;
       gap: 0.5rem;
       flex-wrap: nowrap;
-      margin: 1rem 0;
+      margin: 1rem auto;
       padding: 0.5rem 1rem;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      width: 100%;
       max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
       z-index: 2;
     }
 
@@ -193,7 +186,7 @@
   </style>
 </head>
 <body>
-  <!-- Шапка — вся страница -->
+  <!-- Шапка — картинка по ширине экрана -->
   <div class="header">
     <h1>Subtext</h1>
   </div>
@@ -202,7 +195,7 @@
 
   <!-- Основной интерфейс -->
   <div id="main" class="hidden">
-    <!-- Навигация — кнопки под шапкой -->
+    <!-- Навигация — только кнопки, без белого фона -->
     <div class="nav-container">
       <button onclick="showSection('profile')">👤 Профиль</button>
       <button onclick="showSection('lessons')">📚 Уроки</button>
