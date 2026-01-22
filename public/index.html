@@ -21,44 +21,50 @@
 
     .hidden { display: none; }
 
-    /* Навигация — идеальный блок */
-    .nav-container {
+  .nav-container {
   display: flex;
   gap: 0.5rem;
-  flex-wrap: nowrap;
-  margin: 1rem auto;          /* ← центрируем правильно */
+
+  margin: 1rem auto;          /* строго по центру */
   padding: 0.5rem;
-  background: #fff;
+
+  background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+  max-width: 800px;
+  width: 100%;
+
+  box-sizing: border-box;     /* КЛЮЧЕВОЕ */
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  max-width: 800px;
-  box-sizing: border-box;     /* ← КЛЮЧЕВАЯ СТРОКА */
-}
-.nav-container button {
-  flex: 1;
-  min-width: 120px;
 }
 
-    .nav-container button {
+
+    ..nav-container button {
+  flex: 0 0 140px;            /* все кнопки ОДИНАКОВЫЕ */
+
+  height: 50px;
+
+  padding: 0;
   margin: 0;
-  padding: 0.7rem 1.2rem;
-  background: #e0f0e9;
-  border: 1px solid #a8d8b9;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  min-width: 120px;
-  flex: 0 0 140px;     /* ← ВОТ ЭТА СТРОКА */
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  height: 50px;
+
+  background: #e0f0e9;
+  border: 1px solid #a8d8b9;
+  border-radius: 8px;
+
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center;
+
+  white-space: nowrap;
+}
+.nav-container button:hover {
+  background: #c8e6c9;
 }
 
     textarea {
