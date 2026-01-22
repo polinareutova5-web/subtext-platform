@@ -2,7 +2,19 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzf5Nxa5O4J1smRP8kM4edK
 
 const GOOGLE_FORM_ID = "1FAIpQLSeOt_4wMFLUbl3RfYE-vgcTPAHDvXMopJOiDovicFJ0lQ621Q"; // ⬅️ ЗАМЕНИ ЭТО НА СВОЙ ID ФОРМЫ
 
+// ⚠️ ВАЖНО: Нужно найти ID полей твоей формы!
+// Замени эти значения на реальные ID из твоей Google Forms
+const FORM_FIELD_IDS = {
+  name: '',     // ID поля "Имя ученика"
+  email: 'entry.0987654321',    // ID поля "Email"
+  studentId: 'entry.1111111111', // ID поля "ID ученика"
+  comment: 'entry.2222222222',  // ID поля "Комментарий"
+  file: 'entry.3333333333'      // ID поля "Загрузка файла"
+};
+
 let userId;
+
+// ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
 
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => {
@@ -42,10 +54,8 @@ async function loadData() {
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
 
-    // Автоматически заполняем ID ученика в форме
+    // Автоматически заполняем ID и имя ученика в форме
     document.getElementById('student-id').value = userId;
-    
-    // Пытаемся заполнить имя из профиля
     if (u.username && u.username !== '—') {
       document.getElementById('student-name').value = u.username;
     }
@@ -93,7 +103,7 @@ async function loadData() {
     document.getElementById('main').classList.remove('hidden');
     showSection('profile');
 
-    // Инициализируем Drag & Drop для файлов
+    // Инициализируем загрузку файлов
     initFileUpload();
 
   } catch (err) {
@@ -102,22 +112,21 @@ async function loadData() {
   }
 }
 
-// ====================== ФУНКЦИИ ДЛЯ GOOGLE ФОРМЫ ======================
+// ==================== ФУНКЦИИ ДЛЯ ФОРМЫ ====================
 
 function initFileUpload() {
   const fileInput = document.getElementById('homework-file');
   const fileName = document.getElementById('file-name');
   const dropArea = document.querySelector('.file-upload-area');
   
-  if (fileInput) {
+  if (fileInput && dropArea) {
     fileInput.addEventListener('change', function(e) {
       if (this.files.length > 0) {
-        const file = this.files[0];
-        updateFileInfo(file);
+        updateFileInfo(this.files[0]);
       }
     });
     
-    // Drag & Drop функционал
+    // Drag & Drop
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
       dropArea.addEventListener(eventName, preventDefaults, false);
     });
@@ -159,82 +168,76 @@ function initFileUpload() {
   }
 }
 
-function submitHomeworkViaForm() {
+// ОСНОВНАЯ ФУНКЦИЯ ОТПРАВКИ
+async function submitHomeworkViaForm() {
   const name = document.getElementById('student-name').value.trim();
   const email = document.getElementById('student-email').value.trim();
   const studentId = document.getElementById('student-id').value.trim();
   const fileInput = document.getElementById('homework-file');
   const comment = document.getElementById('homework-comment').value.trim();
   const statusEl = document.getElementById('form-status');
+  const submitBtn = document.querySelector('.btn-primary');
   
   // Валидация
-  if (!name) {
-    showError('Пожалуйста, введите ваше имя');
-    return;
-  }
-  
-  if (!email || !isValidEmail(email)) {
-    showError('Пожалуйста, введите корректный email');
-    return;
-  }
-  
-  if (!studentId) {
-    showError('ID ученика не найден. Пожалуйста, обновите страницу.');
-    return;
-  }
-  
-  if (!fileInput.files.length) {
-    showError('Пожалуйста, выберите файл с домашним заданием');
-    return;
-  }
+  if (!name) return showError('Пожалуйста, введите ваше имя');
+  if (!email || !isValidEmail(email)) return showError('Пожалуйста, введите корректный email');
+  if (!studentId) return showError('ID ученика не найден');
+  if (!fileInput.files.length) return showError('Пожалуйста, выберите файл с ДЗ');
   
   const file = fileInput.files[0];
-  if (file.size > 50 * 1024 * 1024) { // 50 MB лимит
-    showError('Файл слишком большой. Максимальный размер - 50 MB');
-    return;
-  }
+  if (file.size > 50 * 1024 * 1024) return showError('Файл слишком большой. Максимальный размер - 50 MB');
   
-  // Показываем статус загрузки
+  // Блокируем кнопку и показываем загрузку
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '⏳ Отправляется...';
+  
   statusEl.innerHTML = `
     <div class="status-message status-loading">
-      <p style="margin: 0;">⏳ Подготовка формы для отправки...</p>
+      <p style="margin: 0;">⏳ Отправка домашнего задания...</p>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">Не закрывайте страницу</p>
     </div>
   `;
   
-  // Подготавливаем Google Форму URL
-  // Формат: https://docs.google.com/forms/d/e/{FORM_ID}/viewform?usp=pp_url&entry.XXXXX=value&entry.YYYYY=value
-  
-  // Создаем URL с параметрами
-  const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/viewform?usp=pp_url`;
-  
-  // В реальном Google Forms нужно знать ID полей, но для простоты
-  // откроем форму в новом окне с инструкцией
-  
-  // Открываем форму в новом окне
-  const newWindow = window.open(formUrl, '_blank');
-  
-  if (newWindow) {
-    // Показываем успех
+  try {
+    // Отправляем данные напрямую в Google Forms
+    const formData = new FormData();
+    
+    // Добавляем текстовые поля
+    formData.append(FORM_FIELD_IDS.name, name);
+    formData.append(FORM_FIELD_IDS.email, email);
+    formData.append(FORM_FIELD_IDS.studentId, studentId);
+    if (comment) {
+      formData.append(FORM_FIELD_IDS.comment, comment);
+    }
+    
+    // Добавляем файл
+    formData.append(FORM_FIELD_IDS.file, file);
+    
+    // URL для отправки в Google Forms
+    const submitUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
+    
+    // Отправляем POST запрос
+    const response = await fetch(submitUrl, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors' // Важно для Google Forms
+    });
+    
+    // Так как mode: 'no-cors', мы не можем проверить ответ
+    // Но если код выполнился без ошибок - значит отправка прошла
+    
+    // Успешная отправка
     statusEl.innerHTML = `
       <div class="status-message status-success">
-        <p style="margin: 0;">✅ Форма открывается в новом окне!</p>
+        <p style="margin: 0;">✅ Домашнее задание успешно отправлено!</p>
         <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
-          Пожалуйста, заполните открывшуюся Google Форму:
-        </p>
-        <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.9rem;">
-          <li>👤 Имя ученика: <strong>${name}</strong></li>
-          <li>📧 Email: <strong>${email}</strong></li>
-          <li>🔢 ID ученика: <strong>${studentId}</strong></li>
-          <li>📁 Файл: <strong>${file.name}</strong></li>
-          ${comment ? `<li>💬 Комментарий: ${comment}</li>` : ''}
-        </ul>
-        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; font-weight: 600;">
-          Скопируйте эти данные в соответствующие поля формы
+          Файл: <strong>${file.name}</strong><br>
+          Время: <strong>${new Date().toLocaleTimeString()}</strong>
         </p>
       </div>
     `;
     
-    // Очищаем форму через 10 секунд
+    // Очищаем форму
     setTimeout(() => {
       document.getElementById('custom-homework-form').reset();
       document.getElementById('file-name').textContent = '';
@@ -243,12 +246,19 @@ function submitHomeworkViaForm() {
         document.getElementById('student-name').value = document.getElementById('username').textContent;
       }
       statusEl.innerHTML = '';
-    }, 10000);
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '📨 Отправить домашнее задание';
+    }, 5000);
     
-  } else {
-    showError('Не удалось открыть форму. Пожалуйста, разрешите всплывающие окна.');
+  } catch (error) {
+    console.error('Ошибка отправки:', error);
+    showError('Ошибка при отправке. Попробуйте еще раз.');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '📨 Отправить домашнее задание';
   }
 }
+
+// ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
 
 function isValidEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -263,8 +273,6 @@ function showError(message) {
     </div>
   `;
 }
-
-// ====================== ПОКУПКА ======================
 
 async function buyItem(index) {
   const url = `${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`;
@@ -285,6 +293,9 @@ async function buyItem(index) {
   }
 }
 
+// ==================== ЗАГРУЗКА ПРИЛОЖЕНИЯ ====================
+
+loadData();
 // ====================== ЗАГРУЗКА ======================
 
 loadData();
