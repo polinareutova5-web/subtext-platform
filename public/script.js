@@ -3,7 +3,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyz5iHfF9eBSH-uKIMob6L8
 
 let userId;
 
-// Переключение между разделами
+// === ГЛОБАЛЬНЫЕ ФУНКЦИИ ===
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => {
     el.classList.add('hidden');
@@ -11,6 +11,14 @@ function showSection(sectionId) {
   document.getElementById(sectionId).classList.remove('hidden');
 }
 
+function confirmBuy(index, name, price) {
+  const confirmed = confirm(`Хотите купить?\n\n${name}\nЦена: ${price} монет`);
+  if (confirmed) {
+    buyItem(index);
+  }
+}
+
+// === ЗАГРУЗКА ДАННЫХ ===
 async function loadData() {
   const urlParams = new URLSearchParams(window.location.search);
   userId = urlParams.get('id');
@@ -30,90 +38,75 @@ async function loadData() {
     }
 
     const u = data.user;
-    // Заполняем профиль
     document.getElementById('username').textContent = u.username || '—';
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
 
-    // Уроки → в контейнер lessons-list
+    // Уроки
     const lessonsList = document.getElementById('lessons-list');
     if (data.lessons.length > 0) {
       lessonsList.innerHTML = data.lessons.map(l => 
-  `<div class="lesson-card">
-     <strong>Урок ${l.num}</strong><br>
-     <a href="${l.link}" target="_blank">Материалы</a>
-     ${l.hwLink ? `<br><a href="${l.hwLink}" target="_blank">ДЗ</a>` : ''}
-   </div>`
-).join('');
+        `<div class="lesson-card">
+           <strong>Урок ${l.num}</strong><br>
+           <a href="${l.link}" target="_blank">Материалы</a>
+           ${l.hwLink ? `<br><a href="${l.hwLink}" target="_blank">ДЗ</a>` : ''}
+         </div>`
+      ).join('');
     } else {
-      lessonsList.innerHTML = '<p>Нет доступных уроков. Обратитесь к преподавателю.</p>';
+      lessonsList.innerHTML = '<p>Нет доступных уроков.</p>';
     }
 
-    // Магазин → в контейнер shop-items
+    // Магазин
     const shopItems = document.getElementById('shop-items');
-    if (data.shop.length > 0) {
-      // Обновляем баланс в магазине
-document.getElementById('shop-coins').textContent = u.coins;
+    document.getElementById('shop-coins').textContent = u.coins; // баланс в магазине
 
-// Генерируем карточки
-shopItems.innerHTML = data.shop.map((item, idx) =>
-  `<div class="shop-item">
-     <h3>${item.name}</h3>
-     <div class="price">${item.price} монет</div>
-     <button class="buy-btn" onclick="confirmBuy(${idx}, '${item.name}', ${item.price})">Купить</button>
-   </div>`
-).join('');
+    if (data.shop.length > 0) {
+      shopItems.innerHTML = data.shop.map((item, idx) =>
+        `<div class="shop-item">
+           <h3>${item.name}</h3>
+           <div class="price">${item.price} монет</div>
+           <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name}\`, ${item.price})">Купить</button>
+         </div>`
+      ).join('');
     } else {
-      shopItems.innerHTML = '<p>Магазин временно пуст.</p>';
+      shopItems.innerHTML = '<p>Магазин пуст.</p>';
     }
-function confirmBuy(index, name, price) {
-  const confirmed = confirm(`Хотите купить?\n\n${name}\nЦена: ${price} монет`);
-  if (confirmed) {
-    buyItem(index);
-  }
-}
+
     // Показываем интерфейс
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('main').classList.remove('hidden');
-    showSection('profile'); // по умолчанию — профиль
+    showSection('profile');
 
   } catch (err) {
     console.error('Ошибка загрузки:', err);
-    document.getElementById('loading').textContent = '❌ Не удалось загрузить данные. Проверьте интернет.';
+    document.getElementById('loading').textContent = '❌ Не удалось загрузить данные.';
   }
 }
 
+// === ОТПРАВКА ДЗ ===
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
   if (!text) {
-    alert('Пожалуйста, напишите ответ или вставьте ссылку на файл.');
+    alert('Введите текст или ссылку на файл.');
     return;
   }
 
   document.getElementById('hwStatus').textContent = 'Отправка...';
-  
-  // Создаём форму вручную (обход CORS)
-  const formData = new FormData();
-  formData.append('action', 'submit_homework');
-  formData.append('userId', userId);
-  formData.append('homeworkText', text);
-  formData.append('lessonNum', '0');
 
   try {
     const res = await fetch(API_URL, {
       method: 'POST',
-      body: formData // ← не JSON, а FormData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'submit_homework',
+        userId: userId,
+        homeworkText: text,
+        lessonNum: 0
+      })
     });
-    
-    const textResponse = await res.text();
-    let data;
-    try {
-      data = JSON.parse(textResponse);
-    } catch (e) {
-      throw new Error('Сервер вернул не JSON: ' + textResponse);
-    }
 
+    const data = await res.json();
     if (data.success) {
       document.getElementById('hwStatus').textContent = '✅ ДЗ отправлено!';
       document.getElementById('hwText').value = '';
@@ -121,13 +114,13 @@ async function submitHomework() {
       document.getElementById('hwStatus').textContent = `❌ Ошибка: ${data.error}`;
     }
   } catch (err) {
-    console.error('Ошибка:', err);
-    document.getElementById('hwStatus').textContent = '❌ Не удалось отправить. Попробуйте позже.';
+    console.error('Ошибка ДЗ:', err);
+    document.getElementById('hwStatus').textContent = '❌ Не удалось отправить.';
   }
 }
+
+// === ПОКУПКА ===
 async function buyItem(index) {
-  if (!confirm('Подтвердите покупку')) return;
-  
   try {
     const res = await fetch(API_URL, {
       method: 'POST',
@@ -138,19 +131,19 @@ async function buyItem(index) {
         lessonNum: index
       })
     });
+
     const data = await res.json();
-    
     if (data.success) {
       alert('✅ Куплено!');
-      location.reload(); // обновляем страницу, чтобы обновить баланс
+      location.reload();
     } else {
       alert(`❌ ${data.error || 'Не удалось совершить покупку'}`);
     }
   } catch (err) {
     console.error('Ошибка покупки:', err);
-    alert('❌ Ошибка соединения. Попробуйте позже.');
+    alert('❌ Ошибка соединения.');
   }
 }
 
-// Запуск загрузки при открытии страницы
+// Запуск
 loadData();
