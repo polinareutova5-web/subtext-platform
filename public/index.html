@@ -14,17 +14,24 @@
       color: #333;
     }
     .hidden { display: none; }
-    button {
-      margin: 0.5rem 0.25rem;
-      padding: 0.7rem 1.2rem;
-      background: #e0f0e9;
-      border: 1px solid #a8d8b9;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      min-width: 120px;
-      text-align: center;
-    }
+    nav button {
+  margin: 0.5rem 0.25rem;
+  padding: 0.7rem 1.2rem;
+  background: #e0f0e9;
+  border: 1px solid #a8d8b9;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  min-width: 140px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
     button:hover {
       background: #c8e6c9;
     }
