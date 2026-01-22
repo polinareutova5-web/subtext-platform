@@ -1,9 +1,7 @@
-// ВСТАВЬ СЮДА URL ТВОЕГО WEB APP ИЗ GOOGLE APPS SCRIPT (без пробелов!)
 const API_URL = "https://script.google.com/macros/s/AKfycbyz5iHfF9eBSH-uKIMob6L8Hu49jPAMFaxccVq1oK7YWoqYWnTAV5yXuaY_16-74b1atw/exec";
 
 let userId;
 
-// === ГЛОБАЛЬНЫЕ ФУНКЦИИ ===
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => {
     el.classList.add('hidden');
@@ -18,7 +16,6 @@ function confirmBuy(index, name, price) {
   }
 }
 
-// === ЗАГРУЗКА ДАННЫХ ===
 async function loadData() {
   const urlParams = new URLSearchParams(window.location.search);
   userId = urlParams.get('id');
@@ -59,7 +56,7 @@ async function loadData() {
 
     // Магазин
     const shopItems = document.getElementById('shop-items');
-    document.getElementById('shop-coins').textContent = u.coins; // баланс в магазине
+    document.getElementById('shop-coins').textContent = u.coins;
 
     if (data.shop.length > 0) {
       shopItems.innerHTML = data.shop.map((item, idx) =>
@@ -73,7 +70,6 @@ async function loadData() {
       shopItems.innerHTML = '<p>Магазин пуст.</p>';
     }
 
-    // Показываем интерфейс
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('main').classList.remove('hidden');
     showSection('profile');
@@ -84,7 +80,7 @@ async function loadData() {
   }
 }
 
-// === ОТПРАВКА ДЗ ===
+// === ОТПРАВКА ДЗ ЧЕРЕЗ GET ===
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
   if (!text) {
@@ -92,21 +88,16 @@ async function submitHomework() {
     return;
   }
 
+  // Кодируем текст для URL
+  const encodedText = encodeURIComponent(text);
+  const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
+
   document.getElementById('hwStatus').textContent = 'Отправка...';
 
   try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'submit_homework',
-        userId: userId,
-        homeworkText: text,
-        lessonNum: 0
-      })
-    });
-
+    const res = await fetch(url);
     const data = await res.json();
+    
     if (data.success) {
       document.getElementById('hwStatus').textContent = '✅ ДЗ отправлено!';
       document.getElementById('hwText').value = '';
@@ -119,20 +110,14 @@ async function submitHomework() {
   }
 }
 
-// === ПОКУПКА ===
+// === ПОКУПКА ЧЕРЕЗ GET ===
 async function buyItem(index) {
-  try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'buy_item',
-        userId: userId,
-        lessonNum: index
-      })
-    });
+  const url = `${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`;
 
+  try {
+    const res = await fetch(url);
     const data = await res.json();
+    
     if (data.success) {
       alert('✅ Куплено!');
       location.reload();
@@ -145,5 +130,4 @@ async function buyItem(index) {
   }
 }
 
-// Запуск
 loadData();
