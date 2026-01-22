@@ -53,9 +53,17 @@ async function loadData() {
     // Магазин → в контейнер shop-items
     const shopItems = document.getElementById('shop-items');
     if (data.shop.length > 0) {
-      shopItems.innerHTML = data.shop.map((item, idx) =>
-        `<button onclick="buyItem(${idx})" style="display:block; margin:0.5rem 0;">🛒 ${item.name} (${item.price} монет)</button>`
-      ).join('');
+      // Обновляем баланс в магазине
+document.getElementById('shop-coins').textContent = u.coins;
+
+// Генерируем карточки
+shopItems.innerHTML = data.shop.map((item, idx) =>
+  `<div class="shop-item">
+     <h3>${item.name}</h3>
+     <div class="price">${item.price} монет</div>
+     <button class="buy-btn" onclick="confirmBuy(${idx}, '${item.name}', ${item.price})">Купить</button>
+   </div>`
+).join('');
     } else {
       shopItems.innerHTML = '<p>Магазин временно пуст.</p>';
     }
