@@ -87,19 +87,6 @@
       background: #c8e6c9;
     }
 
-    textarea {
-      width: 100%;
-      height: 6rem;
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    input[type="file"] {
-      margin: 0.5rem 0;
-    }
-
     .section {
       animation: fadeIn 0.3s;
       padding: 1rem;
@@ -185,6 +172,127 @@
       margin: 0 auto;
       padding: 0;
     }
+
+    /* Стили для формы */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #4CAF50;
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    }
+    
+    .file-upload-area {
+      border: 2px dashed #4CAF50;
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      background: #f9f9f9;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .file-upload-area:hover {
+      background-color: #f0f9f0;
+    }
+    
+    .file-upload-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: #4CAF50;
+    }
+    
+    .required::after {
+      content: " *";
+      color: #e74c3c;
+    }
+    
+    .form-footer {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    
+    .btn-primary {
+      background: #2e7d32;
+      color: white;
+      flex: 2;
+    }
+    
+    .btn-primary:hover {
+      background: #1b5e20;
+    }
+    
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+      flex: 1;
+    }
+    
+    .btn-secondary:hover {
+      background: #e8e8e8;
+    }
+    
+    .info-box {
+      background: #f0f8ff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      border-left: 4px solid #2196F3;
+    }
+    
+    .status-message {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+    
+    .status-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .status-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .status-loading {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
   </style>
 </head>
 <body>
@@ -222,45 +330,103 @@
         <div id="lessons-list" class="lessons-grid"></div>
       </div>
 
-<!-- ДЗ -->
-<div id="homework" class="section hidden">
-  <h2>📤 Сдать ДЗ</h2>
-  
-  <div style="margin-bottom: 1rem;">
-    <label><strong>Ваш текст или ссылка на файл:</strong></label><br>
-    <textarea id="hwText" placeholder="Напишите ответ или вставьте ссылку на Google Drive/Disk..." 
-              style="width: 100%; height: 100px; margin: 0.5rem 0;"></textarea>
-  </div>
-  
-  <div style="margin-bottom: 1rem;">
-    <label><strong>Или загрузите файл:</strong></label><br>
-    <input type="file" id="hwFile" accept="image/*,.pdf,.doc,.docx,.txt">
-    <small style="color: #666; display: block; margin-top: 0.3rem;">
-      Поддерживаются: изображения, PDF, Word, текстовые файлы
-    </small>
-  </div>
-  
-  <div style="display: flex; gap: 10px; margin-top: 1rem;">
-    <button onclick="submitHomework()" style="padding: 0.7rem 1.5rem; background: #2e7d32; color: white; border: none; border-radius: 6px; cursor: pointer;">
-      📎 Отправить ДЗ
-    </button>
-    <button onclick="clearHomeworkForm()" style="padding: 0.7rem 1.5rem; background: #f5f5f5; color: #333; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
-      Очистить
-    </button>
-  </div>
-  
-  <p id="hwStatus" style="margin-top: 1rem;"></p>
-  
-  <div style="background: #f0f8ff; padding: 1rem; border-radius: 8px; margin-top: 1rem; border-left: 4px solid #2196F3;">
-    <strong>💡 Как отправить файл:</strong>
-    <ol style="margin: 0.5rem 0; padding-left: 1.5rem;">
-      <li>Загрузите файл в <a href="https://drive.google.com" target="_blank">Google Drive</a> или <a href="https://disk.yandex.ru" target="_blank">Яндекс.Диск</a></li>
-      <li>Откройте доступ по ссылке (Настройки доступа → Доступ по ссылке)</li>
-      <li>Скопируйте ссылку и вставьте в поле выше</li>
-      <li>Или используйте кнопку "Выбрать файл" для загрузки</li>
-    </ol>
-  </div>
-</div>
+      <!-- ДЗ через Google Форму -->
+      <div id="homework" class="section hidden">
+        <h2>📤 Сдать домашнее задание</h2>
+        
+        <div id="custom-form-container">
+          <!-- Красивая форма -->
+          <div style="text-align: center; margin-bottom: 1.5rem;">
+            <div class="file-upload-icon">📎</div>
+            <h3 style="margin: 0; color: #2c3e50;">Загрузите ваше домашнее задание</h3>
+            <p style="color: #666; margin-top: 0.5rem;">Файл автоматически сохранится в таблице преподавателя</p>
+          </div>
+          
+          <!-- Кастомная форма -->
+          <form id="custom-homework-form" onsubmit="return false;">
+            <div class="form-group">
+              <label for="student-name" class="form-label required">👤 Имя ученика</label>
+              <input type="text" 
+                     id="student-name" 
+                     class="form-input"
+                     placeholder="Введите ваше имя" 
+                     required>
+            </div>
+            
+            <div class="form-group">
+              <label for="student-email" class="form-label required">📧 Email для обратной связи</label>
+              <input type="email" 
+                     id="student-email" 
+                     class="form-input"
+                     placeholder="example@gmail.com" 
+                     required>
+            </div>
+            
+            <div class="form-group">
+              <label for="student-id" class="form-label required">🔢 ID ученика из профиля</label>
+              <input type="text" 
+                     id="student-id" 
+                     class="form-input"
+                     placeholder="Будет заполнен автоматически" 
+                     readonly
+                     required>
+            </div>
+            
+            <div class="form-group">
+              <label for="homework-file" class="form-label required">📁 Прикрепите файл с ДЗ</label>
+              <div class="file-upload-area" onclick="document.getElementById('homework-file').click()">
+                <div class="file-upload-icon">📤</div>
+                <p style="margin: 0.5rem 0; font-weight: 600;">Нажмите для выбора файла</p>
+                <p style="color: #666; margin-bottom: 1rem;">или перетащите файл сюда</p>
+                <input type="file" 
+                       id="homework-file" 
+                       accept="image/*,.pdf,.doc,.docx,.txt"
+                       style="display: none;"
+                       required>
+                <p id="file-name" style="margin-top: 1rem; color: #666; font-size: 0.9rem;"></p>
+              </div>
+              <small style="color: #666; display: block; margin-top: 0.5rem;">
+                Поддерживаются: изображения (JPG, PNG), PDF, Word документы, текстовые файлы
+              </small>
+            </div>
+            
+            <div class="form-group">
+              <label for="homework-comment" class="form-label">💬 Комментарий к заданию (необязательно)</label>
+              <textarea id="homework-comment" 
+                        class="form-input"
+                        placeholder="Дополнительные комментарии, вопросы к преподавателю..."
+                        rows="4"></textarea>
+            </div>
+            
+            <div class="form-footer">
+              <button type="button" 
+                      class="btn btn-secondary"
+                      onclick="showSection('profile')">
+                ← Назад
+              </button>
+              <button type="button" 
+                      class="btn btn-primary"
+                      onclick="submitHomeworkViaForm()">
+                📨 Отправить домашнее задание
+              </button>
+            </div>
+          </form>
+          
+          <div id="form-status" style="margin-top: 1.5rem;"></div>
+          
+          <div class="info-box">
+            <p style="margin: 0; color: #2c3e50; font-weight: 600;">💡 Как это работает:</p>
+            <ol style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #666;">
+              <li>Заполняете форму выше</li>
+              <li>Нажимаете "Отправить домашнее задание"</li>
+              <li>Ваше ДЗ автоматически сохранится в таблице преподавателя</li>
+              <li>Файл будет доступен для скачивания прямо из таблицы</li>
+              <li>Вы получите подтверждение об отправке</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
       <!-- Магазин -->
       <div id="shop" class="section hidden">
         <h2>🛒 Магазин</h2>
@@ -278,6 +444,10 @@
       </div>
     </div>
   </div>
+
+  <!-- Google Form iFrame (скрытый) -->
+  <iframe id="google-form-frame" 
+          style="display: none; width: 100%; height: 500px; border: none;"></iframe>
 
   <script src="script.js"></script>
 </body>
