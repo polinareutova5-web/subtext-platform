@@ -330,102 +330,98 @@
         <div id="lessons-list" class="lessons-grid"></div>
       </div>
 
-      <!-- ДЗ через Google Форму -->
-      <div id="homework" class="section hidden">
-        <h2>📤 Сдать домашнее задание</h2>
-        
-        <div id="custom-form-container">
-          <!-- Красивая форма -->
-          <div style="text-align: center; margin-bottom: 1.5rem;">
-            <div class="file-upload-icon">📎</div>
-            <h3 style="margin: 0; color: #2c3e50;">Загрузите ваше домашнее задание</h3>
-            <p style="color: #666; margin-top: 0.5rem;">Файл автоматически сохранится в таблице преподавателя</p>
-          </div>
-          
-          <!-- Кастомная форма -->
-          <form id="custom-homework-form" onsubmit="return false;">
-            <div class="form-group">
-              <label for="student-name" class="form-label required">👤 Имя ученика</label>
-              <input type="text" 
-                     id="student-name" 
-                     class="form-input"
-                     placeholder="Введите ваше имя" 
-                     required>
-            </div>
-            
-            <div class="form-group">
-              <label for="student-email" class="form-label required">📧 Email для обратной связи</label>
-              <input type="email" 
-                     id="student-email" 
-                     class="form-input"
-                     placeholder="example@gmail.com" 
-                     required>
-            </div>
-            
-            <div class="form-group">
-              <label for="student-id" class="form-label required">🔢 ID ученика из профиля</label>
-              <input type="text" 
-                     id="student-id" 
-                     class="form-input"
-                     placeholder="Будет заполнен автоматически" 
-                     readonly
-                     required>
-            </div>
-            
-            <div class="form-group">
-              <label for="homework-file" class="form-label required">📁 Прикрепите файл с ДЗ</label>
-              <div class="file-upload-area" onclick="document.getElementById('homework-file').click()">
-                <div class="file-upload-icon">📤</div>
-                <p style="margin: 0.5rem 0; font-weight: 600;">Нажмите для выбора файла</p>
-                <p style="color: #666; margin-bottom: 1rem;">или перетащите файл сюда</p>
-                <input type="file" 
-                       id="homework-file" 
-                       accept="image/*,.pdf,.doc,.docx,.txt"
-                       style="display: none;"
-                       required>
-                <p id="file-name" style="margin-top: 1rem; color: #666; font-size: 0.9rem;"></p>
-              </div>
-              <small style="color: #666; display: block; margin-top: 0.5rem;">
-                Поддерживаются: изображения (JPG, PNG), PDF, Word документы, текстовые файлы
-              </small>
-            </div>
-            
-            <div class="form-group">
-              <label for="homework-comment" class="form-label">💬 Комментарий к заданию (необязательно)</label>
-              <textarea id="homework-comment" 
-                        class="form-input"
-                        placeholder="Дополнительные комментарии, вопросы к преподавателю..."
-                        rows="4"></textarea>
-            </div>
-            
-            <div class="form-footer">
-              <button type="button" 
-                      class="btn btn-secondary"
-                      onclick="showSection('profile')">
-                ← Назад
-              </button>
-              <button type="button" 
-                      class="btn btn-primary"
-                      onclick="submitHomeworkViaForm()">
-                📨 Отправить домашнее задание
-              </button>
-            </div>
-          </form>
-          
-          <div id="form-status" style="margin-top: 1.5rem;"></div>
-          
-          <div class="info-box">
-            <p style="margin: 0; color: #2c3e50; font-weight: 600;">💡 Как это работает:</p>
-            <ol style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #666;">
-              <li>Заполняете форму выше</li>
-              <li>Нажимаете "Отправить домашнее задание"</li>
-              <li>Ваше ДЗ автоматически сохранится в таблице преподавателя</li>
-              <li>Файл будет доступен для скачивания прямо из таблицы</li>
-              <li>Вы получите подтверждение об отправке</li>
-            </ol>
-          </div>
-        </div>
+     <!-- ДЗ -->
+<div id="homework" class="section hidden">
+  <h2>📤 Сдать домашнее задание</h2>
+  
+  <div id="custom-form-container">
+    <div style="text-align: center; margin-bottom: 1.5rem;">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📎</div>
+      <h3 style="margin: 0; color: #2c3e50;">Отправьте ваше ДЗ</h3>
+      <p style="color: #666; margin-top: 0.5rem;">Файл будет сохранен в вашей таблице</p>
+    </div>
+    
+    <form id="custom-homework-form" onsubmit="return false;">
+      <div class="form-group">
+        <label class="form-label">👤 Имя ученика</label>
+        <input type="text" 
+               id="student-name" 
+               class="form-input"
+               placeholder="Введите ваше имя" 
+               required>
       </div>
+      
+      <div class="form-group">
+        <label class="form-label">📧 Email (для обратной связи)</label>
+        <input type="email" 
+               id="student-email" 
+               class="form-input"
+               placeholder="example@gmail.com" 
+               required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">🔢 ID ученика</label>
+        <input type="text" 
+               id="student-id" 
+               class="form-input"
+               readonly
+               required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">📁 Прикрепите файл с ДЗ</label>
+        <div class="file-upload-area" onclick="document.getElementById('homework-file').click()">
+          <div class="file-upload-icon">📤</div>
+          <p style="margin: 0.5rem 0; font-weight: 600;">Нажмите для выбора файла</p>
+          <p style="color: #666; margin-bottom: 1rem;">или перетащите файл сюда</p>
+          <input type="file" 
+                 id="homework-file" 
+                 accept="image/*,.pdf,.doc,.docx,.txt"
+                 style="display: none;"
+                 required>
+          <p id="file-name" style="margin-top: 1rem; color: #666; font-size: 0.9rem;"></p>
+        </div>
+        <small style="color: #666; display: block; margin-top: 0.5rem;">
+          Поддерживаются: изображения (JPG, PNG), PDF, Word, текстовые файлы
+        </small>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">💬 Комментарий к заданию (необязательно)</label>
+        <textarea id="homework-comment" 
+                  class="form-input"
+                  placeholder="Дополнительные комментарии..."
+                  rows="4"></textarea>
+      </div>
+      
+      <div class="form-footer">
+        <button type="button" 
+                class="btn btn-secondary"
+                onclick="showSection('profile')">
+          ← Назад
+        </button>
+        <button type="button" 
+                class="btn btn-primary"
+                onclick="submitHomeworkSimple()">
+          📨 Отправить домашнее задание
+        </button>
+      </div>
+    </form>
+    
+    <div id="form-status" style="margin-top: 1.5rem;"></div>
+    
+    <div class="info-box">
+      <p style="margin: 0; color: #2c3e50; font-weight: 600;">💡 Как это работает:</p>
+      <ol style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #666;">
+        <li>Заполняете форму выше</li>
+        <li>Нажимаете "Отправить домашнее задание"</li>
+        <li>Данные сохраняются в вашу Google Таблицу</li>
+        <li>Вы получаете подтверждение об отправке</li>
+      </ol>
+    </div>
+  </div>
+</div>
 
       <!-- Магазин -->
       <div id="shop" class="section hidden">
