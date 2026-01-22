@@ -2,32 +2,6 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzf5Nxa5O4J1smRP8kM4edK
 
 let userId;
 
-// Функция для преобразования ссылки Яндекс Диска в прямую
-function convertYandexLink(link) {
-  if (!link) return '';
-  
-  // Если это уже прямая ссылка на изображение, оставляем как есть
-  if (link.match(/\.(jpg|jpeg|png|gif|webp)$/i)) return link;
-  
-  // Если это ссылка Яндекс Диска
-  if (link.includes('yadi.sk') || link.includes('disk.yandex.ru')) {
-    // Преобразуем в прямую ссылку для скачивания
-    // Формат: https://getfile.dokpub.com/yandex/get/[ключ]
-    const match = link.match(/\/d\/([^\/\?]+)/);
-    if (match) {
-      return `https://getfile.dokpub.com/yandex/get/${match[1]}`;
-    }
-    
-    // Альтернативный формат для новых ссылок
-    const match2 = link.match(/\/[^\/]+\/([^\/\?]+)/);
-    if (match2) {
-      return `https://getfile.dokpub.com/yandex/get/${match2[1]}`;
-    }
-  }
-  
-  return link;
-}
-
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => {
     el.classList.add('hidden');
@@ -86,15 +60,14 @@ async function loadData() {
 
     if (data.shop.length > 0) {
       shopItems.innerHTML = data.shop.map((item, idx) => {
-        const imageUrl = convertYandexLink(item.image);
         return `
         <div class="shop-item">
-          ${imageUrl ? `
+          ${item.image ? `
             <div style="height: 150px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; overflow: hidden; border-radius: 8px;">
-              <img src="${imageUrl}" 
+              <img src="${item.image}" 
                    alt="${item.name}" 
                    style="max-width: 100%; max-height: 100%; object-fit: contain;"
-                   onerror="this.src='https://via.placeholder.com/150x150?text=Нет+изображения'">
+                   onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div style=\'color:#666;font-size:0.9rem\'>Нет изображения</div>'">
             </div>
           ` : ''}
           <h3>${item.name}</h3>
