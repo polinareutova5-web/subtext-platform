@@ -1,50 +1,8 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzf5Nxa5O4J1smRP8kM4edKK-SMEuXR6ECnCqN87ktDMndIZ6-7LDbt9MkGdtVIlPx8iA/exec";
 
+const GOOGLE_FORM_ID = "1FAIpQLSeOt_4wMFLUbl3RfYE-vgcTPAHDvXMopJOiDovicFJ0lQ621Q"; // ⬅️ ЗАМЕНИ ЭТО НА СВОЙ ID ФОРМЫ
+
 let userId;
-let selectedFile = null;
-
-// Функция для очистки формы
-function clearHomeworkForm() {
-  document.getElementById('hwText').value = '';
-  document.getElementById('hwFile').value = '';
-  selectedFile = null;
-  document.getElementById('hwStatus').textContent = '';
-}
-
-// Обработчик выбора файла
-document.addEventListener('DOMContentLoaded', function() {
-  const fileInput = document.getElementById('hwFile');
-  if (fileInput) {
-    fileInput.addEventListener('change', function(e) {
-      selectedFile = e.target.files[0];
-      if (selectedFile) {
-        console.log('Выбран файл:', selectedFile.name, selectedFile.type);
-        
-        // Если файл изображение - предпросмотр
-        if (selectedFile.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            // Показываем миниатюру
-            const statusEl = document.getElementById('hwStatus');
-            statusEl.innerHTML = `
-              <div style="margin: 10px 0;">
-                <strong>Выбрано изображение:</strong><br>
-                <img src="${e.target.result}" style="max-width: 200px; max-height: 150px; margin-top: 5px; border-radius: 5px;">
-              </div>
-            `;
-          };
-          reader.readAsDataURL(selectedFile);
-        } else {
-          document.getElementById('hwStatus').innerHTML = `
-            <div style="margin: 10px 0;">
-              <strong>Выбран файл:</strong> ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(2)} KB)
-            </div>
-          `;
-        }
-      }
-    });
-  }
-});
 
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => {
@@ -83,6 +41,14 @@ async function loadData() {
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
+
+    // Автоматически заполняем ID ученика в форме
+    document.getElementById('student-id').value = userId;
+    
+    // Пытаемся заполнить имя из профиля
+    if (u.username && u.username !== '—') {
+      document.getElementById('student-name').value = u.username;
+    }
 
     // Уроки
     const lessonsList = document.getElementById('lessons-list');
@@ -127,90 +93,179 @@ async function loadData() {
     document.getElementById('main').classList.remove('hidden');
     showSection('profile');
 
+    // Инициализируем Drag & Drop для файлов
+    initFileUpload();
+
   } catch (err) {
     console.error('Ошибка загрузки:', err);
     document.getElementById('loading').textContent = '❌ Не удалось загрузить данные.';
   }
 }
 
-// Основная функция отправки ДЗ
-async function submitHomework() {
-  const text = document.getElementById('hwText').value.trim();
-  const file = selectedFile;
+// ====================== ФУНКЦИИ ДЛЯ GOOGLE ФОРМЫ ======================
+
+function initFileUpload() {
+  const fileInput = document.getElementById('homework-file');
+  const fileName = document.getElementById('file-name');
+  const dropArea = document.querySelector('.file-upload-area');
   
-  if (!text && !file) {
-    alert('Пожалуйста, введите текст ответа или прикрепите файл.');
+  if (fileInput) {
+    fileInput.addEventListener('change', function(e) {
+      if (this.files.length > 0) {
+        const file = this.files[0];
+        updateFileInfo(file);
+      }
+    });
+    
+    // Drag & Drop функционал
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, () => {
+        dropArea.style.backgroundColor = '#e8f5e9';
+      }, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, () => {
+        dropArea.style.backgroundColor = '#f9f9f9';
+      }, false);
+    });
+    
+    dropArea.addEventListener('drop', function(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      
+      if (files.length > 0) {
+        fileInput.files = files;
+        updateFileInfo(files[0]);
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    }, false);
+  }
+  
+  function updateFileInfo(file) {
+    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+    fileName.textContent = `📄 ${file.name} (${sizeInMB} MB)`;
+    fileName.style.color = '#2e7d32';
+    fileName.style.fontWeight = '600';
+  }
+}
+
+function submitHomeworkViaForm() {
+  const name = document.getElementById('student-name').value.trim();
+  const email = document.getElementById('student-email').value.trim();
+  const studentId = document.getElementById('student-id').value.trim();
+  const fileInput = document.getElementById('homework-file');
+  const comment = document.getElementById('homework-comment').value.trim();
+  const statusEl = document.getElementById('form-status');
+  
+  // Валидация
+  if (!name) {
+    showError('Пожалуйста, введите ваше имя');
     return;
   }
-
-  document.getElementById('hwStatus').innerHTML = '<div style="color: #666;">⏳ Отправка ДЗ...</div>';
-
-  try {
-    let submissionText = '';
-    
-    // Если есть файл - загружаем его
-    if (file) {
-      submissionText = await uploadFileToDrive(file, text);
-    } else {
-      // Если только текст
-      submissionText = text;
-    }
-    
-    // Отправляем на сервер
-    const encodedText = encodeURIComponent(submissionText);
-    const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-    
-    if (data.success) {
-      document.getElementById('hwStatus').innerHTML = `
-        <div style="color: #2e7d32; background: #e8f5e9; padding: 10px; border-radius: 6px;">
-          ✅ <strong>ДЗ успешно отправлено!</strong><br>
-          ${file ? `Файл: ${file.name}` : ''}
-        </div>
-      `;
-      clearHomeworkForm();
-    } else {
-      document.getElementById('hwStatus').innerHTML = `
-        <div style="color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 6px;">
-          ❌ <strong>Ошибка:</strong> ${data.error || 'Не удалось отправить'}
-        </div>
-      `;
-    }
-  } catch (err) {
-    console.error('Ошибка отправки ДЗ:', err);
-    document.getElementById('hwStatus').innerHTML = `
-      <div style="color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 6px;">
-        ❌ <strong>Ошибка соединения.</strong><br>
-        <small>Попробуйте отправить ссылку на файл в текстовом поле.</small>
+  
+  if (!email || !isValidEmail(email)) {
+    showError('Пожалуйста, введите корректный email');
+    return;
+  }
+  
+  if (!studentId) {
+    showError('ID ученика не найден. Пожалуйста, обновите страницу.');
+    return;
+  }
+  
+  if (!fileInput.files.length) {
+    showError('Пожалуйста, выберите файл с домашним заданием');
+    return;
+  }
+  
+  const file = fileInput.files[0];
+  if (file.size > 50 * 1024 * 1024) { // 50 MB лимит
+    showError('Файл слишком большой. Максимальный размер - 50 MB');
+    return;
+  }
+  
+  // Показываем статус загрузки
+  statusEl.innerHTML = `
+    <div class="status-message status-loading">
+      <p style="margin: 0;">⏳ Подготовка формы для отправки...</p>
+    </div>
+  `;
+  
+  // Подготавливаем Google Форму URL
+  // Формат: https://docs.google.com/forms/d/e/{FORM_ID}/viewform?usp=pp_url&entry.XXXXX=value&entry.YYYYY=value
+  
+  // Создаем URL с параметрами
+  const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/viewform?usp=pp_url`;
+  
+  // В реальном Google Forms нужно знать ID полей, но для простоты
+  // откроем форму в новом окне с инструкцией
+  
+  // Открываем форму в новом окне
+  const newWindow = window.open(formUrl, '_blank');
+  
+  if (newWindow) {
+    // Показываем успех
+    statusEl.innerHTML = `
+      <div class="status-message status-success">
+        <p style="margin: 0;">✅ Форма открывается в новом окне!</p>
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
+          Пожалуйста, заполните открывшуюся Google Форму:
+        </p>
+        <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.9rem;">
+          <li>👤 Имя ученика: <strong>${name}</strong></li>
+          <li>📧 Email: <strong>${email}</strong></li>
+          <li>🔢 ID ученика: <strong>${studentId}</strong></li>
+          <li>📁 Файл: <strong>${file.name}</strong></li>
+          ${comment ? `<li>💬 Комментарий: ${comment}</li>` : ''}
+        </ul>
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; font-weight: 600;">
+          Скопируйте эти данные в соответствующие поля формы
+        </p>
       </div>
     `;
+    
+    // Очищаем форму через 10 секунд
+    setTimeout(() => {
+      document.getElementById('custom-homework-form').reset();
+      document.getElementById('file-name').textContent = '';
+      document.getElementById('student-id').value = userId;
+      if (document.getElementById('username').textContent !== '—') {
+        document.getElementById('student-name').value = document.getElementById('username').textContent;
+      }
+      statusEl.innerHTML = '';
+    }, 10000);
+    
+  } else {
+    showError('Не удалось открыть форму. Пожалуйста, разрешите всплывающие окна.');
   }
 }
 
-// Функция для загрузки файла (упрощенная версия)
-async function uploadFileToDrive(file, additionalText = '') {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64Data = e.target.result.split(',')[1];
-      
-      // Формируем текст для отправки
-      let resultText = additionalText ? `${additionalText}\n\n` : '';
-      resultText += `[ПРИКРЕПЛЕН ФАЙЛ]\n`;
-      resultText += `Имя: ${file.name}\n`;
-      resultText += `Тип: ${file.type}\n`;
-      resultText += `Размер: ${(file.size / 1024).toFixed(2)} KB\n`;
-      resultText += `Base64 (первые 500 символов): ${base64Data.substring(0, 500)}...`;
-      
-      resolve(resultText);
-    };
-    reader.readAsDataURL(file);
-  });
+function isValidEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
 }
 
-// === ПОКУПКА ЧЕРЕЗ GET ===
+function showError(message) {
+  const statusEl = document.getElementById('form-status');
+  statusEl.innerHTML = `
+    <div class="status-message status-error">
+      <p style="margin: 0;">❌ ${message}</p>
+    </div>
+  `;
+}
+
+// ====================== ПОКУПКА ======================
+
 async function buyItem(index) {
   const url = `${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`;
 
@@ -229,5 +284,7 @@ async function buyItem(index) {
     alert('❌ Ошибка соединения.');
   }
 }
+
+// ====================== ЗАГРУЗКА ======================
 
 loadData();
