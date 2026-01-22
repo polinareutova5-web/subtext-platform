@@ -5,29 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      background-color: #faf9f6;
+      color: #333;
+    }
     .hidden { display: none; }
-    button { margin: 0.5rem 0.25rem; padding: 0.4rem 0.8rem; }
-    textarea { width: 100%; height: 6rem; margin: 0.5rem 0; }
+    button {
+      margin: 0.5rem 0.25rem;
+      padding: 0.5rem 1rem;
+      background: #e0f0e9;
+      border: 1px solid #a8d8b9;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #c8e6c9;
+    }
+    textarea {
+      width: 100%;
+      height: 6rem;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    input[type="file"] {
+      margin: 0.5rem 0;
+    }
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0;
+    }
+    h1 {
+      color: #2e7d32;
+      text-align: center;
+    }
+    .section {
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
   <h1>📘 Subtext</h1>
   <div id="loading">Загрузка...</div>
+
+  <!-- Основной интерфейс (появляется после загрузки) -->
   <div id="main" class="hidden">
-    <p>Привет, <strong id="username"></strong>!</p>
-    <p>Уровень: <span id="level"></span> | Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+    <!-- Навигация -->
+    <nav>
+      <button onclick="showSection('profile')">👤 Профиль</button>
+      <button onclick="showSection('lessons')">📚 Уроки</button>
+      <button onclick="showSection('homework')">📤 ДЗ</button>
+      <button onclick="showSection('shop')">🛒 Магазин</button>
+    </nav>
 
-    <h2>📚 Уроки</h2>
-    <div id="lessons"></div>
+    <!-- Профиль -->
+    <div id="profile" class="section">
+      <h2>👤 Профиль</h2>
+      <p>Привет, <strong id="username"></strong>!</p>
+      <p>Уровень: <span id="level"></span></p>
+      <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+    </div>
 
-    <h2>🛒 Магазин</h2>
-    <div id="shop"></div>
+    <!-- Уроки -->
+    <div id="lessons" class="section hidden">
+      <h2>📚 Уроки</h2>
+      <div id="lessons-list"></div>
+    </div>
 
-    <h2>📤 Сдать ДЗ</h2>
-    <textarea id="hwText" placeholder="Ваш ответ..."></textarea><br>
-    <button onclick="submitHomework()">Отправить ДЗ</button>
-    <p id="hwStatus"></p>
+    <!-- Домашнее задание -->
+    <div id="homework" class="section hidden">
+      <h2>📤 Сдать ДЗ</h2>
+      <textarea id="hwText" placeholder="Ваш ответ..."></textarea><br>
+      <input type="file" id="hwFile" accept="image/*,.pdf,.doc,.docx">
+      <button onclick="submitHomework()">Отправить ДЗ</button>
+      <p id="hwStatus"></p>
+    </div>
+
+    <!-- Магазин -->
+    <div id="shop" class="section hidden">
+      <h2>🛒 Магазин</h2>
+      <div id="shop-items"></div>
+    </div>
   </div>
 
   <script src="script.js"></script>
