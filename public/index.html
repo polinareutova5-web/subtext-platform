@@ -8,20 +8,22 @@
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+      margin: 0 auto;
+      padding: 0;
       background-color: #faf9f6;
       color: #333;
     }
     .hidden { display: none; }
     button {
       margin: 0.5rem 0.25rem;
-      padding: 0.5rem 1rem;
+      padding: 0.7rem 1.2rem;
       background: #e0f0e9;
       border: 1px solid #a8d8b9;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
+      min-width: 120px;
+      text-align: center;
     }
     button:hover {
       background: #c8e6c9;
@@ -41,82 +43,99 @@
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
-      margin: 1.5rem 0;
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     h1 {
-      color: #2e7d32;
+      color: #013220;
       text-align: center;
+      margin: 0;
+      padding: 1rem;
+      background: url('https://i.imgur.com/7kzVXxY.jpg') no-repeat center center;
+      background-size: cover;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
     .section {
       animation: fadeIn 0.3s;
+      padding: 1rem;
     }
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
     .lessons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.lesson-card {
-  background: #f8f9fa;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .lesson-card {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
     .shop-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.2rem;
-  margin-top: 1rem;
-}
-
-.shop-item {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-}
-
-.shop-item h3 {
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.shop-item .price {
-  font-weight: bold;
-  color: #e74c3c;
-  margin: 0.5rem 0;
-}
-
-.buy-btn {
-  background: #2e7d32;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-top: 0.5rem;
-}
-
-.buy-btn:hover {
-  background: #1b5e20;
-}
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+    .shop-item {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    }
+    .shop-item h3 {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .shop-item .price {
+      font-weight: bold;
+      color: #e74c3c;
+      margin: 0.5rem 0;
+    }
+    .buy-btn {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+    .buy-btn:hover {
+      background: #1b5e20;
+    }
+    #loading {
+      text-align: center;
+      padding: 2rem;
+      font-size: 1.2rem;
+      color: #666;
+    }
   </style>
 </head>
 <body>
-  <h1>📘 Subtext</h1>
+  <!-- Шапка с картинкой -->
+  <h1>Subtext</h1>
+
   <div id="loading">Загрузка...</div>
 
-  <!-- Основной интерфейс (появляется после загрузки) -->
+  <!-- Основной интерфейс -->
   <div id="main" class="hidden">
     <!-- Навигация -->
     <nav>
@@ -124,6 +143,7 @@
       <button onclick="showSection('lessons')">📚 Уроки</button>
       <button onclick="showSection('homework')">📤 ДЗ</button>
       <button onclick="showSection('shop')">🛒 Магазин</button>
+      <button onclick="showSection('schedule')">📅 Расписание</button>
     </nav>
 
     <!-- Профиль -->
@@ -140,7 +160,7 @@
       <div id="lessons-list" class="lessons-grid"></div>
     </div>
 
-    <!-- Домашнее задание -->
+    <!-- ДЗ -->
     <div id="homework" class="section hidden">
       <h2>📤 Сдать ДЗ</h2>
       <textarea id="hwText" placeholder="Ваш ответ..."></textarea><br>
@@ -152,10 +172,17 @@
     <!-- Магазин -->
     <div id="shop" class="section hidden">
       <h2>🛒 Магазин</h2>
-     <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
-  💰 Ваши монеты: <span id="shop-coins">0</span>
-</div>
-<div id="shop-items" class="shop-grid"></div>
+      <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
+        💰 Ваши монеты: <span id="shop-coins">0</span>
+      </div>
+      <div id="shop-items" class="shop-grid"></div>
+    </div>
+
+    <!-- Расписание -->
+    <div id="schedule" class="section hidden">
+      <h2>📅 Расписание</h2>
+      <p>Ваше индивидуальное расписание пока не задано.</p>
+      <p>Свяжитесь с преподавателем для составления графика.</p>
     </div>
   </div>
 
