@@ -59,13 +59,14 @@ async function loadData() {
     document.getElementById('shop-coins').textContent = u.coins;
 
     if (data.shop.length > 0) {
-      shopItems.innerHTML = data.shop.map((item, idx) =>
-        `<div class="shop-item">
-           <h3>${item.name}</h3>
-           <div class="price">${item.price} монет</div>
-           <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name}\`, ${item.price})">Купить</button>
-         </div>`
-      ).join('');
+     shopItems.innerHTML = data.shop.map((item, idx) =>
+  `<div class="shop-item">
+     ${item.image ? `<img src="${item.image}" alt="${item.name}" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 0.5rem;">` : ''}
+     <h3>${item.name}</h3>
+     <div class="price">${item.price} монет</div>
+     <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name}\`, ${item.price})">Купить</button>
+   </div>`
+).join('');
     } else {
       shopItems.innerHTML = '<p>Магазин пуст.</p>';
     }
