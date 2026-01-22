@@ -4,29 +4,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
-
+  
   <!-- Подключение шрифта -->
   <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
-
+  
   <style>
-    /* ===== ОСНОВА ===== */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;                 /* ❗ УБРАЛИ max-width */
+      max-width: 800px;
+      margin: 0 auto;
       padding: 0;
       background-color: #faf9f6;
       color: #333;
     }
-
     .hidden { display: none; }
 
-    /* ===== ШАПКА ===== */
+    /* Навигация — идеальный блок */
+    .nav-container {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: nowrap;
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .nav-container button {
+      margin: 0;
+      padding: 0.7rem 1.2rem;
+      background: #e0f0e9;
+      border: 1px solid #a8d8b9;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      min-width: 120px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      height: 50px; /* ← фиксированная высота */
+    }
+
+    .nav-container button:hover {
+      background: #c8e6c9;
+    }
+
+    textarea {
+      width: 100%;
+      height: 6rem;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    input[type="file"] {
+      margin: 0.5rem 0;
+    }
+
+    /* Шапка с фоном */
     h1 {
       color: #013220;
       text-align: center;
       margin: 0;
       padding: 1rem;
-      background: url('https://drive.google.com/drive/u/0/my-drive?q=after:2026-01-22%20parent:0AMmahdcaF53BUk9PVA') no-repeat center center;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
       background-size: cover;
       height: 200px;
       display: flex;
@@ -39,47 +92,6 @@
       letter-spacing: 1px;
     }
 
-    /* ===== ОСНОВНОЙ БЛОК (ВОТ ТУТ ФИКС) ===== */
-    #main {
-      max-width: 800px;          /* ❗ БЕЛЫЙ БЛОК ПО ЦЕНТРУ */
-      margin: 0 auto;
-    }
-
-    /* ===== НАВИГАЦИЯ ===== */
-    .nav-container {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: nowrap;
-      margin: 1rem 0;
-      padding: 0.5rem 1rem;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .nav-container button {
-      margin: 0;
-      padding: 0.7rem 1.2rem;
-      background: #e0f0e9;
-      border: 1px solid #a8d8b9;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      min-width: 120px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      white-space: nowrap;
-    }
-
-    .nav-container button:hover {
-      background: #c8e6c9;
-    }
-
-    /* ===== СЕКЦИИ ===== */
     .section {
       animation: fadeIn 0.3s;
       padding: 1rem;
@@ -90,7 +102,6 @@
       to { opacity: 1; }
     }
 
-    /* ===== УРОКИ ===== */
     .lessons-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -106,7 +117,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    /* ===== МАГАЗИН ===== */
     .shop-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -126,11 +136,13 @@
     .shop-item h3 {
       margin: 0.5rem 0;
       font-size: 1.1rem;
+      color: #333;
     }
 
     .shop-item .price {
       font-weight: bold;
       color: #e74c3c;
+      margin: 0.5rem 0;
     }
 
     .buy-btn {
@@ -157,15 +169,14 @@
   </style>
 </head>
 <body>
-
-  <!-- Шапка -->
+  <!-- Шапка с картинкой -->
   <h1>Subtext</h1>
 
   <div id="loading">Загрузка...</div>
 
-  <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
+  <!-- Основной интерфейс -->
   <div id="main" class="hidden">
-
+    <!-- Навигация -->
     <div class="nav-container">
       <button onclick="showSection('profile')">👤 Профиль</button>
       <button onclick="showSection('lessons')">📚 Уроки</button>
@@ -174,6 +185,7 @@
       <button onclick="showSection('schedule')">📅 Расписание</button>
     </div>
 
+    <!-- Профиль -->
     <div id="profile" class="section">
       <h2>👤 Профиль</h2>
       <p>Привет, <strong id="username"></strong>!</p>
@@ -181,27 +193,36 @@
       <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
     </div>
 
+    <!-- Уроки -->
     <div id="lessons" class="section hidden">
       <h2>📚 Уроки</h2>
       <div id="lessons-list" class="lessons-grid"></div>
     </div>
 
+    <!-- ДЗ -->
     <div id="homework" class="section hidden">
       <h2>📤 Сдать ДЗ</h2>
-      <textarea placeholder="Ваш ответ..."></textarea>
-      <input type="file">
+      <textarea id="hwText" placeholder="Ваш ответ..."></textarea><br>
+      <input type="file" id="hwFile" accept="image/*,.pdf,.doc,.docx">
+      <button onclick="submitHomework()">Отправить ДЗ</button>
+      <p id="hwStatus"></p>
     </div>
 
+    <!-- Магазин -->
     <div id="shop" class="section hidden">
       <h2>🛒 Магазин</h2>
+      <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
+        💰 Ваши монеты: <span id="shop-coins">0</span>
+      </div>
       <div id="shop-items" class="shop-grid"></div>
     </div>
 
+    <!-- Расписание -->
     <div id="schedule" class="section hidden">
       <h2>📅 Расписание</h2>
-      <p>Пока не задано.</p>
+      <p>Ваше индивидуальное расписание пока не задано.</p>
+      <p>Свяжитесь с преподавателем для составления графика.</p>
     </div>
-
   </div>
 
   <script src="script.js"></script>
