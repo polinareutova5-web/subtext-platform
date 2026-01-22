@@ -72,37 +72,44 @@ async function loadData() {
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
   if (!text) {
-    alert('Пожалуйста, напишите ответ или вставьте ссылку на файл (Google Drive и др.)');
+    alert('Пожалуйста, напишите ответ или вставьте ссылку на файл.');
     return;
   }
 
   document.getElementById('hwStatus').textContent = 'Отправка...';
+  
+  // Создаём форму вручную (обход CORS)
+  const formData = new FormData();
+  formData.append('action', 'submit_homework');
+  formData.append('userId', userId);
+  formData.append('homeworkText', text);
+  formData.append('lessonNum', '0');
+
   try {
     const res = await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'submit_homework',
-        userId: userId,
-        homeworkText: text,
-        lessonNum: 0 // можно будет уточнить позже
-      })
+      body: formData // ← не JSON, а FormData
     });
-    const data = await res.json();
     
+    const textResponse = await res.text();
+    let data;
+    try {
+      data = JSON.parse(textResponse);
+    } catch (e) {
+      throw new Error('Сервер вернул не JSON: ' + textResponse);
+    }
+
     if (data.success) {
       document.getElementById('hwStatus').textContent = '✅ ДЗ отправлено!';
       document.getElementById('hwText').value = '';
-      document.getElementById('hwFile').value = ''; // очистить файл (если добавим позже)
     } else {
       document.getElementById('hwStatus').textContent = `❌ Ошибка: ${data.error}`;
     }
   } catch (err) {
-    console.error('Ошибка отправки:', err);
+    console.error('Ошибка:', err);
     document.getElementById('hwStatus').textContent = '❌ Не удалось отправить. Попробуйте позже.';
   }
 }
-
 async function buyItem(index) {
   if (!confirm('Подтвердите покупку')) return;
   
