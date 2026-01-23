@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -23,7 +23,7 @@
     .header-container {
       width: 100vw;
       margin-left: calc(-50vw + 50%);
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9iZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
       background-size: cover;
       height: 200px;
     }
@@ -293,6 +293,61 @@
       color: #856404;
       border: 1px solid #ffeaa7;
     }
+    
+    /* Стили для аватара */
+    .avatar-container {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .avatar-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #2e7d32;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .avatar-img:hover {
+      transform: scale(1.05);
+    }
+    
+    .avatar-placeholder {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: #e0f0e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      border: 4px solid #a8d8b9;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .avatar-placeholder:hover {
+      background: #c8e6c9;
+    }
+    
+    .avatar-placeholder-icon {
+      font-size: 3rem;
+      color: #4CAF50;
+    }
+    
+    .avatar-upload-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .avatar-upload-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -316,12 +371,29 @@
         <button onclick="showSection('schedule')">📅 Расписание</button>
       </div>
 
-      <!-- Профиль -->
+      <!-- Профиль с аватаркой -->
       <div id="profile" class="section">
         <h2>👤 Профиль</h2>
-        <p>Привет, <strong id="username"></strong>!</p>
-        <p>Уровень: <span id="level"></span></p>
-        <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+        
+        <!-- Контейнер для аватара -->
+        <div id="avatar-container" class="avatar-container">
+          <!-- Аватар будет загружен через JavaScript -->
+        </div>
+        
+        <!-- Информация профиля -->
+        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+          <p>Привет, <strong id="username"></strong>!</p>
+          <p>Уровень: <span id="level"></span></p>
+          <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+        </div>
+        
+        <!-- Статистика -->
+        <div style="margin-top: 1.5rem; padding: 1rem; background: #f0f8ff; border-radius: 8px; border-left: 4px solid #2196F3;">
+          <h3 style="margin-top: 0; color: #2c3e50;">📊 Ваша статистика</h3>
+          <p>Пройдено уроков: <span id="lessons-count">0</span></p>
+          <p>Сдано ДЗ: <span id="homework-count">0</span></p>
+          <p>Куплено материалов: <span id="purchases-count">0</span></p>
+        </div>
       </div>
 
       <!-- Уроки -->
@@ -330,98 +402,100 @@
         <div id="lessons-list" class="lessons-grid"></div>
       </div>
 
-     <!-- ДЗ -->
-<div id="homework" class="section hidden">
-  <h2>📤 Сдать домашнее задание</h2>
-  
-  <div id="custom-form-container">
-    <div style="text-align: center; margin-bottom: 1.5rem;">
-      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📎</div>
-      <h3 style="margin: 0; color: #2c3e50;">Отправьте ваше ДЗ</h3>
-      <p style="color: #666; margin-top: 0.5rem;">Файл будет сохранен в вашей таблице</p>
-    </div>
-    
-    <form id="custom-homework-form" onsubmit="return false;">
-      <div class="form-group">
-        <label class="form-label">👤 Имя ученика</label>
-        <input type="text" 
-               id="student-name" 
-               class="form-input"
-               placeholder="Введите ваше имя" 
-               required>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">📧 Email (для обратной связи)</label>
-        <input type="email" 
-               id="student-email" 
-               class="form-input"
-               placeholder="example@gmail.com" 
-               required>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">🔢 ID ученика</label>
-        <input type="text" 
-               id="student-id" 
-               class="form-input"
-               readonly
-               required>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">📁 Прикрепите файл с ДЗ</label>
-        <div class="file-upload-area" onclick="document.getElementById('homework-file').click()">
-          <div class="file-upload-icon">📤</div>
-          <p style="margin: 0.5rem 0; font-weight: 600;">Нажмите для выбора файла</p>
-          <p style="color: #666; margin-bottom: 1rem;">или перетащите файл сюда</p>
-          <input type="file" 
-                 id="homework-file" 
-                 accept="image/*,.pdf,.doc,.docx,.txt"
-                 style="display: none;"
-                 required>
-          <p id="file-name" style="margin-top: 1rem; color: #666; font-size: 0.9rem;"></p>
+      <!-- ДЗ с фото -->
+      <div id="homework" class="section hidden">
+        <h2>📸 Сдать домашнее задание</h2>
+        
+        <div class="info-box" style="margin-bottom: 1.5rem;">
+          <p style="margin: 0; color: #2c3e50; font-weight: 600;">📌 Как это работает:</p>
+          <ol style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #666;">
+            <li>Вы загружаете фото задания</li>
+            <li>Система автоматически сохраняет его в Google Drive</li>
+            <li>Ссылка на файл появляется в таблице преподавателя</li>
+            <li>Фото доступно в оригинальном качестве</li>
+          </ol>
         </div>
-        <small style="color: #666; display: block; margin-top: 0.5rem;">
-          Поддерживаются: изображения (JPG, PNG), PDF, Word, текстовые файлы
-        </small>
+        
+        <form id="custom-homework-form" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label required">👤 Имя ученика</label>
+            <input type="text" 
+                   id="student-name" 
+                   class="form-input"
+                   placeholder="Введите ваше имя" 
+                   required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label required">📧 Email (для обратной связи)</label>
+            <input type="email" 
+                   id="student-email" 
+                   class="form-input"
+                   placeholder="example@gmail.com" 
+                   required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label required">🔢 ID ученика</label>
+            <input type="text" 
+                   id="student-id" 
+                   class="form-input"
+                   readonly
+                   required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label required">📷 Фото задания</label>
+            <div class="file-upload-area" onclick="document.getElementById('homework-file').click()">
+              <div class="file-upload-icon">📸</div>
+              <p style="margin: 0.5rem 0; font-weight: 600;">Нажмите для выбора фото</p>
+              <p style="color: #666; margin-bottom: 1rem;">JPG, PNG, GIF (до 10 MB)</p>
+              <input type="file" 
+                     id="homework-file" 
+                     accept="image/*"
+                     style="display: none;"
+                     required>
+              <p id="file-name" style="margin-top: 1rem; color: #666; font-size: 0.9rem;"></p>
+            </div>
+            <small style="color: #666; display: block; margin-top: 0.5rem;">
+              📱 Можно сфотографировать задание телефоном
+            </small>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">💬 Комментарий к заданию (необязательно)</label>
+            <textarea id="homework-comment" 
+                      class="form-input"
+                      placeholder="Дополнительные комментарии, вопросы к преподавателю..."
+                      rows="4"></textarea>
+          </div>
+          
+          <div class="form-footer">
+            <button type="button" 
+                    class="btn btn-secondary"
+                    onclick="showSection('profile')">
+              ← Назад
+            </button>
+            <button type="button" 
+                    class="btn btn-primary"
+                    onclick="submitHomeworkWithPhoto()">
+              📸 Отправить фото
+            </button>
+          </div>
+        </form>
+        
+        <div id="form-status" style="margin-top: 1.5rem;"></div>
+        
+        <div class="info-box">
+          <p style="margin: 0; color: #2c3e50; font-weight: 600;">💡 Что происходит с фото:</p>
+          <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #666;">
+            <li>Фото сохраняется в Google Drive в вашей папке</li>
+            <li>В таблице "ДЗ" появляется кликабельная ссылка</li>
+            <li>Преподаватель видит фото в оригинальном качестве</li>
+            <li>Вы можете проверить, что фото загружено корректно</li>
+          </ul>
+        </div>
       </div>
-      
-      <div class="form-group">
-        <label class="form-label">💬 Комментарий к заданию (необязательно)</label>
-        <textarea id="homework-comment" 
-                  class="form-input"
-                  placeholder="Дополнительные комментарии..."
-                  rows="4"></textarea>
-      </div>
-      
-      <div class="form-footer">
-        <button type="button" 
-                class="btn btn-secondary"
-                onclick="showSection('profile')">
-          ← Назад
-        </button>
-        <button type="button" 
-                class="btn btn-primary"
-                onclick="submitHomeworkSimple()">
-          📨 Отправить домашнее задание
-        </button>
-      </div>
-    </form>
-    
-    <div id="form-status" style="margin-top: 1.5rem;"></div>
-    
-    <div class="info-box">
-      <p style="margin: 0; color: #2c3e50; font-weight: 600;">💡 Как это работает:</p>
-      <ol style="margin: 0.5rem 0 0 0; padding-left: 1.5rem; color: #666;">
-        <li>Заполняете форму выше</li>
-        <li>Нажимаете "Отправить домашнее задание"</li>
-        <li>Данные сохраняются в вашу Google Таблицу</li>
-        <li>Вы получаете подтверждение об отправке</li>
-      </ol>
-    </div>
-  </div>
-</div>
 
       <!-- Магазин -->
       <div id="shop" class="section hidden">
@@ -441,10 +515,8 @@
     </div>
   </div>
 
-  <!-- Google Form iFrame (скрытый) -->
-  <iframe id="google-form-frame" 
-          style="display: none; width: 100%; height: 500px; border: none;"></iframe>
-
+  <!-- Модальное окно для аватара (будет добавлено через JS) -->
+  
   <script src="script.js"></script>
 </body>
 </html>
