@@ -1,11 +1,11 @@
-    <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
   
-  <!-- Подключение шрифта -->
+  <!-- Подключение шрифта (убраны лишние пробелы) -->
   <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
   
   <style>
@@ -396,12 +396,6 @@
         </div>
       </div>
 
-      <!-- Уроки -->
-      <div id="lessons" class="section hidden">
-        <h2>📚 Уроки</h2>
-        <div id="lessons-list" class="lessons-grid"></div>
-      </div>
-
       <!-- ДЗ с фото -->
       <div id="homework" class="section hidden">
         <h2>📸 Сдать домашнее задание</h2>
@@ -515,8 +509,14 @@
     </div>
   </div>
 
-  <!-- Модальное окно для аватара (будет добавлено через JS) -->
-  
   <script src="script.js"></script>
+
+  <!-- Обработка выбора файла -->
+  <script>
+    document.getElementById('homework-file').addEventListener('change', function(e) {
+      const fileName = e.target.files[0]?.name || '';
+      document.getElementById('file-name').textContent = fileName ? `Выбрано: ${fileName}` : '';
+    });
+  </script>
 </body>
 </html>
