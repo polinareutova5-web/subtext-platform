@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
   
-  <!-- Подключение шрифта (убраны лишние пробелы) -->
+  <!-- Подключение шрифта (без пробелов) -->
   <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
   
   <style>
@@ -53,7 +53,7 @@
       z-index: 2;
     }
 
-    /* Навигация — только кнопки, без белого фона */
+    /* Навигация */
     .nav-container {
       display: flex;
       gap: 0.5rem;
@@ -63,7 +63,6 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       max-width: 800px;
-      z-index: 2;
     }
 
     .nav-container button {
@@ -91,15 +90,18 @@
       background: #c8e6c9;
     }
 
-    /* Основной контент */
-    .main-content {
-      padding: 2rem 1rem;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
+    /* Секции */
+    .section {
+      animation: fadeIn 0.3s;
+      padding: 1rem;
     }
 
-    /* Профиль — только в разделе "Профиль" */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Профиль */
     .profile-section {
       display: flex;
       flex-direction: column;
@@ -135,16 +137,7 @@
       border: 3px solid #2e7d32;
     }
 
-    .section {
-      animation: fadeIn 0.3s;
-      padding: 1rem;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
+    /* Уроки */
     .lessons-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -160,6 +153,7 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
+    /* Магазин */
     .shop-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -203,6 +197,7 @@
       background: #1b5e20;
     }
 
+    /* Загрузка */
     #loading {
       text-align: center;
       padding: 2rem;
@@ -210,7 +205,7 @@
       color: #666;
     }
 
-    /* Стили для формы ДЗ */
+    /* Форма ДЗ */
     .form-group {
       margin: 1rem 0;
     }
@@ -239,6 +234,7 @@
       font-weight: 600;
     }
 
+    /* Центрирование заголовков */
     h2 {
       text-align: center;
       margin: 1.5rem 0 1rem 0;
@@ -246,14 +242,13 @@
   </style>
 </head>
 <body>
-  <!-- Шапка — картинка с пустым центром -->
+  <!-- Шапка -->
   <div class="header">
     <h1>Subtext</h1>
   </div>
 
   <div id="loading">Загрузка...</div>
 
-  <!-- Основной интерфейс -->
   <div id="main" class="hidden">
     <!-- Навигация -->
     <div class="nav-container">
@@ -264,15 +259,12 @@
       <button onclick="showSection('schedule')">📅 Расписание</button>
     </div>
 
-    <!-- Профиль с аватаром -->
+    <!-- Профиль (только здесь!) -->
     <div id="profile" class="section profile-section">
       <h2>👤 Профиль</h2>
-      
-      <!-- Аватар (только отображение) -->
       <div class="avatar-container">
         <img id="avatar-img" src="" alt="Аватар" class="avatar-img">
       </div>
-      
       <p>Привет, <strong id="username"></strong>!</p>
       <p>Уровень: <span id="level"></span></p>
       <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
@@ -299,10 +291,10 @@
       <p id="hwStatus"></p>
     </div>
 
-    <!-- Магазин -->
+    <!-- Магазин (только монеты) -->
     <div id="shop" class="section hidden">
       <h2>🛒 Магазин</h2>
-      <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32;">
+      <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32; text-align: center;">
         💰 Ваши монеты: <span id="shop-coins">0</span>
       </div>
       <div id="shop-items" class="shop-grid"></div>
