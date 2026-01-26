@@ -127,23 +127,12 @@
       margin-bottom: 1.5rem;
     }
 
-    .avatar-placeholder,
     .avatar-img {
       width: 120px;
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      cursor: pointer;
       border: 3px solid #2e7d32;
-    }
-
-    .avatar-placeholder {
-      background: #e0f0e9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      color: #4CAF50;
     }
 
     .section {
@@ -249,10 +238,11 @@
       cursor: pointer;
       font-weight: 600;
     }
+
     h2 {
-  text-align: center;
-  margin: 1.5rem 0 1rem 0;
-}
+      text-align: center;
+      margin: 1.5rem 0 1rem 0;
+    }
   </style>
 </head>
 <body>
@@ -278,11 +268,10 @@
     <div id="profile" class="section profile-section">
       <h2>👤 Профиль</h2>
       
-      <!-- Аватар -->
-      <div class="avatar-container" onclick="document.getElementById('avatar-upload').click()">
-        <img id="avatar-img" class="avatar-placeholder" src="" alt="Аватар">
+      <!-- Аватар (только отображение) -->
+      <div class="avatar-container">
+        <img id="avatar-img" src="" alt="Аватар" class="avatar-img">
       </div>
-      <input type="file" id="avatar-upload" accept="image/*" style="display: none;" onchange="uploadAvatar(this.files[0])">
       
       <p>Привет, <strong id="username"></strong>!</p>
       <p>Уровень: <span id="level"></span></p>
@@ -328,20 +317,5 @@
   </div>
 
   <script src="script.js"></script>
-
-  <script>
-    // Обновление аватара при загрузке
-    function updateAvatarPreview(url) {
-      const img = document.getElementById('avatar-img');
-      if (url) {
-        img.src = url;
-        img.classList.remove('avatar-placeholder');
-      } else {
-        img.src = '';
-        img.classList.add('avatar-placeholder');
-        img.alt = 'Аватар';
-      }
-    }
-  </script>
 </body>
 </html>
