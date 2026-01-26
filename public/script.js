@@ -41,8 +41,15 @@ async function loadData() {
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
 
-    // Загружаем аватар
-    loadAvatar(u.avatarUrl);
+    // Загружаем аватар из таблицы
+    const avatarImg = document.getElementById('avatar-img');
+    if (avatarImg) {
+      if (u.avatarUrl) {
+        avatarImg.src = u.avatarUrl;
+      } else {
+        avatarImg.src = "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
+      }
+    }
 
     // Уроки
     const lessonsList = document.getElementById('lessons-list');
@@ -89,64 +96,6 @@ async function loadData() {
   } catch (err) {
     console.error('Ошибка загрузки:', err);
     document.getElementById('loading').textContent = '❌ Не удалось загрузить данные.';
-  }
-}
-
-// === ЗАГРУЗКА АВАТАРА ===
-function loadAvatar(avatarUrl) {
-  const avatarImg = document.getElementById('avatar-img');
-  if (avatarImg) {
-    if (avatarUrl) {
-      avatarImg.src = avatarUrl;
-      avatarImg.classList.remove('avatar-placeholder');
-      avatarImg.alt = "Аватар";
-    } else {
-      avatarImg.src = "";
-      avatarImg.classList.add('avatar-placeholder');
-      avatarImg.alt = "Добавить аватар";
-    }
-  }
-}
-
-// === ЗАГРУЗКА АВАТАРА ПРИ ВЫБОРЕ ФАЙЛА ===
-async function uploadAvatar(file) {
-  if (!file) return;
-  
-  if (!file.type.startsWith('image/')) {
-    alert('Пожалуйста, выберите изображение.');
-    return;
-  }
-  
-  if (file.size > 5 * 1024 * 1024) {
-    alert('Файл слишком большой. Максимум 5 МБ.');
-    return;
-  }
-
-  try {
-    const base64 = await fileToBase64(file);
-    
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: "upload_avatar",
-        userId: userId,
-        fileName: file.name,
-        fileBase64: base64
-      })
-    });
-
-    const result = await response.json();
-    
-    if (result.success) {
-      loadAvatar(result.fileUrl);
-      alert('✅ Аватар обновлён!');
-    } else {
-      alert('❌ Ошибка: ' + (result.error || 'Неизвестная ошибка'));
-    }
-  } catch (err) {
-    console.error('Ошибка загрузки аватара:', err);
-    alert('❌ Не удалось загрузить аватар.');
   }
 }
 
