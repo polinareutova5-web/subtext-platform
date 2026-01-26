@@ -114,10 +114,11 @@
     }
 
     .profile-section h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
-  color: #8B0000; /* Бордовый */
-}
+      margin: 0 0 1rem 0;
+      font-size: 1.5rem;
+      color: #8B0000; /* Бордовый */
+    }
+    
     .profile-section p {
       margin: 0.5rem 0;
       font-size: 1.1rem;
@@ -307,6 +308,160 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Текущий пользователь
+    let currentUser = null;
+
+    // Загрузка данных
+    async function loadData() {
+      try {
+        // Эмуляция загрузки пользователя
+        setTimeout(() => {
+          currentUser = {
+            id: 1,
+            username: "Алексей",
+            level: 5,
+            progress: 1250,
+            coins: 540,
+            avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
+          };
+
+          // Обновляем профиль
+          document.getElementById('username').textContent = currentUser.username;
+          document.getElementById('level').textContent = currentUser.level;
+          document.getElementById('progress').textContent = currentUser.progress;
+          document.getElementById('coins').textContent = currentUser.coins;
+          document.getElementById('avatar-img').src = currentUser.avatar;
+
+          // Обновляем монеты в магазине
+          document.getElementById('shop-coins').textContent = currentUser.coins;
+
+          // Эмуляция загрузки уроков
+          loadLessons();
+          
+          // Эмуляция загрузки магазина
+          loadShop();
+
+          // Скрываем загрузку, показываем основной контент
+          document.getElementById('loading').classList.add('hidden');
+          document.getElementById('main').classList.remove('hidden');
+          
+          // Показываем профиль по умолчанию
+          showSection('profile');
+        }, 800);
+      } catch (error) {
+        console.error('Ошибка загрузки:', error);
+        document.getElementById('loading').innerHTML = 'Ошибка загрузки данных';
+      }
+    }
+
+    // Загрузка уроков
+    function loadLessons() {
+      const lessons = [
+        { id: 1, title: "Урок 1: Основы", description: "Введение в язык", status: "Завершено" },
+        { id: 2, title: "Урок 2: Грамматика", description: "Времена глаголов", status: "В процессе" },
+        { id: 3, title: "Урок 3: Лексика", description: "Популярные фразы", status: "Доступно" },
+        { id: 4, title: "Урок 4: Диалоги", description: "Повседневные ситуации", status: "Доступно" }
+      ];
+
+      const lessonsList = document.getElementById('lessons-list');
+      lessonsList.innerHTML = '';
+      
+      lessons.forEach(lesson => {
+        const card = document.createElement('div');
+        card.className = 'lesson-card';
+        card.innerHTML = `
+          <h3>${lesson.title}</h3>
+          <p>${lesson.description}</p>
+          <p><strong>Статус:</strong> ${lesson.status}</p>
+        `;
+        lessonsList.appendChild(card);
+      });
+    }
+
+    // Загрузка магазина
+    function loadShop() {
+      const shopItems = [
+        { id: 1, name: "Премиум курс", price: 300, description: "Расширенный доступ" },
+        { id: 2, name: "Доп. уроки", price: 150, description: "5 дополнительных уроков" },
+        { id: 3, name: "Консультация", price: 200, description: "Индивидуальная консультация" },
+        { id: 4, name: "Сертификат", price: 500, description: "Официальный сертификат" }
+      ];
+
+      const shopContainer = document.getElementById('shop-items');
+      shopContainer.innerHTML = '';
+      
+      shopItems.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'shop-item';
+        itemDiv.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>${item.description}</p>
+          <div class="price">${item.price} монет</div>
+          <button class="buy-btn" onclick="buyItem(${item.id}, ${item.price})">Купить</button>
+        `;
+        shopContainer.appendChild(itemDiv);
+      });
+    }
+
+    // Покупка товара
+    function buyItem(itemId, price) {
+      if (!currentUser) return;
+      
+      if (currentUser.coins >= price) {
+        currentUser.coins -= price;
+        
+        // Обновляем монеты в профиле
+        document.getElementById('coins').textContent = currentUser.coins;
+        
+        // Обновляем монеты в магазине
+        document.getElementById('shop-coins').textContent = currentUser.coins;
+        
+        alert(`Вы успешно купили товар за ${price} монет!`);
+      } else {
+        alert('Недостаточно монет!');
+      }
+    }
+
+    // Переключение секций
+    function showSection(sectionId) {
+      // Скрываем все секции
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      // Показываем выбранную секцию
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.classList.remove('hidden');
+      }
+      
+      // Если показываем магазин, обновляем баланс
+      if (sectionId === 'shop' && currentUser) {
+        document.getElementById('shop-coins').textContent = currentUser.coins;
+      }
+    }
+
+    // Отправка ДЗ
+    function submitHomework() {
+      const text = document.getElementById('hwText').value;
+      const file = document.getElementById('hwFile').files[0];
+      
+      if (!text && !file) {
+        alert('Заполните текст или прикрепите файл!');
+        return;
+      }
+      
+      document.getElementById('hwStatus').textContent = 'ДЗ отправлено! Проверка займет некоторое время.';
+      document.getElementById('hwStatus').style.color = 'green';
+      
+      // Очистка формы
+      document.getElementById('hwText').value = '';
+      document.getElementById('hwFile').value = '';
+    }
+
+    // Запуск при загрузке страницы
+    window.onload = loadData;
+  </script>
 </body>
 </html>
