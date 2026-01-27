@@ -6,7 +6,7 @@
   <title>Subtext</title>
 
   <!-- Шрифт для названия -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; }
@@ -24,12 +24,12 @@
     .header {
       width: 100vw;
       height: 280px;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0')
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png')
         no-repeat center center;
       background-size: cover;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       position: relative;
     }
 
@@ -43,18 +43,38 @@
         rgba(255,255,255,0.25),
         rgba(255,255,255,0.85)
       );
+      z-index: 1;
     }
 
-    .header h1 {
+    /* ===== BIG TITLE ===== */
+    .big-title-container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .big-title {
       font-family: 'Playfair Display', serif;
-      font-size: 3.2rem;
-      letter-spacing: 1px;
-      color: #013220;
-      z-index: 1;
-      padding: .6rem 2rem;
-      border-radius: 16px;
+      font-size: 6rem;
+      color: rgba(255, 255, 255, 0.85);
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow:
+        0 2px 6px rgba(0,0,0,0.2),
+        0 4px 12px rgba(0,0,0,0.15),
+        0 8px 20px rgba(0,0,0,0.1);
       backdrop-filter: blur(6px);
-      text-shadow: 0 4px 12px rgba(0,0,0,.2);
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .big-title:hover {
+      transform: scale(1.05);
+      text-shadow:
+        0 4px 12px rgba(0,0,0,0.25),
+        0 8px 24px rgba(0,0,0,0.2),
+        0 12px 36px rgba(0,0,0,0.15);
     }
 
     /* ===== NAV ===== */
@@ -66,6 +86,8 @@
       padding: .5rem 1rem;
       justify-content: center;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
     }
 
     .nav-container button {
@@ -117,26 +139,12 @@
       margin-bottom: 1rem;
     }
 
-    /* ===== GRIDS ===== */
-    .lessons-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.2rem;
-    }
-
-    /* МАГАЗИН — СТРОГО 4 В ЛИНИЮ */
+    /* ===== GLASS CARDS ===== */
+    .lessons-grid,
     .shop-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, 1fr); /* ровно 4 товара в ряд */
       gap: 1.2rem;
-    }
-
-    @media (max-width: 900px) {
-      .shop-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 500px) {
-      .shop-grid { grid-template-columns: 1fr; }
     }
 
     .lesson-card,
@@ -156,38 +164,26 @@
       box-shadow: 0 14px 30px rgba(0,0,0,.15);
     }
 
-    /* ===== ОБЪЕМНЫЕ КНОПКИ УРОКОВ ===== */
+    /* ===== LESSON BUTTONS ===== */
     .lesson-btn {
       display: inline-block;
-      margin-top: .8rem;
-      padding: .7rem 1.6rem;
+      margin-top: .6rem;
+      padding: .6rem 1.4rem;
       border-radius: 999px;
-      background:
-        linear-gradient(to bottom, #66bb6a, #2e7d32);
+      background: linear-gradient(135deg, #2e7d32, #43a047);
       color: #fff;
-      font-weight: 700;
       text-decoration: none;
-      box-shadow:
-        0 6px 0 #1b5e20,
-        0 10px 18px rgba(0,0,0,.25);
-      transition: all .2s ease;
+      font-weight: 600;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: all .25s ease;
     }
 
     .lesson-btn:hover {
       transform: translateY(-2px);
-      box-shadow:
-        0 8px 0 #1b5e20,
-        0 14px 24px rgba(0,0,0,.3);
+      box-shadow: 0 10px 20px rgba(46,125,50,.35);
     }
 
-    .lesson-btn:active {
-      transform: translateY(4px);
-      box-shadow:
-        0 2px 0 #1b5e20,
-        0 6px 12px rgba(0,0,0,.25);
-    }
-
-    /* ===== OTHER BUTTONS ===== */
+    /* ===== BUTTONS ===== */
     button[type="button"],
     .buy-btn {
       background: linear-gradient(135deg, #2e7d32, #43a047);
@@ -221,7 +217,9 @@
 <body>
 
   <div class="header">
-    <h1>Subtext</h1>
+    <div class="big-title-container">
+      <h1 class="big-title">Subtext</h1>
+    </div>
   </div>
 
   <div id="loading">Загрузка...</div>
