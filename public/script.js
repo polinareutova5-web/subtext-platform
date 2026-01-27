@@ -1,5 +1,5 @@
 // Убраны лишние пробелы в URL
-const API_URL = "https://script.google.com/macros/s/AKfycbz7I4VeL3AviX53i9fWOlMrpJi8u691MW1STwsfGo-3NqPko-5MAbmAneqcTycs3QRF0g/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxtl9nLY8TeK0JDUlQrR8kYjfUaaCxMn3gyUGHJHIqXQ1mwxs3I1nDjuZPm7c9Klwzo/exec";
 
 let userId;
 
@@ -41,9 +41,6 @@ async function loadData() {
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
 
-    // Баланс в магазине
-    document.getElementById('shop-coins').textContent = u.coins;
-
     // Загружаем аватар из таблицы
     const avatarImg = document.getElementById('avatar-img');
     if (avatarImg) {
@@ -70,6 +67,8 @@ async function loadData() {
 
     // Магазин
     const shopItems = document.getElementById('shop-items');
+    document.getElementById('shop-coins').textContent = u.coins;
+
     if (data.shop.length > 0) {
       shopItems.innerHTML = data.shop.map((item, idx) => `
         <div class="shop-item">
@@ -106,51 +105,48 @@ async function submitHomework() {
   const fileInput = document.getElementById('hwFile');
   const file = fileInput.files[0];
 
-  // Проверка формата файла (если есть)
   if (file) {
-    if (!file.type.match('image/jpeg|image/png|image/gif')) {
-      alert('Поддерживаются только JPG, PNG, GIF');
+    if (!file.type.startsWith('image/')) {
+      alert('Пожалуйста, выберите изображение.');
       return;
     }
+    
     if (file.size > 10 * 1024 * 1024) {
       alert('Файл слишком большой. Максимум 10 МБ.');
       return;
     }
-  }
 
-  try {
-    let base64 = "";
-    if (file) {
-      base64 = await fileToBase64(file);
+    try {
+      const base64 = await fileToBase64(file);
+      
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: "submit_homework_photo",
+          userId: userId,
+          userName: document.getElementById('username').textContent || '—',
+          userEmail: '',
+          fileName: file.name,
+          fileBase64: base64,
+          comment: text
+        })
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        document.getElementById('hwStatus').textContent = '✅ ДЗ с фото отправлено!';
+        document.getElementById('hwText').value = '';
+        fileInput.value = '';
+      } else {
+        document.getElementById('hwStatus').textContent = `❌ Ошибка: ${result.error || 'Неизвестная ошибка'}`;
+      }
+    } catch (err) {
+      console.error('Ошибка отправки ДЗ:', err);
+      document.getElementById('hwStatus').textContent = '❌ Не удалось отправить ДЗ.';
     }
-
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: "submit_homework_photo",
-        userId: userId,
-        userName: document.getElementById('username').textContent || '—',
-        fileName: file ? file.name : "",
-        fileBase64: base64,
-        comment: text
-      })
-    });
-
-    const result = await response.json();
-    
-    if (result.success) {
-      document.getElementById('hwStatus').textContent = result.message;
-      document.getElementById('hwText').value = '';
-      fileInput.value = '';
-    } else {
-      document.getElementById('hwStatus').textContent = `❌ Ошибка: ${result.error || 'Неизвестная ошибка'}`;
-    }
-  } catch (err) {
-    console.error('Ошибка отправки ДЗ:', err);
-    document.getElementById('hwStatus').textContent = '❌ Не удалось отправить ДЗ.';
-  }
-}
+  } 
   else if (text) {
     const encodedText = encodeURIComponent(text);
     const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
