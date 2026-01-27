@@ -99,79 +99,33 @@ async function loadData() {
   }
 }
 
-// === ОТПРАВКА ДЗ С ФОТО ===
+// === ОТПРАВКА ДЗ ===
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
-  const fileInput = document.getElementById('hwFile');
-  const file = fileInput.files[0];
+  
+  if (!text) {
+    alert('Введите текст задания.');
+    return;
+  }
 
-  if (file) {
-    if (!file.type.startsWith('image/')) {
-      alert('Пожалуйста, выберите изображение.');
-      return;
-    }
-    
-    if (file.size > 10 * 1024 * 1024) {
-      alert('Файл слишком большой. Максимум 10 МБ.');
-      return;
-    }
-
-    try {
-      const base64 = await fileToBase64(file);
-      
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: "submit_homework_photo",
-          userId: userId,
-          userName: document.getElementById('username').textContent || '—',
-          userEmail: '',
-          fileName: file.name,
-          fileBase64: base64,
-          comment: text
-        })
-      });
-
-      const result = await response.json();
-      
-      if (result.success) {
-        document.getElementById('hwStatus').textContent = '✅ ДЗ с фото отправлено!';
-        document.getElementById('hwText').value = '';
-        fileInput.value = '';
-      } else {
-        document.getElementById('hwStatus').textContent = `❌ Ошибка: ${result.error || 'Неизвестная ошибка'}`;
-      }
-    } catch (err) {
-      console.error('Ошибка отправки ДЗ:', err);
-      document.getElementById('hwStatus').textContent = '❌ Не удалось отправить ДЗ.';
-    }
-  } 
-  else if (text) {
+  try {
     const encodedText = encodeURIComponent(text);
     const url = `${API_URL}?action=submit_homework&userId=${userId}&homeworkText=${encodedText}&lessonNum=0`;
 
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      
-      if (data.success) {
-        document.getElementById('hwStatus').textContent = '✅ Текстовое ДЗ отправлено!';
-        document.getElementById('hwText').value = '';
-      } else {
-        document.getElementById('hwStatus').textContent = `❌ Ошибка: ${data.error}`;
-      }
-    } catch (err) {
-      console.error('Ошибка ДЗ:', err);
-      document.getElementById('hwStatus').textContent = '❌ Не удалось отправить.';
+    const res = await fetch(url);
+    const data = await res.json();
+    
+    if (data.success) {
+      document.getElementById('hwStatus').textContent = '✅ ДЗ отправлено!';
+      document.getElementById('hwText').value = '';
+    } else {
+      document.getElementById('hwStatus').textContent = `❌ Ошибка: ${data.error}`;
     }
-  } 
-  else {
-    alert('Введите текст или прикрепите фото.');
+  } catch (err) {
+    console.error('Ошибка ДЗ:', err);
+    document.getElementById('hwStatus').textContent = '❌ Не удалось отправить.';
   }
-}
-
-// === ПОКУПКА ЧЕРЕЗ GET ===
+}// === ПОКУПКА ЧЕРЕЗ GET ===
 async function buyItem(index) {
   const url = `${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`;
 
