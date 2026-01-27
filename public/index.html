@@ -8,20 +8,25 @@
   <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
       background-color: #faf9f6;
       color: #333;
     }
 
     .hidden { display: none; }
 
+    /* ===== HERO / HEADER ===== */
     .header {
-      width: 100%;
-      height: 200px;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png') no-repeat center top;
+      width: 100vw;
+      height: 260px;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png')
+        no-repeat center center;
       background-size: cover;
       display: flex;
       align-items: center;
@@ -35,98 +40,136 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(255,255,255,0.9) 0%,
-        rgba(255,255,255,0) 50%,
-        rgba(255,255,255,0.9) 100%
+        rgba(255,255,255,0.85),
+        rgba(255,255,255,0.2),
+        rgba(255,255,255,0.85)
       );
     }
 
     .header h1 {
       font-family: 'English Script', cursive;
-      font-size: 3rem;
+      font-size: 3.5rem;
       color: #013220;
       z-index: 1;
+      padding: .5rem 1.5rem;
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+      text-shadow: 0 2px 8px rgba(0,0,0,.15);
     }
 
+    /* ===== NAV BUTTONS ===== */
     .nav-container {
       display: flex;
-      gap: .5rem;
+      gap: .8rem;
       overflow-x: auto;
-      max-width: 800px;
-      margin: 1rem auto;
-      padding: .5rem;
+      max-width: 900px;
+      margin: 1.5rem auto;
+      padding: .5rem 1rem;
+      justify-content: center;
     }
 
     .nav-container button {
-      min-width: 140px;
+      min-width: 150px;
       height: 55px;
-      background: #e0f0e9;
-      border: 1px solid #a8d8b9;
-      border-radius: 8px;
-      cursor: pointer;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2e7d32, #66bb6a);
+      color: #fff;
       font-weight: 600;
+      font-size: .95rem;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: all .25s ease;
     }
 
+    .nav-container button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(46,125,50,.35);
+      filter: brightness(1.05);
+    }
+
+    /* ===== SECTIONS ===== */
     .section {
-      padding: 1rem;
-      animation: fadeIn .3s;
+      padding: 1.5rem;
+      animation: fadeIn .3s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0 }
-      to { opacity: 1 }
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
+    /* ===== PROFILE ===== */
     .profile-section {
-      max-width: 500px;
+      max-width: 520px;
       margin: auto;
       text-align: center;
       background: #fff;
       padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,.05);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
     }
 
     .avatar-img {
-      width: 120px;
-      height: 120px;
+      width: 130px;
+      height: 130px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #2e7d32;
+      border: 4px solid #2e7d32;
+      margin-bottom: 1rem;
     }
 
+    /* ===== CARDS ===== */
     .lessons-grid,
     .shop-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
     .lesson-card,
     .shop-item {
       background: #fff;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 3px 6px rgba(0,0,0,.08);
+      padding: 1.2rem;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
       text-align: center;
+      transition: transform .25s ease, box-shadow .25s ease;
     }
 
-    .buy-btn,
-    button[type="button"] {
-      background: #2e7d32;
+    .lesson-card:hover,
+    .shop-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.12);
+    }
+
+    /* ===== BUTTONS ===== */
+    button[type="button"],
+    .buy-btn {
+      background: linear-gradient(135deg, #2e7d32, #43a047);
       color: #fff;
       border: none;
-      border-radius: 6px;
-      padding: .6rem 1.2rem;
-      cursor: pointer;
+      border-radius: 999px;
+      padding: .7rem 1.6rem;
       font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: all .25s ease;
     }
 
+    button[type="button"]:hover,
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(46,125,50,.35);
+    }
+
+    /* ===== FORMS ===== */
     textarea, input[type="file"] {
       width: 100%;
-      padding: .5rem;
-      border-radius: 6px;
+      padding: .7rem;
+      border-radius: 10px;
       border: 1px solid #ccc;
+      font-size: .95rem;
     }
 
     .form-group {
@@ -135,6 +178,7 @@
 
     h2 {
       text-align: center;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
