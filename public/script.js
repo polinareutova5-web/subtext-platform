@@ -100,11 +100,38 @@ async function submitHomework() {
   const fileInput = document.getElementById('hwImage');
   const file = fileInput.files[0];
 
+  // ====== 1️⃣ ТОЛЬКО ТЕКСТ ======
   if (!file) {
-    alert("Добавьте изображение");
+    if (!text) {
+      alert("Введите текст или прикрепите фото");
+      return;
+    }
+
+    try {
+      const url =
+        `${API_URL}?action=submit_homework` +
+        `&userId=${encodeURIComponent(userId)}` +
+        `&homeworkText=${encodeURIComponent(text)}` +
+        `&lessonNum=0`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById('hwStatus').textContent = "✅ ДЗ отправлено!";
+        document.getElementById('hwText').value = "";
+      } else {
+        document.getElementById('hwStatus').textContent = "❌ " + data.error;
+      }
+    } catch (e) {
+      console.error(e);
+      document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
+    }
+
     return;
   }
 
+  // ====== 2️⃣ ТЕКСТ + ФОТО ======
   const reader = new FileReader();
 
   reader.onload = async () => {
@@ -129,14 +156,13 @@ async function submitHomework() {
 
       const data = await res.json();
 
-      document.getElementById('hwStatus').textContent =
-        data.success ? "✅ ДЗ отправлено!" : "❌ " + data.error;
-
       if (data.success) {
-        fileInput.value = "";
+        document.getElementById('hwStatus').textContent = "✅ ДЗ отправлено!";
         document.getElementById('hwText').value = "";
+        fileInput.value = "";
+      } else {
+        document.getElementById('hwStatus').textContent = "❌ " + data.error;
       }
-
     } catch (e) {
       console.error(e);
       document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
