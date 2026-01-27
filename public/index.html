@@ -1,250 +1,264 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Subtext</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subtext</title>
 
-  <!-- Шрифт для названия -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<!-- Шрифты -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
-  <style>
-    * { box-sizing: border-box; }
+<style>
+* { box-sizing: border-box; }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background-color: #faf9f6;
-      color: #333;
-    }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top, #f0f7f3, #faf9f6);
+  color: #1f2933;
+}
 
-    .hidden { display: none; }
+/* ===== HERO ===== */
+.header {
+  min-height: 85vh;
+  background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
 
-    /* ===== HEADER ===== */
-    .header {
-      width: 100vw;
-      height: 280px;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0')
-        no-repeat center center;
-      background-size: cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,.85),
+    rgba(255,255,255,.4),
+    rgba(255,255,255,.9)
+  );
+}
 
-    .header::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.85),
-        rgba(255,255,255,0.25),
-        rgba(255,255,255,0.85)
-      );
-    }
+.hero-box {
+  z-index: 1;
+  padding: 3rem 4rem;
+  border-radius: 28px;
+  background: rgba(255,255,255,.55);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 30px 60px rgba(0,0,0,.15);
+  text-align: center;
+  animation: heroIn .9s ease;
+}
 
-    .header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.2rem;
-      letter-spacing: 1px;
-      color: #013220;
-      z-index: 1;
-      padding: .6rem 2rem;
-      border-radius: 16px;
-      backdrop-filter: blur(6px);
-      text-shadow: 0 4px 12px rgba(0,0,0,.2);
-    }
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(30px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-    /* ===== NAV ===== */
-    .nav-container {
-      display: flex;
-      gap: .8rem;
-      max-width: 900px;
-      margin: 1.5rem auto;
-      padding: .5rem 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+.hero-box h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  margin: 0;
+  letter-spacing: 1px;
+}
 
-    .nav-container button {
-      min-width: 150px;
-      height: 55px;
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #2e7d32, #66bb6a);
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(46,125,50,.25);
-      transition: all .25s ease;
-    }
+.hero-box p {
+  margin-top: .8rem;
+  font-size: 1.1rem;
+  opacity: .8;
+}
 
-    .nav-container button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(46,125,50,.35);
-    }
+/* ===== NAV ===== */
+.nav-container {
+  display: flex;
+  gap: .8rem;
+  justify-content: center;
+  margin: -2.2rem auto 2rem;
+  flex-wrap: wrap;
+}
 
-    /* ===== SECTIONS ===== */
-    .section {
-      padding: 1.5rem;
-      animation: fadeIn .3s ease;
-    }
+.nav-container button {
+  padding: .9rem 1.8rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #2e7d32, #81c784);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 25px rgba(46,125,50,.35);
+  transition: all .25s ease;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.nav-container button:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 18px 40px rgba(46,125,50,.45);
+}
 
-    /* ===== PROFILE ===== */
-    .profile-section {
-      max-width: 520px;
-      margin: auto;
-      text-align: center;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-    }
+/* ===== SECTIONS ===== */
+.section {
+  padding: 2rem;
+  animation: fade .4s ease;
+}
 
-    .avatar-img {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #2e7d32;
-      margin-bottom: 1rem;
-    }
+@keyframes fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    /* ===== GLASS CARDS ===== */
-    .lessons-grid,
-    .shop-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.2rem;
-    }
+.hidden { display: none; }
 
-    .lesson-card,
-    .shop-item {
-      background: rgba(255,255,255,0.55);
-      backdrop-filter: blur(10px);
-      border-radius: 18px;
-      padding: 1.4rem;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,.1);
-      transition: all .25s ease;
-    }
+/* ===== PROFILE ===== */
+.profile-section {
+  max-width: 520px;
+  margin: auto;
+  padding: 2.5rem;
+  border-radius: 26px;
+  background: rgba(255,255,255,.6);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 50px rgba(0,0,0,.12);
+  text-align: center;
+}
 
-    .lesson-card:hover,
-    .shop-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 30px rgba(0,0,0,.15);
-    }
+.avatar-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 5px solid rgba(46,125,50,.6);
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
 
-    /* ===== LESSON BUTTONS ===== */
-    .lesson-btn {
-      display: inline-block;
-      margin-top: .6rem;
-      padding: .6rem 1.4rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #2e7d32, #43a047);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      box-shadow: 0 6px 14px rgba(46,125,50,.25);
-      transition: all .25s ease;
-    }
+/* ===== GLASS CARDS ===== */
+.lessons-grid,
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px,1fr));
+  gap: 1.5rem;
+}
 
-    .lesson-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(46,125,50,.35);
-    }
+.lesson-card,
+.shop-item {
+  padding: 1.8rem;
+  border-radius: 24px;
+  background: rgba(255,255,255,.55);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.12);
+  text-align: center;
+  transition: all .3s ease;
+}
 
-    /* ===== BUTTONS ===== */
-    button[type="button"],
-    .buy-btn {
-      background: linear-gradient(135deg, #2e7d32, #43a047);
-      color: #fff;
-      border: none;
-      border-radius: 999px;
-      padding: .7rem 1.6rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(46,125,50,.25);
-      transition: all .25s ease;
-    }
+.lesson-card:hover,
+.shop-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px rgba(0,0,0,.18);
+}
 
-    button:hover,
-    .buy-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(46,125,50,.35);
-    }
+/* ===== LESSON BUTTONS ===== */
+.lesson-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: .7rem 1.8rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(46,125,50,.3);
+  transition: all .25s ease;
+}
 
-    textarea, input[type="file"] {
-      width: 100%;
-      padding: .7rem;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-    }
+.lesson-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+}
 
-    h2 { text-align: center; }
-  </style>
+/* ===== FORMS ===== */
+textarea, input[type="file"] {
+  width: 100%;
+  padding: .8rem;
+  border-radius: 14px;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+button[type="button"],
+.buy-btn {
+  padding: .8rem 2rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(46,125,50,.35);
+  transition: all .25s ease;
+}
+
+button:hover,
+.buy-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+h2 { text-align: center; }
+</style>
 </head>
 
 <body>
 
-  <div class="header">
+<div class="header">
+  <div class="hero-box">
     <h1>Subtext</h1>
+    <p>Личное пространство для роста и знаний</p>
+  </div>
+</div>
+
+<div id="loading">Загрузка...</div>
+
+<div id="main" class="hidden">
+
+  <div class="nav-container">
+    <button onclick="showSection('profile')">Профиль</button>
+    <button onclick="showSection('lessons')">Уроки</button>
+    <button onclick="showSection('homework')">ДЗ</button>
+    <button onclick="showSection('shop')">Магазин</button>
+    <button onclick="showSection('schedule')">Расписание</button>
   </div>
 
-  <div id="loading">Загрузка...</div>
-
-  <div id="main" class="hidden">
-
-    <div class="nav-container">
-      <button onclick="showSection('profile')">👤 Профиль</button>
-      <button onclick="showSection('lessons')">📚 Уроки</button>
-      <button onclick="showSection('homework')">📤 ДЗ</button>
-      <button onclick="showSection('shop')">🛒 Магазин</button>
-      <button onclick="showSection('schedule')">📅 Расписание</button>
-    </div>
-
-    <div id="profile" class="section profile-section">
-      <img id="avatar-img" class="avatar-img">
-      <p>Привет, <strong id="username"></strong>!</p>
-      <p>Уровень: <span id="level"></span></p>
-      <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
-    </div>
-
-    <div id="lessons" class="section hidden">
-      <h2>📚 Уроки</h2>
-      <div id="lessons-list" class="lessons-grid"></div>
-    </div>
-
-    <div id="homework" class="section hidden">
-      <h2>📤 Сдать ДЗ</h2>
-      <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
-      <input type="file" id="hwImage"><br><br>
-      <button type="button" onclick="submitHomework()">Отправить ДЗ</button>
-      <p id="hwStatus"></p>
-    </div>
-
-    <div id="shop" class="section hidden">
-      <h2>🛒 Магазин</h2>
-      <p style="text-align:center;font-weight:bold">
-        💰 Монеты: <span id="shop-coins">0</span>
-      </p>
-      <div id="shop-items" class="shop-grid"></div>
-    </div>
-
-    <div id="schedule" class="section hidden">
-      <h2>📅 Расписание</h2>
-      <p>Индивидуальное расписание пока не задано.</p>
-    </div>
-
+  <div id="profile" class="section profile-section">
+    <img id="avatar-img" class="avatar-img">
+    <p>Привет, <strong id="username"></strong>!</p>
+    <p>Уровень: <span id="level"></span></p>
+    <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
   </div>
 
-  <script src="script.js"></script>
+  <div id="lessons" class="section hidden">
+    <h2>Уроки</h2>
+    <div id="lessons-list" class="lessons-grid"></div>
+  </div>
+
+  <div id="homework" class="section hidden">
+    <h2>Сдать ДЗ</h2>
+    <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea>
+    <input type="file" id="hwImage">
+    <button type="button" onclick="submitHomework()">Отправить</button>
+    <p id="hwStatus"></p>
+  </div>
+
+  <div id="shop" class="section hidden">
+    <h2>Магазин</h2>
+    <p style="text-align:center;font-weight:600">
+      Монеты: <span id="shop-coins">0</span>
+    </p>
+    <div id="shop-items" class="shop-grid"></div>
+  </div>
+
+  <div id="schedule" class="section hidden">
+    <h2>Расписание</h2>
+    <p>Индивидуальное расписание пока не задано.</p>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
