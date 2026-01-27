@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext</title>
-  
-  <!-- Подключение шрифта (без пробелов) -->
+
   <link href="https://fonts.googleapis.com/css2?family=English+Script&display=swap" rel="stylesheet">
-  
+
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,117 +15,76 @@
       background-color: #faf9f6;
       color: #333;
     }
+
     .hidden { display: none; }
 
-    /* Шапка — картинка с пустым центром */
     .header {
       width: 100%;
       height: 200px;
-      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center top;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png') no-repeat center top;
       background-size: cover;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
     }
 
     .header::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.9) 80%, rgba(255,255,255,0.9) 100%);
-      z-index: 1;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.9) 0%,
+        rgba(255,255,255,0) 50%,
+        rgba(255,255,255,0.9) 100%
+      );
     }
 
     .header h1 {
-      color: #013220;
       font-family: 'English Script', cursive;
       font-size: 3rem;
-      font-weight: normal;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-      letter-spacing: 1px;
-      margin: 0;
-      z-index: 2;
+      color: #013220;
+      z-index: 1;
     }
 
-    /* Навигация */
     .nav-container {
       display: flex;
-      gap: 0.5rem;
-      flex-wrap: nowrap;
-      margin: 1rem auto;
-      padding: 0.5rem 1rem;
+      gap: .5rem;
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       max-width: 800px;
+      margin: 1rem auto;
+      padding: .5rem;
     }
 
     .nav-container button {
-      margin: 0;
-      padding: 0.8rem 1.4rem;
+      min-width: 140px;
+      height: 55px;
       background: #e0f0e9;
       border: 1px solid #a8d8b9;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      min-width: 140px;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      height: 55px;
-      font-size: 1rem;
     }
 
-    .nav-container button:hover {
-      background: #c8e6c9;
-    }
-
-    /* Секции */
     .section {
-      animation: fadeIn 0.3s;
       padding: 1rem;
+      animation: fadeIn .3s;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0 }
+      to { opacity: 1 }
     }
 
-    /* Профиль */
     .profile-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      max-width: 500px;
+      margin: auto;
+      text-align: center;
+      background: #fff;
       padding: 2rem;
-      background: rgba(255, 255, 255, 0.9);
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .profile-section h2 {
-      margin: 0 0 1rem 0;
-      font-size: 1.5rem;
-      color: #2e7d32;
-    }
-
-    .profile-section p {
-      margin: 0.5rem 0;
-      font-size: 1.1rem;
-    }
-
-    /* Аватар */
-    .avatar-container {
-      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,.05);
     }
 
     .avatar-img {
@@ -137,112 +95,52 @@
       border: 3px solid #2e7d32;
     }
 
-    /* Уроки */
-    .lessons-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .lesson-card {
-      background: #f8f9fa;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    /* Магазин */
+    .lessons-grid,
     .shop-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.2rem;
-      margin-top: 1rem;
+      gap: 1rem;
     }
 
+    .lesson-card,
     .shop-item {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 10px;
+      background: #fff;
       padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 6px rgba(0,0,0,.08);
       text-align: center;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
     }
 
-    .shop-item h3 {
-      margin: 0.5rem 0;
-      font-size: 1.1rem;
-      color: #333;
-    }
-
-    .shop-item .price {
-      font-weight: bold;
-      color: #e74c3c;
-      margin: 0.5rem 0;
-    }
-
-    .buy-btn {
+    .buy-btn,
+    button[type="button"] {
       background: #2e7d32;
-      color: white;
+      color: #fff;
       border: none;
-      padding: 0.4rem 0.8rem;
       border-radius: 6px;
+      padding: .6rem 1.2rem;
       cursor: pointer;
-      font-weight: 600;
-      margin-top: 0.5rem;
-    }
-
-    .buy-btn:hover {
-      background: #1b5e20;
-    }
-
-    /* Загрузка */
-    #loading {
-      text-align: center;
-      padding: 2rem;
-      font-size: 1.2rem;
-      color: #666;
-    }
-
-    /* Форма ДЗ */
-    .form-group {
-      margin: 1rem 0;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
       font-weight: 600;
     }
 
     textarea, input[type="file"] {
       width: 100%;
-      padding: 0.5rem;
+      padding: .5rem;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 6px;
     }
 
-    button[type="button"] {
-      margin-top: 1rem;
-      padding: 0.6rem 1.2rem;
-      background: #2e7d32;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
+    .form-group {
+      margin: 1rem 0;
     }
 
-    /* Центрирование заголовков */
     h2 {
       text-align: center;
-      margin: 1.5rem 0 1rem 0;
     }
   </style>
 </head>
+
 <body>
-  <!-- Шапка -->
+
   <div class="header">
     <h1>Subtext</h1>
   </div>
@@ -250,7 +148,7 @@
   <div id="loading">Загрузка...</div>
 
   <div id="main" class="hidden">
-    <!-- Навигация -->
+
     <div class="nav-container">
       <button onclick="showSection('profile')">👤 Профиль</button>
       <button onclick="showSection('lessons')">📚 Уроки</button>
@@ -259,52 +157,46 @@
       <button onclick="showSection('schedule')">📅 Расписание</button>
     </div>
 
-    <!-- Профиль (только здесь!) -->
     <div id="profile" class="section profile-section">
-      <h2>👤 Профиль</h2>
-      <div class="avatar-container">
-        <img id="avatar-img" src="" alt="Аватар" class="avatar-img">
-      </div>
+      <img id="avatar-img" class="avatar-img" alt="Аватар">
       <p>Привет, <strong id="username"></strong>!</p>
       <p>Уровень: <span id="level"></span></p>
       <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
     </div>
 
-    <!-- Уроки -->
     <div id="lessons" class="section hidden">
       <h2>📚 Уроки</h2>
       <div id="lessons-list" class="lessons-grid"></div>
     </div>
 
-    
-<!-- ДЗ -->
-<div id="homework" class="section hidden">
-  <h2>📤 Сдать ДЗ</h2>
+    <div id="homework" class="section hidden">
+      <h2>📤 Сдать ДЗ</h2>
 
-  <textarea id="hwText" placeholder="Комментарий к ДЗ..." rows="4"></textarea>
+      <div class="form-group">
+        <textarea id="hwText" placeholder="Комментарий к ДЗ..." rows="4"></textarea>
+      </div>
 
-  <input type="file" id="hwImage" accept="image/*" />
+      <div class="form-group">
+        <input type="file" id="hwImage" accept="image/*">
+      </div>
 
-  <button onclick="submitHomework()">Отправить ДЗ</button>
-  <p id="hwStatus"></p>
-</div>
+      <button type="button" onclick="submitHomework()">Отправить ДЗ</button>
+      <p id="hwStatus"></p>
+    </div>
 
-
-    <!-- Магазин (только монеты) -->
     <div id="shop" class="section hidden">
       <h2>🛒 Магазин</h2>
-      <div id="shop-balance" style="margin-bottom: 1rem; font-weight: bold; color: #2e7d32; text-align: center;">
+      <p style="text-align:center;font-weight:bold">
         💰 Ваши монеты: <span id="shop-coins">0</span>
-      </div>
+      </p>
       <div id="shop-items" class="shop-grid"></div>
     </div>
 
-    <!-- Расписание -->
     <div id="schedule" class="section hidden">
       <h2>📅 Расписание</h2>
       <p>Ваше индивидуальное расписание пока не задано.</p>
-      <p>Свяжитесь с преподавателем для составления графика.</p>
     </div>
+
   </div>
 
   <script src="script.js"></script>
