@@ -84,18 +84,17 @@
 <body>
 
 <!-- ===== START PAGE ===== -->
-<div class="start-page" id="startPage">
-  <div class="start-title">Subtext</div>
-
-  <div class="start-box">
-    <input id="idInput" placeholder="Введите ваш ID">
-    <button onclick="checkUser()">Войти</button>
-    <div class="start-error" id="startError"></div>
-  </div>
+<div id="start">
+  <h2>Введите свой ID</h2>
+  <input id="idInput" placeholder="Ваш ID">
+  <button onclick="enterById()">Войти</button>
 </div>
 
-<!-- ===== MAIN CABINET ===== -->
+<div id="loading" class="hidden">Загрузка...</div>
 <div id="main" class="hidden">
+  <!-- здесь весь ЛК код -->
+</div>
+
   <!-- ТВОЙ ЛИЧНЫЙ КАБИНЕТ УЖЕ ЗДЕСЬ -->
 </div>
 
