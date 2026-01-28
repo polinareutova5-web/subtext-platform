@@ -56,20 +56,18 @@ async function loadCabinet() {
     const u = data.user;
     username = u.username || "";
 
+    // ===== PROFILE =====
     document.getElementById('username').textContent = u.username || '—';
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
-    document.getElementById('lesson-link').textContent =
-  u.link ? u.link : "Не указана";
-
-document.getElementById('lesson-schedule').textContent =
-  u.schedule ? u.schedule : "Не указано";
+    document.getElementById('lesson-link').textContent = u.link || "Не указана";
+    document.getElementById('lesson-schedule').textContent = u.schedule || "Не указано";
 
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
 
-    // ===== Уроки =====
+    // ===== LESSONS =====
     const lessonsList = document.getElementById('lessons-list');
     lessonsList.innerHTML = data.lessons.length
       ? data.lessons.map(l => `
@@ -81,13 +79,15 @@ document.getElementById('lesson-schedule').textContent =
       `).join('')
       : '<p>Нет доступных уроков.</p>';
 
-    // ===== Магазин =====
+    // ===== SHOP =====
     const shopItems = document.getElementById('shop-items');
     document.getElementById('shop-coins').textContent = u.coins;
     shopItems.innerHTML = data.shop.length
       ? data.shop.map((item, idx) => `
         <div class="shop-item">
-          ${item.image ? `<div style="height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem"><img src="${item.image}" style="max-width:100%;max-height:100%;object-fit:contain"></div>` : ''}
+          ${item.image ? `<div style="height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem">
+            <img src="${item.image}" style="max-width:100%;max-height:100%;object-fit:contain">
+          </div>` : ''}
           <h3>${item.name}</h3>
           <div class="price">${item.price} монет</div>
           <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name}\`, ${item.price})">Купить</button>
@@ -99,65 +99,87 @@ document.getElementById('lesson-schedule').textContent =
     document.getElementById('main').classList.remove('hidden');
     showSection('profile');
 
+    // ===== SLOTS =====
+    await loadSlots();
+
   } catch (e) {
     console.error(e);
     document.getElementById('loading').textContent = '❌ Ошибка загрузки кабинета';
   }
 }
+
+// ================= SLOTS =================
 async function loadSlots() {
-  const res = await fetch(`${API_URL}?action=get_slots`);
-  const data = await res.json();
+  try {
+    const res = await fetch(`${API_URL}?action=get_slots`);
+    const data = await res.json();
+    if (!data.slots) return;
 
-  const box = document.getElementById("slots");
-  box.innerHTML = "";
+    const container = document.getElementById("slots");
+    container.innerHTML = "";
 
-  data.slots.forEach(s => {
-    const btn = document.createElement("button");
-    btn.className = "slot-btn";
-    btn.textContent = `${s.date} · ${s.time}`;
-    btn.onclick = () => bookSlot(s.id);
-    box.appendChild(btn);
-  });
+    data.slots.forEach(slot => {
+      const btn = document.createElement("button");
+      btn.className = "slot-btn";
+
+      if (slot.user && slot.user !== username) {
+        btn.textContent = `${slot.date} · ${slot.time} (Занято)`;
+        btn.disabled = true;
+      } else if (slot.user === username) {
+        btn.textContent = `${slot.date} · ${slot.time} (Ваш слот)`;
+        btn.onclick = () => cancelSlot(slot.id);
+      } else {
+        btn.textContent = `${slot.date} · ${slot.time} (Свободно)`;
+        btn.onclick = () => bookSlot(slot.id);
+      }
+
+      container.appendChild(btn);
+    });
+
+  } catch (e) {
+    console.error(e);
+    document.getElementById("slots").innerHTML = "<p>❌ Ошибка загрузки слотов</p>";
+  }
 }
+
 async function bookSlot(slotId) {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "book_slot",
-      slotId,
-      userId,
-      username
-    })
-  });
-
-  const data = await res.json();
-  if (data.success) {
-    alert("Вы записались!");
-    loadSlots();
-  } else {
-    alert(data.error);
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "book_slot", slotId, userId, username })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert("Вы записались!");
+      loadSlots();
+    } else {
+      alert(data.error);
+    }
+  } catch {
+    alert("❌ Ошибка соединения");
   }
 }
+
 async function cancelSlot(slotId) {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "cancel_slot",
-      slotId,
-      userId
-    })
-  });
-
-  const data = await res.json();
-  if (data.success) {
-    alert("Запись отменена");
-    loadSlots();
-  } else {
-    alert(data.error);
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "cancel_slot", slotId, userId })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert("Запись отменена");
+      loadSlots();
+    } else {
+      alert(data.error);
+    }
+  } catch {
+    alert("❌ Ошибка соединения");
   }
 }
+
 // ================= HOMEWORK =================
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
@@ -210,4 +232,4 @@ async function buyItem(index) {
 }
 
 // ================= INIT =================
-window.addEventListener("DOMContentLoaded", loadData);
+document.addEventListener("DOMContentLoaded", () => loadData());
