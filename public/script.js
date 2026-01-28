@@ -4,8 +4,6 @@ const API_URL = "https://script.google.com/macros/s/AKfycbynjNvB5zI0bRatoPJTTHF2
 let userId;
 let username = "";
 
-// ==================== UI ====================
-
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => {
     el.classList.add('hidden');
@@ -18,8 +16,6 @@ function confirmBuy(index, name, price) {
     buyItem(index);
   }
 }
-
-// ==================== ЗАГРУЗКА ДАННЫХ ====================
 
 async function loadData() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -52,7 +48,6 @@ async function loadData() {
       avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
     }
 
-    // Уроки
     const lessonsList = document.getElementById('lessons-list');
     lessonsList.innerHTML = data.lessons.length
       ? data.lessons.map(l => `
@@ -64,7 +59,6 @@ async function loadData() {
       `).join('')
       : '<p>Нет доступных уроков.</p>';
 
-    // Магазин
     const shopItems = document.getElementById('shop-items');
     document.getElementById('shop-coins').textContent = u.coins;
 
@@ -78,7 +72,7 @@ async function loadData() {
           }
           <h3>${item.name}</h3>
           <div class="price">${item.price} монет</div>
-          <button onclick="confirmBuy(${idx}, \`${item.name}\`, ${item.price})">Купить</button>
+          <button onclick="confirmBuy(${idx}, \`${item.name.replace(/'/g, "\\'")}\`, ${item.price})">Купить</button>
         </div>
       `).join('')
       : '<p>Магазин пуст.</p>';
@@ -93,14 +87,12 @@ async function loadData() {
   }
 }
 
-// ==================== ОТПРАВКА ДЗ ====================
-
 async function submitHomework() {
   const text = document.getElementById('hwText').value.trim();
   const fileInput = document.getElementById('hwImage');
   const file = fileInput.files[0];
 
-  // ====== 1️⃣ ТОЛЬКО ТЕКСТ ======
+  // Только текст
   if (!file) {
     if (!text) {
       alert("Введите текст или прикрепите фото");
@@ -127,52 +119,53 @@ async function submitHomework() {
       console.error(e);
       document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
     }
-
     return;
   }
 
-  // ====== 2️⃣ ТЕКСТ + ФОТО ======
-  const reader = new FileReader();
+  // Текст + фото
+  if (!file.type.match('image/jpeg|image/png|image/gif')) {
+    alert('Поддерживаются только JPG, PNG, GIF');
+    return;
+  }
 
-  reader.onload = async () => {
-    const base64 = reader.result.split(',')[1];
+  const base64 = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 
-    const payload = {
-      action: "submit_homework",
-      userId,
-      username,
-      lessonNum: 0,
-      text,
-      fileName: file.name,
-      fileBase64: base64
-    };
-
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        document.getElementById('hwStatus').textContent = "✅ ДЗ отправлено!";
-        document.getElementById('hwText').value = "";
-        fileInput.value = "";
-      } else {
-        document.getElementById('hwStatus').textContent = "❌ " + data.error;
-      }
-    } catch (e) {
-      console.error(e);
-      document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
-    }
+  const payload = {
+    action: "submit_homework",
+    userId,
+    username,
+    lessonNum: 0,
+    text,
+    fileName: file.name,
+    fileBase64: base64
   };
 
-  reader.readAsDataURL(file);
-}
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-// ==================== ПОКУПКА ====================
+    const data = await res.json();
+
+    if (data.success) {
+      document.getElementById('hwStatus').textContent = "✅ ДЗ отправлено!";
+      document.getElementById('hwText').value = "";
+      fileInput.value = "";
+    } else {
+      document.getElementById('hwStatus').textContent = "❌ " + data.error;
+    }
+  } catch (e) {
+    console.error(e);
+    document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
+  }
+}
 
 async function buyItem(index) {
   try {
@@ -190,5 +183,4 @@ async function buyItem(index) {
   }
 }
 
-// ==================== СТАРТ ====================
 loadData();
