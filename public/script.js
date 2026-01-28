@@ -1,5 +1,5 @@
 // Убраны лишние пробелы в URL
-const API_URL = "https://script.google.com/macros/s/AKfycbyptrYu83IBfzL5yhcxSwt1_5ReAqvQldW18RCFuZn7BObkk1wYFcU0WDBTY1wquyDhuw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwsZBaf3oDUyduHlEKsFTTSOfazTRXu1hzAjni8p03Cp5W4hurajBT3ETsSnQlK1XwCmg/exec";
 
 let userId;
 let username = "";
