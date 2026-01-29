@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -18,13 +18,12 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top, #141814, #0b0e0b);
+  background: radial-gradient(circle at top, #1c1f1c, #0f120f);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  overflow: hidden;
-  transition: background .6s ease;
+  transition: background 0.6s ease;
 }
 
 body[data-on="true"] {
@@ -33,81 +32,30 @@ body[data-on="true"] {
     linear-gradient(135deg, #e0f2f1, #f1f8e9);
 }
 
-/* ===== СВЕТ ОТ ЛАМПЫ ===== */
-.light {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 520px;
-  height: 100%;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at 160px 260px,
-    rgba(255,244,200,.75),
-    rgba(255,236,170,.35) 35%,
-    transparent 65%
-  );
-  opacity: calc(var(--lamp-on));
-  transition: opacity .7s ease;
-}
-
-
 /* ===== ЛАМПА ===== */
-.lamp {
+.lamp-wrap {
   position: absolute;
-  left: 40px;
-  bottom: 30px;
-  width: 220px; /* было 160 */
+  top: 40px;
+  text-align: center;
   cursor: pointer;
-  transform: scale(1.15);
 }
 
-
-.lamp-head {
-  width: 170px;
-  height: 90px;
-  background: linear-gradient(180deg, #3a3a3a, #1f1f1f);
-  border-radius: 120px 120px 40px 40px;
-  margin: auto;
-  box-shadow:
-    inset 0 -12px 20px rgba(255,255,255,.08),
-    0 12px 30px rgba(0,0,0,.35);
-}
-
-
-.lamp-neck {
-  width: 12px;
-  height: 120px;
-  background: linear-gradient(180deg, #555, #2e2e2e);
-  margin: auto;
-  border-radius: 6px;
-}
-
-
-.lamp-base {
-  width: 180px;
-  height: 26px;
-  background: linear-gradient(180deg, #2c2c2c, #111);
-  border-radius: 999px;
-  margin: 14px auto 0;
-  box-shadow: 0 8px 20px rgba(0,0,0,.45);
+.lamp {
+  font-size: 5rem;
+  transition: .4s ease;
+  filter: drop-shadow(0 0 calc(40px * var(--lamp-on)) rgba(255,255,180,.8));
 }
 
 .switch {
-  margin-top: 10px;
-  font-size: .75rem;
+  margin-top: .4rem;
+  font-size: .85rem;
   opacity: .7;
-  text-align: center;
-}
-.lamp:hover {
-  transform: scale(1.18);
 }
 
-body[data-on="true"] .lamp-head {
-  box-shadow:
-    inset 0 -8px 18px rgba(255,255,200,.35),
-    0 12px 35px rgba(255,240,180,.45);
+.lamp-wrap:hover .lamp {
+  transform: scale(1.08);
 }
+
 /* ===== CARD ===== */
 .card {
   opacity: 0;
@@ -125,7 +73,6 @@ body[data-on="true"] .lamp-head {
     inset 0 0 0 1px rgba(255,255,255,.4);
   text-align: center;
   color: #1b3a1b;
-  z-index: 2;
 }
 
 body[data-on="true"] .card {
@@ -192,14 +139,10 @@ button {
 
 <body data-on="false">
 
-<div class="light"></div>
-
 <!-- ЛАМПА -->
-<div class="lamp" onclick="toggleLamp()">
-  <div class="lamp-head"></div>
-  <div class="lamp-neck"></div>
-  <div class="lamp-base"></div>
-  <div class="switch">включить лампу</div>
+<div class="lamp-wrap" onclick="toggleLamp()">
+  <div class="lamp">💡</div>
+  <div class="switch">включить свет</div>
 </div>
 
 <!-- CARD -->
