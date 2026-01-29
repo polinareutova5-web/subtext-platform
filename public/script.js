@@ -61,10 +61,10 @@ async function loadCabinet() {
     document.getElementById('progress').textContent = u.progress || 0;
     document.getElementById('coins').textContent = u.coins || 0;
     document.getElementById('lesson-link').textContent =
-  u.link ? u.link : "Не указана";
+      u.link ? u.link : "Не указана";
 
-document.getElementById('lesson-schedule').textContent =
-  u.schedule ? u.schedule : "Не указано";
+    document.getElementById('lesson-schedule').textContent =
+      u.schedule ? u.schedule : "Не указано";
 
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
@@ -102,6 +102,120 @@ document.getElementById('lesson-schedule').textContent =
   } catch (e) {
     console.error(e);
     document.getElementById('loading').textContent = '❌ Ошибка загрузки кабинета';
+  }
+}
+
+// ================= СЛОТЫ РАСПИСАНИЯ =================
+async function loadSlots() {
+  try {
+    // Загружаем доступные слоты
+    const availableRes = await fetch(`${API_URL}?action=get_slots`);
+    const availableData = await availableRes.json();
+    
+    // Загружаем слоты пользователя
+    const userSlotsRes = await fetch(`${API_URL}?action=get_user_slots&userId=${encodeURIComponent(userId)}`);
+    const userSlotsData = await userSlotsRes.json();
+    
+    // Отображаем доступные слоты
+    if (availableData.success) {
+      const availableSlots = availableData.slots || [];
+      const availableContainer = document.getElementById('available-slots-container');
+      
+      if (availableSlots.length === 0) {
+        availableContainer.innerHTML = '<p>Нет доступных слотов для бронирования.</p>';
+      } else {
+        availableContainer.innerHTML = availableSlots.map(slot => `
+          <div class="slot-card">
+            <div class="slot-date">📅 ${slot.date}</div>
+            <div class="slot-time">⏰ ${slot.time}</div>
+            <div class="slot-status">${slot.status}</div>
+            <button class="book-btn" onclick="bookSlot('${slot.id}')">Забронировать</button>
+          </div>
+        `).join('');
+      }
+    } else {
+      document.getElementById('available-slots-container').innerHTML = 
+        '<p class="error">❌ Ошибка загрузки доступных слотов</p>';
+    }
+    
+    // Отображаем слоты пользователя
+    if (userSlotsData.success) {
+      const userSlots = userSlotsData.slots || [];
+      const userContainer = document.getElementById('user-slots-container');
+      
+      if (userSlots.length === 0) {
+        userContainer.innerHTML = '<p>У вас нет забронированных слотов.</p>';
+      } else {
+        userContainer.innerHTML = userSlots.map(slot => `
+          <div class="slot-card">
+            <div class="slot-date">📅 ${slot.date}</div>
+            <div class="slot-time">⏰ ${slot.time}</div>
+            <div class="slot-status">${slot.status}</div>
+            <div class="slot-contact">📞 ${slot.contact || 'Не указано'}</div>
+            <div class="slot-booking-date">📝 Бронирование: ${slot.bookingDate}</div>
+            <button class="cancel-btn" onclick="cancelSlot('${slot.id}')">Отменить бронь</button>
+          </div>
+        `).join('');
+      }
+    } else {
+      document.getElementById('user-slots-container').innerHTML = 
+        '<p class="error">❌ Ошибка загрузки ваших слотов</p>';
+    }
+    
+  } catch (error) {
+    console.error('Ошибка при загрузке слотов:', error);
+    document.getElementById('available-slots-container').innerHTML = 
+      '<p class="error">❌ Ошибка соединения</p>';
+    document.getElementById('user-slots-container').innerHTML = 
+      '<p class="error">❌ Ошибка соединения</p>';
+  }
+}
+
+async function bookSlot(slotId) {
+  const contact = prompt('Введите ваш контактный номер телефона для связи:');
+  if (!contact) {
+    alert('Контактные данные обязательны для бронирования');
+    return;
+  }
+
+  try {
+    const res = await fetch(
+      `${API_URL}?action=book_slot&userId=${encodeURIComponent(userId)}&slotId=${encodeURIComponent(slotId)}&username=${encodeURIComponent(username)}&contact=${encodeURIComponent(contact)}`
+    );
+    const data = await res.json();
+    
+    if (data.success) {
+      alert(`✅ Слот успешно забронирован!\nДата брони: ${data.bookingDate}`);
+      loadSlots(); // Обновляем список слотов
+    } else {
+      alert(`❌ Ошибка: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Ошибка при бронировании:', error);
+    alert('❌ Ошибка соединения при бронировании');
+  }
+}
+
+async function cancelSlot(slotId) {
+  if (!confirm('Вы уверены, что хотите отменить бронирование этого слота?')) {
+    return;
+  }
+
+  try {
+    const res = await fetch(
+      `${API_URL}?action=cancel_slot&userId=${encodeURIComponent(userId)}&slotId=${encodeURIComponent(slotId)}`
+    );
+    const data = await res.json();
+    
+    if (data.success) {
+      alert('✅ Бронирование успешно отменено');
+      loadSlots(); // Обновляем список слотов
+    } else {
+      alert(`❌ Ошибка: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Ошибка при отмене бронирования:', error);
+    alert('❌ Ошибка соединения при отмене бронирования');
   }
 }
 
