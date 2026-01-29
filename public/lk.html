@@ -219,12 +219,22 @@
       padding: 20px;
       border: 2px solid #e0e0e0;
       transition: all .3s ease;
+      cursor: pointer;
     }
 
     .slot-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 12px 28px rgba(46,125,50,.15);
       border-color: #2e7d32;
+    }
+
+    .slot-card.booked {
+      border-color: #dc3545;
+      background: rgba(248, 215, 218, 0.3);
+    }
+
+    .slot-card.booked:hover {
+      border-color: #c82333;
     }
 
     .slot-date {
@@ -235,6 +245,10 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .slot-card.booked .slot-date {
+      color: #dc3545;
     }
 
     .slot-time {
@@ -374,6 +388,85 @@
       transform: translateY(-2px);
     }
 
+    /* Модальное окно подтверждения */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      animation: modalAppear 0.3s ease;
+    }
+
+    @keyframes modalAppear {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal h3 {
+      color: #2e7d32;
+      margin-bottom: 20px;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .modal-info {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+    }
+
+    .modal-info p {
+      margin: 8px 0;
+      font-size: 1.1em;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .modal-btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .3s ease;
+      min-width: 120px;
+    }
+
+    .modal-btn.confirm {
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      color: white;
+    }
+
+    .modal-btn.cancel {
+      background: linear-gradient(135deg, #6c757d, #adb5bd);
+      color: white;
+    }
+
+    .modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
     @media (max-width: 1024px) { 
       .shop-grid { grid-template-columns: repeat(3, 1fr); }
       .slots-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
@@ -387,6 +480,7 @@
       .shop-grid { grid-template-columns: 1fr; }
       .section-title { font-size: 1.6rem; }
       .slots-column { padding: 15px; }
+      .modal-buttons { flex-direction: column; }
     }
   </style>
 </head>
@@ -478,11 +572,28 @@
 
   </div>
 
+  <!-- Модальное окно подтверждения -->
+  <div id="confirmationModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>Подтверждение записи</h3>
+      <div class="modal-info">
+        <p><strong>Дата:</strong> <span id="modalDate">—</span></p>
+        <p><strong>Время:</strong> <span id="modalTime">—</span></p>
+      </div>
+      <p style="text-align: center; margin-bottom: 25px;">Вы подтверждаете запись на этот слот?</p>
+      <div class="modal-buttons">
+        <button class="modal-btn confirm" onclick="confirmBooking()">Да, записаться</button>
+        <button class="modal-btn cancel" onclick="cancelBooking()">Отмена</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxCpAhh7kFIIYIgh9T_EpmBRotTAUh_ntalNsrT3tejS65e49Rlrk9hC34h_pVWUOtyNQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzRYZiF6kUGitVlBNwoelttiCenCChtCT6sC_aZt6KMpfqtZkq_CuVVItRkmZ5cEh-7gw/exec";
 
 let userId;
 let username = "";
+let selectedSlot = null; // Для хранения выбранного слота
 
 // ================= UI =================
 function showSection(sectionId) {
@@ -614,12 +725,12 @@ async function loadSlots() {
         availableContainer.innerHTML = `
           <div class="slots-grid">
             ${availableSlots.map(slot => `
-              <div class="slot-card">
+              <div class="slot-card" onclick="showBookingConfirmation('${slot.id}', '${slot.date}', '${slot.time}')">
                 <div class="slot-date">📅 ${slot.date || 'Дата не указана'}</div>
                 <div class="slot-time">⏰ ${slot.time || 'Время не указано'}</div>
                 <div class="slot-status status-available">${slot.status || 'Свободно'}</div>
                 <div class="slot-actions">
-                  <button class="book-slot-btn" onclick="bookSlot('${slot.id}')">
+                  <button class="book-slot-btn" onclick="event.stopPropagation(); showBookingConfirmation('${slot.id}', '${slot.date}', '${slot.time}')">
                     Забронировать
                   </button>
                 </div>
@@ -644,7 +755,7 @@ async function loadSlots() {
         userContainer.innerHTML = `
           <div class="slots-grid">
             ${userSlots.map(slot => `
-              <div class="slot-card">
+              <div class="slot-card booked">
                 <div class="slot-date">📅 ${slot.date || 'Дата не указана'}</div>
                 <div class="slot-time">⏰ ${slot.time || 'Время не указано'}</div>
                 <div class="slot-status status-booked">${slot.status || 'Забронировано'}</div>
@@ -674,7 +785,36 @@ async function loadSlots() {
   }
 }
 
-async function bookSlot(slotId) {
+// Показать модальное окно подтверждения
+function showBookingConfirmation(slotId, date, time) {
+  selectedSlot = {
+    id: slotId,
+    date: date,
+    time: time
+  };
+  
+  document.getElementById('modalDate').textContent = date;
+  document.getElementById('modalTime').textContent = time;
+  document.getElementById('confirmationModal').classList.remove('hidden');
+}
+
+// Закрыть модальное окно
+function hideModal() {
+  document.getElementById('confirmationModal').classList.add('hidden');
+  selectedSlot = null;
+}
+
+// Отмена бронирования в модальном окне
+function cancelBooking() {
+  hideModal();
+}
+
+// Подтверждение бронирования
+async function confirmBooking() {
+  if (!selectedSlot) return;
+  
+  hideModal();
+  
   const contact = prompt('Введите ваш контактный номер телефона для связи:');
   if (!contact) {
     alert('Контактные данные обязательны для бронирования');
@@ -688,7 +828,7 @@ async function bookSlot(slotId) {
 
   try {
     const res = await fetch(
-      `${API_URL}?action=book_slot&userId=${encodeURIComponent(userId)}&slotId=${encodeURIComponent(slotId)}&username=${encodeURIComponent(username)}&contact=${encodeURIComponent(contact)}`
+      `${API_URL}?action=book_slot&userId=${encodeURIComponent(userId)}&slotId=${encodeURIComponent(selectedSlot.id)}&username=${encodeURIComponent(username)}&contact=${encodeURIComponent(contact)}`
     );
     const data = await res.json();
     
@@ -704,6 +844,7 @@ async function bookSlot(slotId) {
   }
 }
 
+// Отмена бронирования слота
 async function cancelSlot(slotId) {
   if (!confirm('Вы уверены, что хотите отменить бронирование этого слота?')) {
     return;
@@ -801,6 +942,13 @@ async function buyItem(index) {
 
 // ================= INIT =================
 window.addEventListener("DOMContentLoaded", loadData);
+
+// Закрыть модальное окно при клике вне его
+document.getElementById('confirmationModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    hideModal();
+  }
+});
   </script>
 </body>
 </html>
