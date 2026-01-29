@@ -30,28 +30,31 @@
       background: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.25), rgba(255,255,255,0.85));
     }
     .big-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 6rem;
-      color: rgba(255, 255, 255, 0.85);
-      text-align: center;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-shadow:
-        2px 2px 0 rgba(0,60,0,0.7),
-        0 4px 12px rgba(0,0,0,0.15),
-        0 8px 20px rgba(0,0,0,0.1);
-      backdrop-filter: blur(6px);
-      padding: 1rem 2rem;
-      border-radius: 16px;
-      transition: all 0.3s ease;
-    }
-    .big-title:hover {
-      transform: scale(1.05);
-      text-shadow:
-        3px 3px 0 rgba(0,60,0,0.75),
-        0 6px 16px rgba(0,0,0,0.2),
-        0 12px 36px rgba(0,0,0,0.15);
-    }
+  font-family: 'Playfair Display', serif;
+  font-size: 6rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  /* тёмно-зелёная подсветка */
+  text-shadow:
+    2px 2px 0 rgba(0,60,0,0.7),
+    0 4px 12px rgba(0,0,0,0.15),
+    0 8px 20px rgba(0,0,0,0.1);
+  backdrop-filter: blur(6px);
+  padding: 1rem 2rem;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.big-title:hover {
+  transform: scale(1.05);
+  text-shadow:
+    3px 3px 0 rgba(0,60,0,0.75),
+    0 6px 16px rgba(0,0,0,0.2),
+    0 12px 36px rgba(0,0,0,0.15);
+}
+
 
     /* ===== NAV ===== */
     .nav-container {
@@ -173,315 +176,51 @@
       border: 1px solid #ccc;
     }
 
-    /* ===== СТИЛИ ДЛЯ СЛОТОВ ===== */
-    .slots-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin-top: 20px;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    @media (max-width: 768px) {
-      .slots-container {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .slots-column {
-      background: #fff;
-      border-radius: 18px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-    }
-
-    .slots-column h3 {
-      color: #2e7d32;
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 1.5em;
-      font-family: 'Playfair Display', serif;
-    }
-
-    .slots-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .slot-card {
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 20px;
-      border: 2px solid #e0e0e0;
-      transition: all .3s ease;
-      cursor: pointer;
-    }
-
-    .slot-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(46,125,50,.15);
-      border-color: #2e7d32;
-    }
-
-    .slot-card.booked {
-      border-color: #dc3545;
-      background: rgba(248, 215, 218, 0.3);
-    }
-
-    .slot-card.booked:hover {
-      border-color: #c82333;
-    }
-
-    .slot-date {
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #2e7d32;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .slot-card.booked .slot-date {
-      color: #dc3545;
-    }
-
-    .slot-time {
-      font-size: 1.1em;
-      color: #555;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .slot-status {
-      display: inline-block;
-      padding: 6px 15px;
-      border-radius: 20px;
-      font-size: 0.9em;
-      font-weight: 600;
-      margin-bottom: 15px;
-    }
-
-    .status-available {
-      background: #d4edda;
-      color: #155724;
-      border: 2px solid #c3e6cb;
-    }
-
-    .status-booked {
-      background: #f8d7da;
-      color: #721c24;
-      border: 2px solid #f5c6cb;
-    }
-
-    .slot-contact,
-    .slot-booking-date {
-      font-size: 0.9em;
-      color: #666;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .slot-booking-date {
-      margin-bottom: 15px;
-    }
-
-    .slot-actions {
-      margin-top: 15px;
-    }
-
-    .book-slot-btn,
-    .cancel-slot-btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .3s ease;
-      font-size: 1em;
-    }
-
-    .book-slot-btn {
-      background: linear-gradient(135deg, #2e7d32, #4caf50);
-      color: white;
-      box-shadow: 0 6px 14px rgba(46,125,50,.25);
-    }
-
-    .book-slot-btn:hover {
-      background: linear-gradient(135deg, #1b5e20, #388e3c);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(46,125,50,.35);
-    }
-
-    .cancel-slot-btn {
-      background: linear-gradient(135deg, #dc3545, #e57373);
-      color: white;
-      box-shadow: 0 6px 14px rgba(220,53,69,.25);
-    }
-
-    .cancel-slot-btn:hover {
-      background: linear-gradient(135deg, #c82333, #d32f2f);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(220,53,69,.35);
-    }
-
-    .refresh-btn {
-      display: block;
-      margin: 15px auto;
-      padding: 10px 25px;
-      background: linear-gradient(135deg, #6c757d, #adb5bd);
-      color: white;
-      border: none;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .3s ease;
-    }
-
-    .refresh-btn:hover {
-      background: linear-gradient(135deg, #5a6268, #868e96);
-      transform: translateY(-2px);
-    }
-
-    .slots-error {
-      color: #dc3545;
-      text-align: center;
-      padding: 15px;
-      background: #f8d7da;
-      border-radius: 10px;
-      margin: 10px 0;
-      border: 2px solid #f5c6cb;
-    }
-
-    .no-slots-message {
-      text-align: center;
-      color: #6c757d;
-      padding: 20px;
-      font-style: italic;
-    }
-
-    .back-btn {
-      display: block;
-      margin: 30px auto 0;
-      padding: 12px 30px;
-      background: linear-gradient(135deg, #6c757d, #adb5bd);
-      color: white;
-      border: none;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .3s ease;
-    }
-
-    .back-btn:hover {
-      background: linear-gradient(135deg, #5a6268, #868e96);
-      transform: translateY(-2px);
-    }
-
-    /* Модальное окно подтверждения */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-
-    .modal {
-      background: white;
-      border-radius: 20px;
-      padding: 30px;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      animation: modalAppear 0.3s ease;
-    }
-
-    @keyframes modalAppear {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .modal h3 {
-      color: #2e7d32;
-      margin-bottom: 20px;
-      text-align: center;
-      font-family: 'Playfair Display', serif;
-    }
-
-    .modal-info {
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-    }
-
-    .modal-info p {
-      margin: 8px 0;
-      font-size: 1.1em;
-    }
-
-    .modal-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-    }
-
-    .modal-btn {
-      padding: 12px 30px;
-      border: none;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .3s ease;
-      min-width: 120px;
-    }
-
-    .modal-btn.confirm {
-      background: linear-gradient(135deg, #2e7d32, #4caf50);
-      color: white;
-    }
-
-    .modal-btn.cancel {
-      background: linear-gradient(135deg, #6c757d, #adb5bd);
-      color: white;
-    }
-
-    .modal-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-
-    @media (max-width: 1024px) { 
-      .shop-grid { grid-template-columns: repeat(3, 1fr); }
-      .slots-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
-    }
+    @media (max-width: 1024px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 768px) { 
       .big-title { font-size: 3.5rem; }
       .shop-grid { grid-template-columns: repeat(2, 1fr); }
-      .slots-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
       .shop-grid { grid-template-columns: 1fr; }
       .section-title { font-size: 1.6rem; }
-      .slots-column { padding: 15px; }
-      .modal-buttons { flex-direction: column; }
     }
+    /* ===== SLOTS ===== */
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+}
+
+.slot-card {
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 1.2rem;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.1);
+  transition: .25s ease;
+}
+
+.slot-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0,0,0,.15);
+}
+
+.slot-date { font-weight: 600; margin-bottom: .3rem; }
+.slot-time { font-size: 1.3rem; color: #2e7d32; margin-bottom: .6rem; }
+.slot-status { font-size: .9rem; margin-bottom: .6rem; }
+
+.book-btn, .cancel-btn {
+  padding: .6rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(46,125,50,.25);
+}
   </style>
 </head>
 
@@ -501,7 +240,6 @@
       <button onclick="showSection('homework')">ДЗ</button>
       <button onclick="showSection('shop')">Магазин</button>
       <button onclick="showSection('schedule')">Расписание</button>
-      <button onclick="showSection('slots')">Слоты</button>
     </div>
 
     <div id="profile" class="section profile-section">
@@ -533,422 +271,25 @@
     </div>
 
     <div id="schedule" class="section hidden">
-      <div class="section-title">Расписание</div>
-      <div class="profile-section">
-        <p><strong>Ссылка:</strong></p>
-        <p id="lesson-link">—</p>
-        <hr style="margin:1.5rem 0">
-        <p><strong>Расписание:</strong></p>
-        <p id="lesson-schedule">—</p>
-      </div>
-    </div>
+  <div class="section-title">Расписание</div>
 
-    <!-- НОВЫЙ РАЗДЕЛ СЛОТОВ -->
-    <div id="slots" class="section hidden">
-      <div class="section-title">Управление слотами</div>
-      
-      <div class="slots-container">
-        <!-- Доступные слоты -->
-        <div class="slots-column">
-          <h3>📅 Доступные слоты</h3>
-          <button class="refresh-btn" onclick="loadSlots()">🔄 Обновить список</button>
-          <div id="available-slots-container">
-            <p class="no-slots-message">Загрузка доступных слотов...</p>
-          </div>
-        </div>
-        
-        <!-- Забронированные слоты -->
-        <div class="slots-column">
-          <h3>⭐ Мои слоты</h3>
-          <button class="refresh-btn" onclick="loadSlots()">🔄 Обновить список</button>
-          <div id="user-slots-container">
-            <p class="no-slots-message">Загрузка ваших слотов...</p>
-          </div>
-        </div>
-      </div>
-      
-      <button class="back-btn" onclick="showSection('profile')">← Вернуться в профиль</button>
-    </div>
+  <div class="profile-section">
+    <p><strong>Ссылка:</strong></p>
+    <p id="lesson-link">—</p>
 
+    <hr style="margin:1.5rem 0">
+
+    <p><strong>Расписание:</strong></p>
+    <p id="lesson-schedule">—</p>
   </div>
+</div>
+<hr style="margin:2rem 0">
 
-  <!-- Модальное окно подтверждения -->
-  <div id="confirmationModal" class="modal-overlay hidden">
-    <div class="modal">
-      <h3>Подтверждение записи</h3>
-      <div class="modal-info">
-        <p><strong>Дата:</strong> <span id="modalDate">—</span></p>
-        <p><strong>Время:</strong> <span id="modalTime">—</span></p>
-      </div>
-      <p style="text-align: center; margin-bottom: 25px;">Вы подтверждаете запись на этот слот?</p>
-      <div class="modal-buttons">
-        <button class="modal-btn confirm" onclick="confirmBooking()">Да, записаться</button>
-        <button class="modal-btn cancel" onclick="cancelBooking()">Отмена</button>
-      </div>
-    </div>
-  </div>
+<div class="section-title">Доступные слоты</div>
+<div id="available-slots-container" class="slots-grid"></div>
 
-  <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzRYZiF6kUGitVlBNwoelttiCenCChtCT6sC_aZt6KMpfqtZkq_CuVVItRkmZ5cEh-7gw/exec";
-
-let userId;
-let username = "";
-let selectedSlot = null; // Для хранения выбранного слота
-
-// ================= UI =================
-function showSection(sectionId) {
-  document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
-  const el = document.getElementById(sectionId);
-  if(el) el.classList.remove('hidden');
-}
-
-function confirmBuy(index, name, price) {
-  if (confirm(`Хотите купить?\n\n${name}\nЦена: ${price} монет`)) {
-    buyItem(index);
-  }
-}
-
-// ================= LOAD DATA =================
-async function loadData() {
-  const params = new URLSearchParams(window.location.search);
-  userId = params.get('id');
-
-  if (!userId) {
-    document.getElementById('loading').textContent = '❌ Не указан ID';
-    return;
-  }
-
-  try {
-    // проверка регистрации
-    const checkRes = await fetch(`${API_URL}?action=check_user&userId=${encodeURIComponent(userId)}`);
-    const checkData = await checkRes.json();
-
-    if (!checkData.success) {
-      document.getElementById('loading').textContent = '❌ Вы не зарегистрированы';
-      return;
-    }
-
-    // загружаем кабинет
-    await loadCabinet();
-
-  } catch (e) {
-    console.error(e);
-    document.getElementById('loading').textContent = '❌ Ошибка соединения';
-  }
-}
-
-async function loadCabinet() {
-  try {
-    const res = await fetch(`${API_URL}?userId=${encodeURIComponent(userId)}`);
-    if (!res.ok) throw new Error();
-
-    const data = await res.json();
-    if (!data.success) throw new Error(data.error);
-
-    const u = data.user;
-    username = u.username || "";
-
-    document.getElementById('username').textContent = u.username || '—';
-    document.getElementById('level').textContent = u.level || '—';
-    document.getElementById('progress').textContent = u.progress || 0;
-    document.getElementById('coins').textContent = u.coins || 0;
-    document.getElementById('lesson-link').textContent =
-      u.link ? u.link : "Не указана";
-
-    document.getElementById('lesson-schedule').textContent =
-      u.schedule ? u.schedule : "Не указано";
-
-    const avatarImg = document.getElementById('avatar-img');
-    avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
-
-    // ===== Уроки =====
-    const lessonsList = document.getElementById('lessons-list');
-    lessonsList.innerHTML = data.lessons.length
-      ? data.lessons.map(l => `
-        <div class="lesson-card">
-          <strong>Урок ${l.num}</strong><br>
-          <a href="${l.link}" target="_blank" class="lesson-btn">Материалы</a>
-          ${l.hwLink && l.hwLink !== '-' ? `<br><a href="${l.hwLink}" target="_blank" class="lesson-btn">ДЗ</a>` : ''}
-        </div>
-      `).join('')
-      : '<p>Нет доступных уроков.</p>';
-
-    // ===== Магазин =====
-    const shopItems = document.getElementById('shop-items');
-    document.getElementById('shop-coins').textContent = u.coins;
-    shopItems.innerHTML = data.shop.length
-      ? data.shop.map((item, idx) => `
-        <div class="shop-item">
-          ${item.image ? `<div style="height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem"><img src="${item.image}" style="max-width:100%;max-height:100%;object-fit:contain"></div>` : ''}
-          <h3>${item.name}</h3>
-          <div class="price">${item.price} монет</div>
-          <button class="buy-btn" onclick="confirmBuy(${idx}, \`${item.name.replace(/'/g, "\\'")}\`, ${item.price})">Купить</button>
-        </div>
-      `).join('')
-      : '<p>Магазин пуст.</p>';
-
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('main').classList.remove('hidden');
-    showSection('profile');
-
-  } catch (e) {
-    console.error(e);
-    document.getElementById('loading').textContent = '❌ Ошибка загрузки кабинета';
-  }
-}
-
-// ================= СЛОТЫ РАСПИСАНИЯ =================
-async function loadSlots() {
-  try {
-    // Показываем загрузку
-    document.getElementById('available-slots-container').innerHTML = 
-      '<p class="no-slots-message">Загрузка доступных слотов...</p>';
-    document.getElementById('user-slots-container').innerHTML = 
-      '<p class="no-slots-message">Загрузка ваших слотов...</p>';
-    
-    // Загружаем доступные слоты
-    const availableRes = await fetch(`${API_URL}?action=get_slots`);
-    const availableData = await availableRes.json();
-    
-    // Загружаем слоты пользователя
-    const userSlotsRes = await fetch(`${API_URL}?action=get_user_slots&userId=${encodeURIComponent(userId)}`);
-    const userSlotsData = await userSlotsRes.json();
-    
-    // Отображаем доступные слоты
-    if (availableData.success) {
-      const availableSlots = availableData.slots || [];
-      const availableContainer = document.getElementById('available-slots-container');
-      
-      if (availableSlots.length === 0) {
-        availableContainer.innerHTML = '<p class="no-slots-message">Нет доступных слотов для бронирования.</p>';
-      } else {
-        availableContainer.innerHTML = `
-          <div class="slots-grid">
-            ${availableSlots.map(slot => `
-              <div class="slot-card" onclick="showBookingConfirmation('${slot.id}', '${slot.date}', '${slot.time}')">
-                <div class="slot-date">📅 ${slot.date || 'Дата не указана'}</div>
-                <div class="slot-time">⏰ ${slot.time || 'Время не указано'}</div>
-                <div class="slot-status status-available">${slot.status || 'Свободно'}</div>
-                <div class="slot-actions">
-                  <button class="book-slot-btn" onclick="event.stopPropagation(); showBookingConfirmation('${slot.id}', '${slot.date}', '${slot.time}')">
-                    Забронировать
-                  </button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }
-    } else {
-      document.getElementById('available-slots-container').innerHTML = 
-        '<p class="slots-error">❌ Ошибка загрузки доступных слотов</p>';
-    }
-    
-    // Отображаем слоты пользователя
-    if (userSlotsData.success) {
-      const userSlots = userSlotsData.slots || [];
-      const userContainer = document.getElementById('user-slots-container');
-      
-      if (userSlots.length === 0) {
-        userContainer.innerHTML = '<p class="no-slots-message">У вас нет забронированных слотов.</p>';
-      } else {
-        userContainer.innerHTML = `
-          <div class="slots-grid">
-            ${userSlots.map(slot => `
-              <div class="slot-card booked">
-                <div class="slot-date">📅 ${slot.date || 'Дата не указана'}</div>
-                <div class="slot-time">⏰ ${slot.time || 'Время не указано'}</div>
-                <div class="slot-status status-booked">${slot.status || 'Забронировано'}</div>
-                ${slot.contact ? `<div class="slot-contact">📞 ${slot.contact}</div>` : ''}
-                ${slot.bookingDate ? `<div class="slot-booking-date">📝 Бронирование: ${slot.bookingDate}</div>` : ''}
-                <div class="slot-actions">
-                  <button class="cancel-slot-btn" onclick="cancelSlot('${slot.id}')">
-                    Отменить бронь
-                  </button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }
-    } else {
-      document.getElementById('user-slots-container').innerHTML = 
-        '<p class="slots-error">❌ Ошибка загрузки ваших слотов</p>';
-    }
-    
-  } catch (error) {
-    console.error('Ошибка при загрузке слотов:', error);
-    document.getElementById('available-slots-container').innerHTML = 
-      '<p class="slots-error">❌ Ошибка соединения при загрузке</p>';
-    document.getElementById('user-slots-container').innerHTML = 
-      '<p class="slots-error">❌ Ошибка соединения при загрузке</p>';
-  }
-}
-
-// Показать модальное окно подтверждения
-function showBookingConfirmation(slotId, date, time) {
-  selectedSlot = {
-    id: slotId,
-    date: date,
-    time: time
-  };
-  
-  document.getElementById('modalDate').textContent = date;
-  document.getElementById('modalTime').textContent = time;
-  document.getElementById('confirmationModal').classList.remove('hidden');
-}
-
-// Закрыть модальное окно
-function hideModal() {
-  document.getElementById('confirmationModal').classList.add('hidden');
-  selectedSlot = null;
-}
-
-// Отмена бронирования в модальном окне
-function cancelBooking() {
-  hideModal();
-}
-
-// Подтверждение бронирования
-async function confirmBooking() {
-  if (!selectedSlot) return;
-  
-  hideModal();
-  
-  const contact = prompt('Введите ваш контактный номер телефона для связи:');
-  if (!contact) {
-    alert('Контактные данные обязательны для бронирования');
-    return;
-  }
-
-  if (!contact.match(/^[\d\s\-\+\(\)]{10,20}$/)) {
-    alert('Пожалуйста, введите корректный номер телефона');
-    return;
-  }
-
-  try {
-    const res = await fetch(
-      `${API_URL}?action=book_slot&userId=${encodeURIComponent(userId)}&slotId=${encodeURIComponent(selectedSlot.id)}&username=${encodeURIComponent(username)}&contact=${encodeURIComponent(contact)}`
-    );
-    const data = await res.json();
-    
-    if (data.success) {
-      alert(`✅ Слот успешно забронирован!\nДата брони: ${data.bookingDate || 'не указана'}`);
-      loadSlots(); // Обновляем список слотов
-    } else {
-      alert(`❌ Ошибка: ${data.message || 'Неизвестная ошибка'}`);
-    }
-  } catch (error) {
-    console.error('Ошибка при бронировании:', error);
-    alert('❌ Ошибка соединения при бронировании');
-  }
-}
-
-// Отмена бронирования слота
-async function cancelSlot(slotId) {
-  if (!confirm('Вы уверены, что хотите отменить бронирование этого слота?')) {
-    return;
-  }
-
-  try {
-    const res = await fetch(
-      `${API_URL}?action=cancel_slot&userId=${encodeURIComponent(userId)}&slotId=${encodeURIComponent(slotId)}`
-    );
-    const data = await res.json();
-    
-    if (data.success) {
-      alert('✅ Бронирование успешно отменено');
-      loadSlots(); // Обновляем список слотов
-    } else {
-      alert(`❌ Ошибка: ${data.message || 'Неизвестная ошибка'}`);
-    }
-  } catch (error) {
-    console.error('Ошибка при отмене бронирования:', error);
-    alert('❌ Ошибка соединения при отмене бронирования');
-  }
-}
-
-// ================= HOMEWORK =================
-async function submitHomework() {
-  const text = document.getElementById('hwText').value.trim();
-  const fileInput = document.getElementById('hwImage');
-  const file = fileInput.files[0];
-
-  if (!file && !text) {
-    alert("Введите текст или прикрепите фото");
-    return;
-  }
-
-  try {
-    if (file) {
-      if (!file.type.match(/image\/(jpeg|png|gif)/)) {
-        alert("Поддерживаются JPG, PNG, GIF");
-        return;
-      }
-
-      const base64 = await new Promise(resolve => {
-        const r = new FileReader();
-        r.onload = () => resolve(r.result.split(",")[1]);
-        r.readAsDataURL(file);
-      });
-
-      const payload = { 
-        action:"submit_homework", 
-        userId, 
-        username, 
-        lessonNum:0, 
-        text, 
-        fileName:file.name, 
-        fileBase64:base64 
-      };
-      const res = await fetch(API_URL, { 
-        method:"POST", 
-        headers:{"Content-Type":"application/json"}, 
-        body:JSON.stringify(payload)
-      });
-      const data = await res.json();
-      document.getElementById('hwStatus').textContent = data.success ? "✅ ДЗ отправлено!" : "❌ "+data.error;
-      if(data.success){ 
-        document.getElementById('hwText').value=""; 
-        fileInput.value=""; 
-      }
-
-    } else {
-      const res = await fetch(`${API_URL}?action=submit_homework&userId=${encodeURIComponent(userId)}&homeworkText=${encodeURIComponent(text)}&lessonNum=0`);
-      const data = await res.json();
-      document.getElementById('hwStatus').textContent = data.success ? "✅ ДЗ отправлено!" : "❌ "+data.error;
-      if(data.success) document.getElementById('hwText').value="";
-    }
-  } catch {
-    document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
-  }
-}
-
-// ================= SHOP =================
-async function buyItem(index) {
-  try {
-    const res = await fetch(`${API_URL}?action=buy_item&userId=${userId}&lessonNum=${index}`);
-    const data = await res.json();
-    if(data.success){ 
-      alert("✅ Куплено!"); 
-      location.reload(); 
-    } else {
-      alert("❌ " + (data.error || 'Неизвестная ошибка'));
-    }
-  } catch { 
-    alert("❌ Ошибка соединения"); 
-  }
-}
-
-// ================= INIT =================
-window.addEventListener("DOMContentLoaded", loadData);
-
-// Закрыть модальное окно при клике вне его
-document.getElementById('confirmationModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    hideModal();
-  }
-});
-  </script>
+<div class="section-title" style="margin-top:2rem">Мои бронирования</div>
+<div id="user-slots-container" class="slots-grid"></div>
+  <script src="script.js"></script>
 </body>
 </html>
