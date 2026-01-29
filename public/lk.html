@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subtext - Личный кабинет</title>
 
-  <!-- Исправлен шрифт (убраны пробелы) -->
+  <!-- Исправлен шрифт: убраны пробелы -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
@@ -17,7 +17,7 @@
     .header {
       width: 100%;
       height: 260px;
-      /* Исправлен фон (убраны пробелы) */
+      /* Исправлен фон: убраны пробелы */
       background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
       background-size: cover;
       display: flex;
@@ -38,7 +38,10 @@
       text-align: center;
       letter-spacing: 2px;
       text-transform: uppercase;
-      text-shadow: 2px 2px 0 rgba(0,60,0,0.7), 0 4px 12px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.1);
+      text-shadow:
+        2px 2px 0 rgba(0,60,0,0.7),
+        0 4px 12px rgba(0,0,0,0.15),
+        0 8px 20px rgba(0,0,0,0.1);
       backdrop-filter: blur(6px);
       padding: 1rem 2rem;
       border-radius: 16px;
@@ -46,7 +49,10 @@
     }
     .big-title:hover {
       transform: scale(1.05);
-      text-shadow: 3px 3px 0 rgba(0,60,0,0.75), 0 6px 16px rgba(0,0,0,0.2), 0 12px 36px rgba(0,0,0,0.15);
+      text-shadow:
+        3px 3px 0 rgba(0,60,0,0.75),
+        0 6px 16px rgba(0,0,0,0.2),
+        0 12px 36px rgba(0,0,0,0.15);
     }
 
     /* ===== NAV ===== */
@@ -120,6 +126,12 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 1.2rem;
     }
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 1rem;
+    }
 
     /* ===== CARDS ===== */
     .lesson-card, .shop-item {
@@ -148,7 +160,7 @@
     }
     .lesson-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(46,125,50,.35); }
 
-    .buy-btn {
+    .buy-btn, .slot-btn {
       margin-top: .6rem;
       padding: .7rem 1.6rem;
       border-radius: 999px;
@@ -160,7 +172,9 @@
       box-shadow: 0 6px 14px rgba(46,125,50,.25);
       transition: .25s ease;
     }
-    .buy-btn:hover { transform: scale(1.05); }
+    .buy-btn:hover, .slot-btn:hover {
+      transform: scale(1.05);
+    }
 
     textarea, input[type="file"] {
       width: 100%;
@@ -168,24 +182,6 @@
       border-radius: 10px;
       border: 1px solid #ccc;
     }
-
-    /* ===== SLOTS ===== */
-    .slots-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-      margin-top: 1rem;
-    }
-    .slot-btn {
-      padding: 12px;
-      border-radius: 12px;
-      border: none;
-      background: #e8f5e9;
-      font-weight: 600;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-    .slot-btn:hover { background: #c8e6c9; }
 
     @media (max-width: 1024px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 768px) { 
@@ -196,7 +192,6 @@
       .shop-grid { grid-template-columns: 1fr; }
       .section-title { font-size: 1.6rem; }
     }
-
   </style>
 </head>
 
@@ -218,7 +213,6 @@
       <button onclick="showSection('schedule')">Расписание</button>
     </div>
 
-    <!-- ===== PROFILE ===== -->
     <div id="profile" class="section profile-section">
       <img id="avatar-img" class="avatar-img">
       <p>Привет, <strong id="username"></strong>!</p>
@@ -226,13 +220,11 @@
       <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
     </div>
 
-    <!-- ===== LESSONS ===== -->
     <div id="lessons" class="section hidden">
       <div class="section-title">Уроки</div>
       <div id="lessons-list" class="lessons-grid"></div>
     </div>
 
-    <!-- ===== HOMEWORK ===== -->
     <div id="homework" class="section hidden">
       <div class="section-title">Сдать домашнее задание</div>
       <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
@@ -241,7 +233,6 @@
       <p id="hwStatus"></p>
     </div>
 
-    <!-- ===== SHOP ===== -->
     <div id="shop" class="section hidden">
       <div class="section-title">Магазин</div>
       <p style="text-align:center;font-weight:bold">
@@ -250,7 +241,7 @@
       <div id="shop-items" class="shop-grid"></div>
     </div>
 
-    <!-- ===== SCHEDULE ===== -->
+    <!-- ===== РАСПИСАНИЕ + СЛОТЫ ===== -->
     <div id="schedule" class="section hidden">
       <div class="section-title">Расписание</div>
 
@@ -264,9 +255,12 @@
         <p id="lesson-schedule">—</p>
       </div>
 
+      <!-- Свободные слоты -->
+      <div class="section-title" style="margin-top: 2rem;">Свободные слоты</div>
       <div id="slots" class="slots-grid"></div>
 
-      <div id="mySlot" style="margin-top:1rem;text-align:center;font-weight:600"></div>
+      <!-- Текущая запись -->
+      <div id="mySlot" style="margin-top: 1.5rem; text-align: center; font-weight: 600;"></div>
     </div>
 
   </div>
