@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subtext - Личный кабинет</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family: 'Poppins', sans-serif; background-color: #faf9f6; color: #333; }
+    .hidden { display: none; }
+
+    /* ===== HEADER ===== */
+    .header {
+      width: 100%;
+      height: 260px;
+      background: url('https://cdn.qwenlm.ai/output/26e59e0c-c12d-470e-9e9d-ead84f166378/t2i/a16a1240-e568-4c39-8993-f9b94b1f3ad3/1769081334.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMjZlNTllMGMtYzEyZC00NzBlLTllOWQtZWFkODRmMTY2Mzc4IiwicmVzb3VyY2VfaWQiOiIxNzY5MDgxMzM0IiwicmVzb3VyY2VfY2hhdF9pZCI6Ijk0MzFhMmUwLTc5MjYtNGE3Yy04NDhhLWJkZDU2ZmIwMzhmYSJ9.99OvyFwOVuUt-Lmt0WvMKvo17gVGjdeEWDEEEpa8Jf0') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.25), rgba(255,255,255,0.85));
+    }
+    .big-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 6rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  /* тёмно-зелёная подсветка */
+  text-shadow:
+    2px 2px 0 rgba(0,60,0,0.7),
+    0 4px 12px rgba(0,0,0,0.15),
+    0 8px 20px rgba(0,0,0,0.1);
+  backdrop-filter: blur(6px);
+  padding: 1rem 2rem;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.big-title:hover {
+  transform: scale(1.05);
+  text-shadow:
+    3px 3px 0 rgba(0,60,0,0.75),
+    0 6px 16px rgba(0,0,0,0.2),
+    0 12px 36px rgba(0,0,0,0.15);
+}
+
+
+    /* ===== NAV ===== */
+    .nav-container {
+      display: flex;
+      gap: .8rem;
+      max-width: 900px;
+      margin: 1.5rem auto;
+      padding: .5rem 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .nav-container button {
+      min-width: 150px;
+      height: 50px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2e7d32, #66bb6a);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: all .25s ease;
+    }
+    .nav-container button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(46,125,50,.35);
+    }
+
+    /* ===== SECTION TITLE ===== */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      text-align: center;
+      color: #2e7d32;
+      margin-bottom: 1rem;
+      text-shadow: 0 4px 12px rgba(46,125,50,.25);
+    }
+
+    /* ===== SECTIONS ===== */
+    .section { padding: 1.5rem; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:translateY(0);} }
+
+    /* ===== PROFILE ===== */
+    .profile-section {
+      max-width: 520px;
+      margin: auto;
+      text-align: center;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    .avatar-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #2e7d32;
+      margin-bottom: 1rem;
+    }
+
+    /* ===== GRIDS ===== */
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
+
+    /* ===== CARDS ===== */
+    .lesson-card, .shop-item {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 1.4rem;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+      transition: all .25s ease;
+    }
+    .lesson-card:hover, .shop-item:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,.15); }
+
+    /* ===== BUTTONS ===== */
+    .lesson-btn {
+      display: inline-block;
+      margin-top: .6rem;
+      padding: .6rem 1.4rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2e7d32, #43a047);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: all .25s ease;
+    }
+    .lesson-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(46,125,50,.35); }
+
+    .buy-btn {
+      margin-top: .6rem;
+      padding: .7rem 1.6rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1b5e20, #66bb6a);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(46,125,50,.25);
+      transition: .25s ease;
+    }
+    .buy-btn:hover { transform: scale(1.05); }
+
+    textarea, input[type="file"] {
+      width: 100%;
+      padding: .7rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    @media (max-width: 1024px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 768px) { 
+      .big-title { font-size: 3.5rem; }
+      .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .shop-grid { grid-template-columns: 1fr; }
+      .section-title { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="big-title">Subtext</div>
+  </div>
+
+  <div id="loading">Загрузка...</div>
+
+  <div id="main" class="hidden">
+
+    <div class="nav-container">
+      <button onclick="showSection('profile')">Профиль</button>
+      <button onclick="showSection('lessons')">Уроки</button>
+      <button onclick="showSection('homework')">ДЗ</button>
+      <button onclick="showSection('shop')">Магазин</button>
+      <button onclick="showSection('schedule')">Расписание</button>
+    </div>
+
+    <div id="profile" class="section profile-section">
+      <img id="avatar-img" class="avatar-img">
+      <p>Привет, <strong id="username"></strong>!</p>
+      <p>Уровень: <span id="level"></span></p>
+      <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+    </div>
+
+    <div id="lessons" class="section hidden">
+      <div class="section-title">Уроки</div>
+      <div id="lessons-list" class="lessons-grid"></div>
+    </div>
+
+    <div id="homework" class="section hidden">
+      <div class="section-title">Сдать домашнее задание</div>
+      <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
+      <input type="file" id="hwImage"><br><br>
+      <button class="buy-btn" onclick="submitHomework()">Отправить</button>
+      <p id="hwStatus"></p>
+    </div>
+
+    <div id="shop" class="section hidden">
+      <div class="section-title">Магазин</div>
+      <p style="text-align:center;font-weight:bold">
+        💰 Монеты: <span id="shop-coins">0</span>
+      </p>
+      <div id="shop-items" class="shop-grid"></div>
+    </div>
+
+    <div id="schedule" class="section hidden">
+  <div class="section-title">Расписание</div>
+
+  <div class="profile-section">
+    <p><strong>Ссылка:</strong></p>
+    <p id="lesson-link">—</p>
+
+    <hr style="margin:1.5rem 0">
+
+    <p><strong>Расписание:</strong></p>
+    <p id="lesson-schedule">—</p>
+  </div>
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
