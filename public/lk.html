@@ -213,6 +213,15 @@
       <p>Привет, <strong id="username"></strong>!</p>
       <p>Уровень: <span id="level"></span></p>
       <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
+      <!-- Прогресс до завершения уровня -->
+<div style="margin-top: 1.5rem; width: 100%; text-align: left;">
+  <div style="font-weight: 600; margin-bottom: 0.4rem; color: #2e7d32;">
+    Прогресс на уровне: <span id="progress-percent">0</span>%
+  </div>
+  <div style="height: 10px; background: #e0f0e9; border-radius: 5px; overflow: hidden;">
+    <div id="progress-bar-fill" style="height: 100%; background: #2e7d32; width: 0%; transition: width 0.5s ease;"></div>
+  </div>
+</div>
     </div>
 
     <!-- ===== УРОКИ ===== -->
