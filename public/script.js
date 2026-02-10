@@ -228,18 +228,18 @@ async function loadMaterials() {
     }
 
     container.innerHTML = data.materials.map(item => `
-  <div class="lesson-card">
-    <strong>${item.title}</strong>
-    <a href="${item.url}" target="_blank">Открыть</a>
-    ${item.description ? `<small style="color:#666">${item.description}</small>` : ''}
-  </div>
-  `).join('');
-    
+      <div class="lesson-card">
+        <strong>${item.title}</strong><br>
+        ${item.description ? `<small style="color:#666">${item.description}</small><br>` : ''}
+        <a href="${item.url}" target="_blank" class="lesson-btn">Открыть</a>
+      </div>
+    `).join('');
   } catch (e) {
     console.error(e);
     document.getElementById('materials-list').innerHTML = '<p>❌ Не удалось загрузить материалы</p>';
   }
-}
+} // ← ЭТА СКОБКА БЫЛА ПРОПУЩЕНА!
+
 function showSection(sectionId) {
   document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
   const el = document.getElementById(sectionId);
