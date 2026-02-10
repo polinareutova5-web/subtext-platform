@@ -245,10 +245,8 @@ function showSection(sectionId) {
   const el = document.getElementById(sectionId);
   if (el) el.classList.remove('hidden');
 
-  // Загружать материалы только при открытии
-  if (sectionId === 'materials') {
-    loadMaterials();
-  }
+  // Загружать материалы при открытии сайта
+ await loadMaterials();
 }
 // ================= INIT =================
 window.addEventListener("DOMContentLoaded", loadData);
