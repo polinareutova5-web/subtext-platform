@@ -214,6 +214,40 @@ async function buyItem(index) {
     alert("❌ Ошибка соединения");
   }
 }
+// ================= Mfterials=================
 
+async function loadMaterials() {
+  try {
+    const res = await fetch(`${API_URL}?action=get_materials`);
+    const data = await res.json();
+    
+    const container = document.getElementById('materials-list');
+    if (!data.success || !data.materials.length) {
+      container.innerHTML = '<p>Материалы скоро появятся</p>';
+      return;
+    }
+
+    container.innerHTML = data.materials.map(item => `
+      <div class="lesson-card">
+        <strong>${item.title}</strong><br>
+        ${item.description ? `<small style="color:#666">${item.description}</small><br>` : ''}
+        <a href="${item.url}" target="_blank" class="lesson-btn">Открыть</a>
+      </div>
+    `).join('');
+  } catch (e) {
+    console.error(e);
+    document.getElementById('materials-list').innerHTML = '<p>❌ Не удалось загрузить материалы</p>';
+  }
+}
+function showSection(sectionId) {
+  document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
+  const el = document.getElementById(sectionId);
+  if (el) el.classList.remove('hidden');
+
+  // Загружать материалы только при открытии
+  if (sectionId === 'materials') {
+    loadMaterials();
+  }
+}
 // ================= INIT =================
 window.addEventListener("DOMContentLoaded", loadData);
