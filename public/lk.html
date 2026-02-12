@@ -204,8 +204,7 @@
       <button onclick="showSection('homework')">ДЗ</button>
       <button onclick="showSection('shop')">Магазин</button>
       <button onclick="showSection('schedule')">Расписание</button>
-      <button onclick="showSection('announcements')">📢 Объявления</button>
-      <button onclick="showSection('materials')">📚 Материалы</button>
+      <button onclick="showSection('materials')">Материалы</button>
     </div>
 
     <!-- ===== ПРОФИЛЬ ===== -->
@@ -214,15 +213,6 @@
       <p>Привет, <strong id="username"></strong>!</p>
       <p>Уровень: <span id="level"></span></p>
       <p>Баллы: <span id="progress"></span> | Монеты: <span id="coins"></span></p>
-      <!-- Прогресс до завершения уровня -->
-<div style="margin-top: 1.5rem; width: 100%; text-align: left;">
-  <div style="font-weight: 600; margin-bottom: 0.4rem; color: #2e7d32;">
-    Прогресс на текущем уровне: <span id="progress-percent">0</span>%
-  </div>
-  <div style="height: 10px; background: #e0f0e9; border-radius: 5px; overflow: hidden;">
-    <div id="progress-bar-fill" style="height: 100%; background: #2e7d32; width: 0%; transition: width 0.5s ease;"></div>
-  </div>
-</div>
     </div>
 
     <!-- ===== УРОКИ ===== -->
@@ -232,24 +222,13 @@
     </div>
 
     <!-- ===== ДЗ ===== -->
-   
-<div id="homework" class="section hidden">
-  <div class="section-title">Сдать домашнее задание</div>
-
-  <p style="text-align: center; margin-bottom: 1.5rem;">
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyaEIut7zciiAfhbNexWHxXLy6eE1IoEwpprm-x8I-penPrw/viewform?usp=sharing" 
-       target="_blank" 
-       class="buy-btn" 
-       style="display: inline-block; padding: 0.8rem 2rem; text-decoration: none;">
-      📝 Открыть форму для сдачи ДЗ
-    </a>
-  </p>
-
-  <p style="text-align: center; color: #666; font-size: 0.9rem;">
-    Форма открывается в новой вкладке (Google не разрешает встраивать формы напрямую)
-  </p>
-</div>
-
+    <div id="homework" class="section hidden">
+      <div class="section-title">Сдать домашнее задание</div>
+      <textarea id="hwText" rows="4" placeholder="Комментарий..."></textarea><br><br>
+      <input type="file" id="hwImage"><br><br>
+      <button class="buy-btn" onclick="submitHomework()">Отправить</button>
+      <p id="hwStatus"></p>
+    </div>
 
     <!-- ===== МАГАЗИН ===== -->
     <div id="shop" class="section hidden">
@@ -259,45 +238,11 @@
       </p>
       <div id="shop-items" class="shop-grid"></div>
     </div>
-
-
-    <!-- ===== ОБЪЯВЛЕНИЯ ===== -->
-<div id="announcements" class="section hidden">
-  <div class="section-title">📢 Объявления</div>
-
-  <div class="profile-section">
-    <!-- Сюда ты будешь вписывать новости вручную -->
-    
-    <div style="margin-bottom: 1.8rem;">
-      <h3 style="color: #2e7d32; margin-bottom: 0.4rem;">🎉 4 февраля 2026 — Запуск платформы Subtext!</h3>
-      <p>Добро пожаловать на нашу новую образовательную платформу! </p>
-    </div>
-
-    <div style="margin-bottom: 1.8rem;">
-      <h3 style="color: #2e7d32; margin-bottom: 0.4rem;">💡 Как работать с платформой?</h3>
-      <ul style="padding-left: 1.2rem; line-height: 1.6;">
-        <li>Перейдите в раздел <strong>«Уроки»</strong> — там материалы и ДЗ</li>
-        <li>Сдавайте ДЗ в разделе <strong>«ДЗ»</strong> или через Google Форму</li>
-        <li>Выберите удобное время в <strong>«Расписание»</strong></li>
-        <li>Тратьте монеты в <strong>«Магазине»</strong> за выполненные задания</li>
-      </ul>
-    </div>
-
-    <div>
-      <h3 style="color: #2e7d32; margin-bottom: 0.4rem;">🌱 Вы справитесь!</h3>
-      <p>Не бойтесь ошибаться — именно так мы учимся. </p>
-    </div>
-
-  </div>
-</div>
-
-
-    <!-- ===== ПОЛЕЗНЫЕ МАТЕРИАЛЫ ===== -->
-<div id="materials" class="section hidden">
-  <div class="section-title">📚 Полезные материалы</div>
+ <!-- ===== Материалы ===== -->
+    <div id="materials" class="section hidden">
+  <div class="section-title">Материалы</div>
   <div id="materials-list" class="lessons-grid"></div>
 </div>
-    
     <!-- ===== РАСПИСАНИЕ ===== -->
     <div id="schedule" class="section hidden">
       <div class="section-title">Расписание</div>
@@ -320,7 +265,7 @@
     </div>
 
   </div>
-  
+
   <script src="script.js"></script>
 </body>
 </html>
