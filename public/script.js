@@ -64,7 +64,26 @@ async function loadCabinet() {
     document.getElementById('progress').textContent = u.progress || 0;
     const progressValue = Math.min(u.progress || 0, 100);
 const xpFill = document.getElementById('xp-fill');
+
 xpFill.style.width = progressValue + "%";
+
+// 🎨 Цвета по уровню
+if (progressValue >= 100) {
+  // 🟡 ЗОЛОТО
+  xpFill.style.background = "linear-gradient(90deg, gold, orange)";
+  xpFill.style.boxShadow = "0 0 18px rgba(255,215,0,.9)";
+}
+else if (progressValue >= 75) {
+  // 🟣 Почти уровень ап
+  xpFill.style.background = "linear-gradient(90deg, #7b1fa2, #ba68c8)";
+  xpFill.style.boxShadow = "0 0 14px rgba(186,104,200,.8)";
+}
+else {
+  // 🟢 Обычный прогресс
+  xpFill.style.background = "linear-gradient(90deg, #2e7d32, #66bb6a)";
+  xpFill.style.boxShadow = "0 0 10px rgba(76,175,80,.6)";
+}
+
     document.getElementById('coins').textContent = u.coins || 0;
 
     document.getElementById('lesson-link').textContent =
