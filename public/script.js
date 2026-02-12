@@ -85,6 +85,18 @@ async function loadCabinet() {
       `).join('')
       : '<p>Нет доступных уроков.</p>';
 
+    // ===== Материалы =====
+const materialsList = document.getElementById('materials-list');
+
+materialsList.innerHTML = data.materials && data.materials.length
+  ? data.materials.map(m => `
+    <div class="lesson-card">
+      <strong>${m.title}</strong><br>
+      <a href="${m.link}" target="_blank">Открыть</a>
+    </div>
+  `).join('')
+  : '<p>Материалы пока не добавлены.</p>';
+
     // ===== Магазин =====
     const shopItems = document.getElementById('shop-items');
     document.getElementById('shop-coins').textContent = u.coins;
