@@ -175,6 +175,23 @@
       border-radius: 10px;
       border: 1px solid #ccc;
     }
+    .big-hw-btn {
+  display: inline-block;
+  padding: 1.2rem 2.5rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1b5e20, #66bb6a);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(46,125,50,.3);
+  transition: all .25s ease;
+}
+
+.big-hw-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 28px rgba(46,125,50,.4);
+}
 
     @media (max-width: 1024px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 768px) { 
@@ -228,16 +245,22 @@
 <div id="homework" class="section hidden">
   <div class="section-title">Сдать домашнее задание</div>
 
-  <iframe
-    src="https://docs.google.com/forms/d/e/1FAIpQLSeOt_4wMFLUbl3RfYE-vgcTPAHDvXMopJOiDovicFJ0lQ621Q/viewform?embedded=true"
-    width="100%"
-    height="900"
-    frameborder="0"
-    marginheight="0"
-    marginwidth="0">
-    Загрузка…
-  </iframe>
+  <div class="profile-section" style="text-align:center">
+
+    <p style="margin-bottom:1.5rem">
+      Нажмите кнопку ниже, чтобы открыть форму для отправки ДЗ.
+    </p>
+
+    <a 
+      href="https://docs.google.com/forms/d/e/1FAIpQLSeOt_4wMFLUbl3RfYE-vgcTPAHDvXMopJOiDovicFJ0lQ621Q/viewform"
+      target="_blank"
+      class="big-hw-btn">
+      📄 Открыть форму ДЗ
+    </a>
+
+  </div>
 </div>
+
 
     <!-- ===== МАГАЗИН ===== -->
     <div id="shop" class="section hidden">
@@ -247,18 +270,32 @@
       </p>
       <div id="shop-items" class="shop-grid"></div>
     </div>
+    
     <!-- ===== ОБЪЯВЛЕНИЯ ===== -->
 <div id="announcements" class="section hidden">
   <div class="section-title">Объявления</div>
 
   <div class="profile-section">
+
     <p><strong>4 февраля</strong></p>
-    <p>Сегодня мы запустили нашу образовательную платформу!.</p>
+    <p>
+      🎉 Запуск образовательной платформы Subtext!  
+      Теперь все материалы, расписание, домашние задания и прогресс доступны в личном кабинете.
+    </p>
 
     <hr style="margin:1.5rem 0">
+
+    <p><strong>12 февраля</strong></p>
+    <p>
+      ⚙️ С 12:00 до 15:00 возможны технические работы на сайте.  
+      В это время некоторые разделы могут временно не работать.
+    </p>
+
   </div>
 </div>
- <!-- ===== Материалы ===== -->
+
+
+    <!-- ===== Материалы ===== -->
     <div id="materials" class="section hidden">
   <div class="section-title">Материалы</div>
   <div id="materials-list" class="lessons-grid"></div>
