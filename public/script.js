@@ -207,70 +207,7 @@ async function bookSlot(slotId) {
 }
 
 // ================= HOMEWORK =================
-async function submitHomework() {
-  const text = document.getElementById('hwText').value.trim();
-  const fileInput = document.getElementById('hwImage');
-  const file = fileInput.files[0];
 
-  if (!file && !text) {
-    alert("Введите текст или прикрепите фото");
-    return;
-  }
-
-  try {
-    if (file) {
-      if (!file.type.match(/image\/(jpeg|png|gif)/)) {
-        alert("Поддерживаются JPG, PNG, GIF");
-        return;
-      }
-
-      const base64 = await new Promise(resolve => {
-        const r = new FileReader();
-        r.onload = () => resolve(r.result.split(",")[1]);
-        r.readAsDataURL(file);
-      });
-
-      const payload = {
-        action: "submit_homework",
-        userId,
-        username,
-        lessonNum: 0,
-        text,
-        fileName: file.name,
-        fileBase64: base64
-      };
-
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await res.json();
-      document.getElementById('hwStatus').textContent =
-        data.success ? "✅ ДЗ отправлено!" : "❌ " + data.error;
-
-      if (data.success) {
-        document.getElementById('hwText').value = "";
-        fileInput.value = "";
-      }
-
-    } else {
-      const res = await fetch(
-        `${API_URL}?action=submit_homework&userId=${encodeURIComponent(userId)}&homeworkText=${encodeURIComponent(text)}&lessonNum=0`
-      );
-
-      const data = await res.json();
-      document.getElementById('hwStatus').textContent =
-        data.success ? "✅ ДЗ отправлено!" : "❌ " + data.error;
-
-      if (data.success) document.getElementById('hwText').value = "";
-    }
-
-  } catch {
-    document.getElementById('hwStatus').textContent = "❌ Ошибка отправки";
-  }
-}
 
 // ================= SHOP =================
 async function buyItem(index) {
