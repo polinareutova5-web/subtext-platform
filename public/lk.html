@@ -11,7 +11,18 @@
     * { box-sizing: border-box; margin:0; padding:0; }
     body { font-family: 'Poppins', sans-serif; background-color: #faf9f6; color: #333; }
     .hidden { display: none; }
-
+ /* ===== Канал ===== */
+    .channel-badge {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #2e7d32;
+  font-weight: 600;
+  opacity: 0.8;
+}
     /* ===== 14 FEB HEARTS ===== */
 .hearts-container {
   position: fixed;
@@ -260,6 +271,9 @@
 <body>
 
   <div class="header">
+    <div class="channel-badge">
+  t.me/apego_pr
+</div>
     <div class="big-title">Subtext</div>
   </div>
 
@@ -334,7 +348,6 @@
 
   <div class="profile-section">
 
-    <hr style="margin:1.5rem 0">
     <p><strong>14 февраля</strong></p>
     <p>
       Happy Valentine’s Day! 💗
@@ -348,7 +361,8 @@ Collect love, spread kindness, and level up your happiness today.
       ⚙️ С 12:00 до 15:00 возможны технические работы на сайте.  
       В это время некоторые разделы могут временно не работать.
     </p>
-
+    
+<hr style="margin:1.5rem 0">  
     <p><strong>4 февраля</strong></p>
     <p>
       🎉 Запуск образовательной платформы Subtext!  
@@ -414,7 +428,7 @@ function startHearts() {
 
 // ===== Включаем ТОЛЬКО 14 февраля =====
 const today = new Date();
-if (today.getDate() === 13 && today.getMonth() === 1) {
+if (today.getDate() === 14 && today.getMonth() === 1) {
   startHearts();
 }
 </script>
