@@ -265,29 +265,6 @@
   transition: width 1s ease, background .4s ease, box-shadow .4s ease;
 }
 
-    /* ===== TURTLE LOADING ===== */
-.turtle-loading {
-  position: fixed;
-  inset: 0;
-  background: #faf9f6;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  z-index: 10000;
-}
-
-.turtle {
-  font-size: 50px;
-  position: absolute;
-  left: -60px;
-  animation: turtleMove 3s linear infinite;
-}
-
-@keyframes turtleMove {
-  from { left: -60px; }
-  to { left: 110%; }
-}
-
   </style>
 </head>
 
@@ -300,10 +277,7 @@
     <div class="big-title">Subtext</div>
   </div>
 
-  <div id="loading" class="turtle-loading">
-  <div class="turtle">🐢</div>
-</div>
-
+  <div id="loading">Загрузка...</div>
 
   <div id="main" class="hidden">
 
