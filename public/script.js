@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwnQ-GJutRs4zijn0086hTZ5LDze51OEoUw82ykJfNrebYrIQ-noS0RnhjQvBKi_9bcjw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxxQkH8UCr9oTfCtQs_06_AlsfHo5yeqvnfVHq0yETmL7x0Ngg9nmDzlfnJvIu_Ur1HbA/exec";
 
 
 let userId;
@@ -244,6 +244,42 @@ async function buyItem(index) {
   } catch {
     alert("❌ Ошибка соединения");
   }
+}
+
+// ===== SUPPORT =====
+function toggleSupport() {
+  document.getElementById("support-chat").classList.toggle("hidden");
+  loadSupport();
+}
+
+async function loadSupport() {
+  const res = await fetch(`${API_URL}?action=get_support&userId=${userId}`);
+  const data = await res.json();
+
+  const container = document.getElementById("support-messages");
+
+  container.innerHTML = data.messages.map(m => `
+    <div style="margin-bottom:10px;padding:8px;border-radius:8px;background:#f1f8e9">
+      <strong>Вы:</strong><br>${m.question}<br>
+      ${m.answer 
+        ? `<div style="margin-top:6px;background:#e8f5e9;padding:6px;border-radius:6px">
+            <strong>Ответ:</strong><br>${m.answer}
+           </div>`
+        : `<div style="margin-top:6px;font-style:italic;color:gray">Ожидает ответа...</div>`
+      }
+    </div>
+  `).join('');
+}
+
+async function sendSupport() {
+  const input = document.getElementById("support-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  await fetch(`${API_URL}?action=send_support&userId=${userId}&text=${encodeURIComponent(text)}`);
+
+  input.value = "";
+  loadSupport();
 }
 
 // ================= INIT =================
