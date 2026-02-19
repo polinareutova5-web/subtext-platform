@@ -258,26 +258,18 @@ async function loadSupport() {
 
   const container = document.getElementById("support-messages");
 
-  container.innerHTML = "";
-
-data.messages.forEach(m => {
-
-  const userMsg = document.createElement("div");
-  userMsg.className = "message-user";
-  userMsg.textContent = m.question;
-  container.appendChild(userMsg);
-
-  if (m.answer) {
-    const adminMsg = document.createElement("div");
-    adminMsg.className = "message-admin";
-    adminMsg.textContent = m.answer;
-    container.appendChild(adminMsg);
-  }
-
-});
+  container.innerHTML = data.messages.map(m => `
+    <div style="margin-bottom:10px;padding:8px;border-radius:8px;background:#f1f8e9">
+      <strong>Вы:</strong><br>${m.question}<br>
+      ${m.answer 
+        ? `<div style="margin-top:6px;background:#e8f5e9;padding:6px;border-radius:6px">
+            <strong>Ответ:</strong><br>${m.answer}
+           </div>`
+        : `<div style="margin-top:6px;font-style:italic;color:gray">Ожидает ответа...</div>`
+      }
+    </div>
+  `).join('');
 }
-container.scrollTop = container.scrollHeight;
-
 
 async function sendSupport() {
   const input = document.getElementById("support-input");
