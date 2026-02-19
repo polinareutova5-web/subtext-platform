@@ -264,7 +264,36 @@
     inset 0 2px 6px rgba(255,255,255,.4);
   transition: width 1s ease, background .4s ease, box-shadow .4s ease;
 }
+/* ===== SUPPORT ===== */
+#support-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #2e7d32;
+  color: white;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,.3);
+  z-index: 9999;
+}
 
+#support-chat {
+  position: fixed;
+  right: 20px;
+  bottom: 90px;
+  width: 300px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+  padding: 1rem;
+  z-index: 9999;
+}
   </style>
 </head>
 
@@ -409,6 +438,15 @@ Collect love, spread kindness, and level up your happiness today.
     </div>
 
   </div>
+
+  <!-- ===== SUPPORT BUTTON ===== -->
+<div id="support-btn" onclick="toggleSupport()">?</div>
+
+<div id="support-chat" class="hidden">
+  <div id="support-messages" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
+  <textarea id="support-input" placeholder="Ваш вопрос..." style="margin-bottom:8px"></textarea>
+  <button onclick="sendSupport()">Отправить</button>
+</div>
 
   <script src="script.js"></script>
 
