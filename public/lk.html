@@ -265,35 +265,102 @@
   transition: width 1s ease, background .4s ease, box-shadow .4s ease;
 }
 /* ===== SUPPORT ===== */
+
 #support-btn {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 55px;
-  height: 55px;
+  right: 25px;
+  bottom: 25px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background: #2e7d32;
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
   color: white;
   font-size: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(0,0,0,.3);
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+  transition: .3s ease;
   z-index: 9999;
+}
+
+#support-btn:hover {
+  transform: scale(1.1);
 }
 
 #support-chat {
   position: fixed;
-  right: 20px;
-  bottom: 90px;
-  width: 300px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.2);
-  padding: 1rem;
+  right: 25px;
+  bottom: 100px;
+  width: 340px;
+  height: 450px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   z-index: 9999;
 }
+
+#support-header {
+  padding: 15px;
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+}
+
+#support-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message-user {
+  align-self: flex-end;
+  background: #c8e6c9;
+  padding: 10px 14px;
+  border-radius: 16px 16px 4px 16px;
+  max-width: 75%;
+}
+
+.message-admin {
+  align-self: flex-start;
+  background: #eeeeee;
+  padding: 10px 14px;
+  border-radius: 16px 16px 16px 4px;
+  max-width: 75%;
+}
+
+#support-input-area {
+  display: flex;
+  padding: 10px;
+  gap: 8px;
+  border-top: 1px solid #eee;
+}
+
+#support-input {
+  flex: 1;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+#support-input-area button {
+  border-radius: 12px;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
   </style>
 </head>
 
@@ -440,13 +507,19 @@ Collect love, spread kindness, and level up your happiness today.
   </div>
 
   <!-- ===== SUPPORT BUTTON ===== -->
-<div id="support-btn" onclick="toggleSupport()">?</div>
+<div id="support-btn" onclick="toggleSupport()">💬</div>
 
 <div id="support-chat" class="hidden">
-  <div id="support-messages" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
-  <textarea id="support-input" placeholder="Ваш вопрос..." style="margin-bottom:8px"></textarea>
-  <button onclick="sendSupport()">Отправить</button>
+  <div id="support-header">Техподдержка</div>
+
+  <div id="support-messages"></div>
+
+  <div id="support-input-area">
+    <input type="text" id="support-input" placeholder="Напишите сообщение..." />
+    <button onclick="sendSupport()">➤</button>
+  </div>
 </div>
+
 
   <script src="script.js"></script>
 
