@@ -474,15 +474,8 @@ function startHearts() {
     setTimeout(() => heart.remove(), 8000);
   }, 300);
 }
-<!-- Ачивки -->
-<div id="achievements-container" style="margin-top: 1.5rem; width: 100%;">
-  <div style="font-weight: 600; color: #2e7d32; margin-bottom: 0.8rem; text-align: left;">
-    🏆 Мои достижения
-  </div>
-  <div id="achievements-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 1rem; justify-items: center;"></div>
-</div>
-  
-  // ===== Включаем сердечки ТОЛЬКО 13-15 февраля =====
+
+// ===== Включаем сердечки ТОЛЬКО 13-15 февраля =====
 const today = new Date();
 const day = today.getDate();
 const month = today.getMonth();
