@@ -65,7 +65,6 @@ async function loadCabinet() {
     document.getElementById('progress').textContent = u.progress || 0;
     const progressValue = Math.min(u.progress || 0, 100);
 const xpFill = document.getElementById('xp-fill');
-
 xpFill.style.width = progressValue + "%";
 
 // 🎨 Цвета по уровню
@@ -93,7 +92,22 @@ else {
 
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
-
+  
+    // Ачивки (только ручные)
+const achGrid = document.getElementById('achievements-grid');
+if (data.achievements?.length) {
+  achGrid.innerHTML = data.achievements.map(ach => `
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div style="width:80px;height:80px;border:3px solid #2e7d32;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f8f9fa;">
+        ${ach.icon ? `<img src="${ach.icon}" style="width:60px;height:60px;object-fit:contain;">` : `<span style="font-size:1.8rem">🏆</span>`}
+      </div>
+      <div style="font-size:0.85rem; font-weight:500; margin-top:0.4rem; text-align:center;">${ach.title}</div>
+    </div>
+  `).join('');
+} else {
+  achGrid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#666;">Ещё нет достижений</div>';
+}
+    
     // ===== Уроки =====
     const lessonsList = document.getElementById('lessons-list');
     lessonsList.innerHTML = data.lessons.length
