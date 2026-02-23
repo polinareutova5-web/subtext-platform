@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwMliDqnEjCRYGk0VXSQEueHfi8bGHEBKXvpZQTGBKvzdgyifuE24eIdjbdr_NPYscGAw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwF-FNQW7Zi3ab-meSKYQcIxeP3tyMWv2HhUG32Pr0cY09aUjzS_etMzq2slLH0TZfbdg/exec";
 
 
 let userId;
@@ -94,23 +94,40 @@ else {
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
    
-    // ===== АЧИВКИ =====
+// ===== АЧИВКИ =====
 const achievementsList = document.getElementById('achievements-list');
 
 if (achievementsList) {
   achievementsList.innerHTML = data.achievements && data.achievements.length
     ? data.achievements.map(a => `
       <div style="
-        background: rgba(255,255,255,0.7);
-        backdrop-filter: blur(8px);
-        border-radius:16px;
-        padding:12px 18px;
-        text-align:center;
-        min-width:90px;
-        box-shadow:0 6px 16px rgba(0,0,0,.1);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        width:100px;
       ">
-        <div style="font-size:28px;margin-bottom:4px">${a.icon}</div>
-        <div style="font-size:0.8rem;font-weight:600">${a.title}</div>
+        <div style="
+          width:80px;
+          height:80px;
+          border-radius:50%;
+          overflow:hidden;
+          box-shadow:0 6px 16px rgba(0,0,0,.15);
+          background:#fff;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          margin-bottom:8px;
+        ">
+          <img src="${a.image}" 
+               style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div style="
+          font-size:0.8rem;
+          text-align:center;
+          font-weight:600;
+        ">
+          ${a.title}
+        </div>
       </div>
     `).join('')
     : '<p style="opacity:.6">Пока нет достижений</p>';
