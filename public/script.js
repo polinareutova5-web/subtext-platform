@@ -59,53 +59,61 @@ async function loadCabinet() {
     const u = data.user;
     username = u.username || "";
 
+    // === Основные данные профиля ===
     document.getElementById('username').textContent = u.username || '—';
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('coins').textContent = u.coins || 0;
     document.getElementById('progress').textContent = u.progress || 0;
+
+    // === Прогресс-бар ===
     const progressValue = Math.min(u.progress || 0, 100);
-const xpFill = document.getElementById('xp-fill');
-xpFill.style.width = progressValue + "%";
+    const xpFill = document.getElementById('xp-fill');
+    xpFill.style.width = progressValue + "%";
 
-// 🎨 Цвета по уровню
-if (progressValue >= 100) {
-  // 🟡 ЗОЛОТО
-  xpFill.style.background = "linear-gradient(90deg, gold, orange)";
-  xpFill.style.boxShadow = "0 0 18px rgba(255,215,0,.9)";
-}
-else if (progressValue >= 75) {
-  // 🟣 Почти уровень ап
-  xpFill.style.background = "linear-gradient(90deg, #7b1fa2, #ba68c8)";
-  xpFill.style.boxShadow = "0 0 14px rgba(186,104,200,.8)";
-}
-else {
-  // 🟢 Обычный прогресс
-  xpFill.style.background = "linear-gradient(90deg, #2e7d32, #66bb6a)";
-  xpFill.style.boxShadow = "0 0 10px rgba(76,175,80,.6)";
-}
+    // Цвета прогресса
+    if (progressValue >= 100) {
+      xpFill.style.background = "linear-gradient(90deg, gold, orange)";
+      xpFill.style.boxShadow = "0 0 18px rgba(255,215,0,.9)";
+    } else if (progressValue >= 75) {
+      xpFill.style.background = "linear-gradient(90deg, #7b1fa2, #ba68c8)";
+      xpFill.style.boxShadow = "0 0 14px rgba(186,104,200,.8)";
+    } else {
+      xpFill.style.background = "linear-gradient(90deg, #2e7d32, #66bb6a)";
+      xpFill.style.boxShadow = "0 0 10px rgba(76,175,80,.6)";
+    }
 
-    document.getElementById('lesson-link').textContent =
-      u.link ? u.link : "Не указана";
+    // === Ссылки ===
+    document.getElementById('lesson-link').textContent = u.link || "Не указана";
+    document.getElementById('lesson-schedule').textContent = u.schedule || "Не указано";
 
-    document.getElementById('lesson-schedule').textContent =
-      u.schedule ? u.schedule : "Не указано";
-
+    // === Аватар ===
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
-  
-    // Ачивки (только ручные)
-const achGrid = document.getElementById('achievements-grid');
-if (data.achievements?.length) {
-  achGrid.innerHTML = data.achievements.map(ach => `
-    <div style="display:flex;flex-direction:column;align-items:center;">
-      <div style="width:80px;height:80px;border:3px solid #2e7d32;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f8f9fa;">
-        ${ach.icon ? `<img src="${ach.icon}" style="width:60px;height:60px;object-fit:contain;">` : `<span style="font-size:1.8rem">🏆</span>`}
-      </div>
-      <div style="font-size:0.85rem; font-weight:500; margin-top:0.4rem; text-align:center;">${ach.title}</div>
-    </div>
-  `).join('');
-} else {
-  achGrid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#666;">Ещё нет достижений</div>';
+
+    // === Ачивки (ручные, из таблицы) ===
+    const achGrid = document.getElementById('achievements-grid');
+    if (data.achievements?.length) {
+      achGrid.innerHTML = data.achievements.map(ach => `
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="width:80px;height:80px;border:3px solid #2e7d32;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f8f9fa;">
+            ${ach.icon ? `<img src="${ach.icon}" style="width:60px;height:60px;object-fit:contain;">` : `<span style="font-size:1.8rem">🏆</span>`}
+          </div>
+          <div style="font-size:0.85rem; font-weight:500; margin-top:0.4rem; text-align:center;">${ach.title}</div>
+        </div>
+      `).join('');
+    } else {
+      achGrid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#666;">Ещё нет достижений</div>';
+    }
+
+    // === ПОКАЗЫВАЕМ ВСЁ ТОЛЬКО ЗДЕСЬ ===
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('main').classList.remove('hidden');
+    showSection('profile');
+
+  } catch (e) {
+    console.error(e);
+    document.getElementById('loading').textContent = '❌ Ошибка загрузки кабинета';
+  }
 }
     
     // ===== Уроки =====
