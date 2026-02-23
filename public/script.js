@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycby4OZyJITruNyBXN9rhN6SpbQt53r4xwXvMO2K2nx6NinhHaHBTvLrKmeewqvCk79ucsQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwMliDqnEjCRYGk0VXSQEueHfi8bGHEBKXvpZQTGBKvzdgyifuE24eIdjbdr_NPYscGAw/exec";
 
 
 let userId;
@@ -59,61 +59,61 @@ async function loadCabinet() {
     const u = data.user;
     username = u.username || "";
 
-    // === Основные данные профиля ===
     document.getElementById('username').textContent = u.username || '—';
     document.getElementById('level').textContent = u.level || '—';
     document.getElementById('coins').textContent = u.coins || 0;
     document.getElementById('progress').textContent = u.progress || 0;
-
-    // === Прогресс-бар ===
     const progressValue = Math.min(u.progress || 0, 100);
-    const xpFill = document.getElementById('xp-fill');
-    xpFill.style.width = progressValue + "%";
+const xpFill = document.getElementById('xp-fill');
 
-    // Цвета прогресса
-    if (progressValue >= 100) {
-      xpFill.style.background = "linear-gradient(90deg, gold, orange)";
-      xpFill.style.boxShadow = "0 0 18px rgba(255,215,0,.9)";
-    } else if (progressValue >= 75) {
-      xpFill.style.background = "linear-gradient(90deg, #7b1fa2, #ba68c8)";
-      xpFill.style.boxShadow = "0 0 14px rgba(186,104,200,.8)";
-    } else {
-      xpFill.style.background = "linear-gradient(90deg, #2e7d32, #66bb6a)";
-      xpFill.style.boxShadow = "0 0 10px rgba(76,175,80,.6)";
-    }
+xpFill.style.width = progressValue + "%";
 
-    // === Ссылки ===
-    document.getElementById('lesson-link').textContent = u.link || "Не указана";
-    document.getElementById('lesson-schedule').textContent = u.schedule || "Не указано";
+// 🎨 Цвета по уровню
+if (progressValue >= 100) {
+  // 🟡 ЗОЛОТО
+  xpFill.style.background = "linear-gradient(90deg, gold, orange)";
+  xpFill.style.boxShadow = "0 0 18px rgba(255,215,0,.9)";
+}
+else if (progressValue >= 75) {
+  // 🟣 Почти уровень ап
+  xpFill.style.background = "linear-gradient(90deg, #7b1fa2, #ba68c8)";
+  xpFill.style.boxShadow = "0 0 14px rgba(186,104,200,.8)";
+}
+else {
+  // 🟢 Обычный прогресс
+  xpFill.style.background = "linear-gradient(90deg, #2e7d32, #66bb6a)";
+  xpFill.style.boxShadow = "0 0 10px rgba(76,175,80,.6)";
+}
 
-    // === Аватар ===
+    document.getElementById('lesson-link').textContent =
+      u.link ? u.link : "Не указана";
+
+    document.getElementById('lesson-schedule').textContent =
+      u.schedule ? u.schedule : "Не указано";
+
     const avatarImg = document.getElementById('avatar-img');
     avatarImg.src = u.avatarUrl || "https://via.placeholder.com/120/2e7d32/FFFFFF?text=👤";
+   
+    // ===== АЧИВКИ =====
+const achievementsList = document.getElementById('achievements-list');
 
-    // === Ачивки (ручные, из таблицы) ===
-    const achGrid = document.getElementById('achievements-grid');
-    if (data.achievements?.length) {
-      achGrid.innerHTML = data.achievements.map(ach => `
-        <div style="display:flex;flex-direction:column;align-items:center;">
-          <div style="width:80px;height:80px;border:3px solid #2e7d32;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f8f9fa;">
-            ${ach.icon ? `<img src="${ach.icon}" style="width:60px;height:60px;object-fit:contain;">` : `<span style="font-size:1.8rem">🏆</span>`}
-          </div>
-          <div style="font-size:0.85rem; font-weight:500; margin-top:0.4rem; text-align:center;">${ach.title}</div>
-        </div>
-      `).join('');
-    } else {
-      achGrid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#666;">Ещё нет достижений</div>';
-    }
-
-    // === ПОКАЗЫВАЕМ ВСЁ ТОЛЬКО ЗДЕСЬ ===
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('main').classList.remove('hidden');
-    showSection('profile');
-
-  } catch (e) {
-    console.error(e);
-    document.getElementById('loading').textContent = '❌ Ошибка загрузки кабинета';
-  }
+if (achievementsList) {
+  achievementsList.innerHTML = data.achievements && data.achievements.length
+    ? data.achievements.map(a => `
+      <div style="
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(8px);
+        border-radius:16px;
+        padding:12px 18px;
+        text-align:center;
+        min-width:90px;
+        box-shadow:0 6px 16px rgba(0,0,0,.1);
+      ">
+        <div style="font-size:28px;margin-bottom:4px">${a.icon}</div>
+        <div style="font-size:0.8rem;font-weight:600">${a.title}</div>
+      </div>
+    `).join('')
+    : '<p style="opacity:.6">Пока нет достижений</p>';
 }
     
     // ===== Уроки =====
