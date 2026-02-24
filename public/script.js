@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwF-FNQW7Zi3ab-meSKYQcIxeP3tyMWv2HhUG32Pr0cY09aUjzS_etMzq2slLH0TZfbdg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyTaziG9kH3-ZlHc0vvTSZGKkM765SUOtpYnCwiYMskIjO709QB5Bd4yHvvBjE_ZzM4gw/exec";
 
 
 let userId;
@@ -203,7 +203,6 @@ function formatTime(timeStr) {
 async function loadSlots() {
   const container = document.getElementById('slots-container');
 
-
   container.innerHTML = "Загрузка слотов...";
 
   try {
@@ -219,6 +218,7 @@ async function loadSlots() {
 
     if (!slots.length) {
       container.textContent = "Нет доступных слотов";
+      loadGroupSlots();   // ← ВАЖНО: чтобы группы всё равно загрузились
       return;
     }
 
@@ -237,6 +237,8 @@ async function loadSlots() {
         </div>
       `;
     }).join("");
+
+    loadGroupSlots();   // ← ВОТ СЮДА НУЖНО ВСТАВИТЬ
 
   } catch (e) {
     console.error(e);
@@ -263,6 +265,84 @@ async function bookSlot(slotId) {
 
   } catch (e) {
     alert("❌ Ошибка соединения");
+  }
+}
+
+async function loadGroupSlots() {
+
+  const container = document.getElementById('group-slots-container');
+  if (!container) return;
+
+  container.innerHTML = "Загрузка...";
+
+  try {
+
+    const res = await fetch(`${API_URL}?action=get_group_slots`);
+    const data = await res.json();
+
+    if (!data.success) {
+      container.textContent = "Ошибка загрузки";
+      return;
+    }
+
+    const slots = data.slots;
+
+    if (!slots.length) {
+      container.textContent = "Нет групповых занятий";
+      return;
+    }
+
+    container.innerHTML = slots.map(slot => {
+
+      const freePlaces = slot.capacity - slot.bookedCount;
+      const available = freePlaces > 0;
+
+      return `
+        <div style="margin-bottom:.8rem;padding:.8rem;border-radius:12px;
+          background:${available ? '#e3f2fd' : '#eee'}">
+
+          <strong>${slot.title}</strong><br>
+          ${formatDate(slot.date)} ${formatTime(slot.time)}<br>
+
+          ${available
+            ? `<button class="buy-btn"
+                 onclick="bookGroupSlot(${slot.id})">
+                 Записаться (${slot.bookedCount}/${slot.capacity})
+               </button>`
+            : `<span style="opacity:.6">
+                 Мест нет (${slot.capacity}/${slot.capacity})
+               </span>`
+          }
+        </div>
+      `;
+    }).join("");
+
+  } catch {
+    container.textContent = "Ошибка соединения";
+  }
+}
+
+async function bookGroupSlot(slotId) {
+
+  if (!confirm("Записаться на групповое занятие?")) return;
+
+  try {
+
+    const res = await fetch(
+      `${API_URL}?action=book_group_slot&userId=${encodeURIComponent(userId)}&slotId=${slotId}`
+    );
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert("✅ Вы записались!");
+      loadGroupSlots();
+    } else {
+      alert("❌ " + data.error);
+    }
+
+  } catch {
+    alert("Ошибка соединения");
   }
 }
 
