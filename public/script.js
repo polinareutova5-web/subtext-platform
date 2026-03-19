@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxnCMvt04uRD5TLX6Ty-j24kQk15kC--YcV3HgV-CMtOmKXQpsXdqGNwSEp1lgdqA8vSA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwHMwQE6RgnqrBsMtPO-VqdbX-JvViC9RyWcQ4xaGzR3um0Zf4HrI7gwhh5kf_tZNMz8w/exec";
 
 
 let userId;
@@ -277,7 +277,7 @@ async function loadGroupSlots() {
 
   try {
 
-    const res = await fetch(`${API_URL}?action=get_group_slots`);
+    const res = await fetch(`${API_URL}?action=get_group_slots&userId=${encodeURIComponent(userId)}`);
     const data = await res.json();
 
     if (!data.success) {
