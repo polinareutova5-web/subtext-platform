@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbw1PmxYnylG-7bx_p_AAViaIOXqWbvqUFzNxzA4d7HLqLVOm_vB9CHY7BJRRX_Ayr1TNg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxnCMvt04uRD5TLX6Ty-j24kQk15kC--YcV3HgV-CMtOmKXQpsXdqGNwSEp1lgdqA8vSA/exec";
 
 
 let userId;
@@ -206,7 +206,7 @@ async function loadSlots() {
   container.innerHTML = "Загрузка слотов...";
 
   try {
-    const res = await fetch(`${API_URL}?action=get_slots`);
+    const res = await fetch(`${API_URL}?action=get_slots&userId=${encodeURIComponent(userId)}`);
     const data = await res.json();
 
     if (!data.success) {
