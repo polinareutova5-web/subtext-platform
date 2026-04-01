@@ -13,6 +13,9 @@ function showSection(sectionId) {
   if (sectionId === "schedule") {
     loadSlots();
   }
+  if (sectionId === "about") {
+    // Здесь можно добавить какую-то логику при открытии "О нас", если нужно
+  }
 }
 
 function confirmBuy(index, name, price) {
